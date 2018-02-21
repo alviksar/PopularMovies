@@ -3,7 +3,7 @@ package xyz.alviksar.popularmovies.model;
 import java.util.Date;
 
 /**
- * Created by Alexey on 21.02.2018.
+ * Represents movie data
  */
 
 public class Movie {

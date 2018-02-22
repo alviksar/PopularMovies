@@ -1,12 +1,7 @@
 package xyz.alviksar.popularmovies;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -33,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         mErrorMessage = findViewById(R.id.tv_error_message);
 
-        GridLayoutManager layoutManager =
-                new GridLayoutManager(this, 3);
+        AutoSpanGridLayoutManager layoutManager =
+                new AutoSpanGridLayoutManager(this, 1);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

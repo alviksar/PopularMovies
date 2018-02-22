@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessage = findViewById(R.id.tv_error_message);
 
         GridLayoutManager layoutManager =
-                new GridLayoutManager(this, 2);
+                new GridLayoutManager(this, 3);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

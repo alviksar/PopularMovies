@@ -50,7 +50,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     @Override
     public int getItemCount() {
-        return 20;
+        return 200;
         /*
         if (mMovieList != null) {
             return mMovieList.size();

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessage = findViewById(R.id.tv_error_message);
 
         AutoSpanGridLayoutManager layoutManager =
-                new AutoSpanGridLayoutManager(this, 1);
+                new AutoSpanGridLayoutManager(this, 1.5f);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

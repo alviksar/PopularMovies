@@ -14,7 +14,7 @@ public class AutoSpanGridLayoutManager extends GridLayoutManager {
     private int mColumnWidthPixels;
     private boolean mColumnWidthChanged = true;
 
-    public AutoSpanGridLayoutManager(Context context, int columnWidthInches) {
+    public AutoSpanGridLayoutManager(Context context, float columnWidthInches) {
         super(context, 1);
         if (columnWidthInches > 0) {
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();

@@ -3,10 +3,13 @@
 
     <!-- themoviedb urls -->
     <string name="themoviedb_api_base_url">http://api.themoviedb.org/3</string>
-    <string name="themoviedb_api_popular_endpoint">/movie/popular</string>
-    <string name="themoviedb_api_top_rated_endpoint">/movie/top_rated</string>
+    <string name="themoviedb_api_popular_endpoint">/popularMovie/popular</string>
+    <string name="themoviedb_api_top_rated_endpoint">/popularMovie/top_rated</string>
     <string name="image_base_url">http://image.tmdb.org/t/p</string>
     <string name="recommend_image_size">w185</string>
     <string name="api_key_parameter">api_key</string>
+
+    <!-- error messages -->
+    <string name="no_connection">No Internet connection.</string>
 
 </resources>

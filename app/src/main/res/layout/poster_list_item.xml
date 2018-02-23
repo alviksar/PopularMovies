@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="ContentDescription"
+        android:scaleType="centerCrop"
         tools:src="@drawable/interstellar" />
     <!--    android:scaleType="centerCrop" -->
 

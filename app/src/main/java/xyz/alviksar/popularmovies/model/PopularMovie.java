@@ -6,7 +6,7 @@ import java.util.Date;
  * Represents movie data
  */
 
-public class Movie {
+public class PopularMovie {
     // movie record id
     private int id;
     // original title
@@ -20,7 +20,7 @@ public class Movie {
     // release date
     private Date releaseDate;
 
-    public Movie() {
+    public PopularMovie() {
 
     }
     public int getId() {

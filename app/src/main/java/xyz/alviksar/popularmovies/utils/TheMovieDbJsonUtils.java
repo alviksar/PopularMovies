@@ -1,19 +1,17 @@
 package xyz.alviksar.popularmovies.utils;
 
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.alviksar.popularmovies.model.Movie;
+import xyz.alviksar.popularmovies.model.PopularMovie;
 
 /**
  * Sample:
@@ -50,10 +48,10 @@ import xyz.alviksar.popularmovies.model.Movie;
  * release date
  */
 
-public final class TheMovieDbJson {
+public final class TheMovieDbJsonUtils {
 
     // The array of movie records
-    private static final String TMD_RESULTS_TAG = "results";
+    private static final String TMD_RESULTS = "results";
     // The record id
     private static final String TMD_ID = "id";
     // The original title
@@ -75,37 +73,40 @@ public final class TheMovieDbJson {
      * @throws JSONException If JSON data cannot be properly parsed
      */
     @Nullable
-    public static List<Movie> getMoviesFromJson(String jsonStr)
+    public static List<PopularMovie> getMoviesFromJson(String jsonStr)
             throws JSONException {
 
         JSONObject forecastJson = new JSONObject(jsonStr);
 
-        if (!forecastJson.has(TMD_RESULTS_TAG)) {
+        if (!forecastJson.has(TMD_RESULTS)) {
             // Something goes wrong
             return null;
         }
 
-        JSONArray jsonMoviesArray = forecastJson.getJSONArray(TMD_RESULTS_TAG);
+        JSONArray jsonMoviesArray = forecastJson.getJSONArray(TMD_RESULTS);
 
-        ArrayList<Movie> movieList = new ArrayList<>(jsonMoviesArray.length());
-        Movie movie;
+        ArrayList<PopularMovie> popularMovieList = new ArrayList<>(jsonMoviesArray.length());
+        PopularMovie popularMovie;
 
         for (int i = 0; i < jsonMoviesArray.length(); i++) {
 
-            // Get the JSON object representing the movie record
+            // Get the JSON object representing the popularMovie record
             JSONObject jsonMovieObject = jsonMoviesArray.getJSONObject(i);
 
-            movie = new Movie();
-            movie.setId(jsonMovieObject.getInt(TMD_ID));
-            movie.setOriginalTitle(jsonMovieObject.optString(TMD_ID));
-            movie.setPlotSynopsis(jsonMovieObject.optString(TMD_OVERVIEW));
-            movie.setPosterImage(jsonMovieObject.optString(TMD_POSTER_PATH));
-            //  movie.setReleaseDate(new Date(TMD_RELEASE_DATE));
-            movie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE);
+            popularMovie = new PopularMovie();
+            popularMovie.setId(jsonMovieObject.getInt(TMD_ID));
+            popularMovie.setOriginalTitle(jsonMovieObject.optString(TMD_ID));
+            popularMovie.setPlotSynopsis(jsonMovieObject.optString(TMD_OVERVIEW));
+            String poster = jsonMovieObject.optString(TMD_POSTER_PATH);
+            poster = TextUtils.substring(poster, 1, poster.length());
+            popularMovie.setPosterImage(poster);
+            // TODO: Convert string to date
+            //  popularMovie.setReleaseDate(new Date(TMD_RELEASE_DATE));
+            popularMovie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE));
 
-            movieList.add(movie);
+            popularMovieList.add(popularMovie);
         }
-        return movieList;
+        return popularMovieList;
 
     }
 

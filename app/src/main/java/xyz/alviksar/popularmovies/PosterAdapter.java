@@ -10,9 +10,10 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import xyz.alviksar.popularmovies.model.Movie;
+import xyz.alviksar.popularmovies.model.PopularMovie;
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
  * Exposes a grid of the movie posters to RecyclerView
@@ -21,7 +22,7 @@ import xyz.alviksar.popularmovies.model.Movie;
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdapterViewHolder> {
 
     private Context mContext;
-    private ArrayList<Movie> mMovieList;
+    private List<PopularMovie> mPopularMovieList;
 
     /**
      * Creates a ForecastAdapter.
@@ -34,30 +35,33 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     @Override
     public PosterAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.poster_list_item, parent, false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.poster_list_item, parent, false);
         view.setFocusable(true);
         return new PosterAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(PosterAdapterViewHolder holder, int position) {
+        PopularMovie popularMovie = mPopularMovieList.get(position);
+        String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(popularMovie.getPosterImage());
         Picasso.with(mContext)
-                .load(R.drawable.interstellar)
-          //      .placeholder(R.drawable.user_placeholder)
-          //      .error(R.drawable.user_placeholder_error)
+                .load(fullPathToPoster)
+                // .load(R.drawable.interstellar)
+                //     .placeholder(R.drawable.user_placeholder)
+                //      .error(R.drawable.user_placeholder_error)
                 .into(holder.posterView);
     }
 
     @Override
     public int getItemCount() {
-        return 200;
-        /*
-        if (mMovieList != null) {
-            return mMovieList.size();
+        //   return  200;
+
+        if (mPopularMovieList != null) {
+            return mPopularMovieList.size();
         } else {
             return 0;
         }
-        */
     }
 
     /**
@@ -68,8 +72,8 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
      *
      * @param data the new data to use as PosterAdapter's data source
      */
-    void swapData(ArrayList<Movie> data) {
-        mMovieList = data;
+    void swapData(List<PopularMovie> data) {
+        mPopularMovieList = data;
         notifyDataSetChanged();
     }
 

@@ -19,29 +19,34 @@ import java.util.Scanner;
     http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]
     */
 
-public class TheMovieDbHttp {
+public class TheMovieDbHttpUtils {
 
-    private static final String TAG = TheMovieDbHttp.class.getSimpleName();
+    private static final String TAG = TheMovieDbHttpUtils.class.getSimpleName();
 
-    // The base URL
-    private static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3";
+    // The base URL for a list
+    private static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/movie";
     // The top rated endpoint
-    private static final String TOP_RATED_ENDPOINT = "/movie/top_rated";
+    private static final String TOP_RATED_ENDPOINT = "top_rated";
     // The popular endpoint
-    private static final String POPULAR_ENDPOINT = "/movie/popular";
+    private static final String POPULAR_ENDPOINT = "popular";
     // API KEY parameter
     private static final String API_KEY_PARAM = "api_key";
     private static String API_KEY_VALUE = "";
+
+    // The base URL for image
+    private static final String MOVIEDB_IMAGE_URL = "http://image.tmdb.org/t/p";
+    // The image width endpoint
+    private static final String IMAGE_WIDTH_ENDPOINT = "w342";
 
     public static void setAPI_KEY(String key) {
         API_KEY_VALUE = key;
     }
 
-    public String getMoviesByPopularity() throws IOException {
+    public static String getMoviesByPopularity() throws IOException {
         return getResponseFromHttpUrl(buildTheMovieDbUrl(TOP_RATED_ENDPOINT));
     }
 
-    public String getMoviesByRating() throws IOException {
+    public static String getMoviesByRating() throws IOException {
         return getResponseFromHttpUrl(buildTheMovieDbUrl(POPULAR_ENDPOINT));
     }
 
@@ -75,7 +80,7 @@ public class TheMovieDbHttp {
      * @return The contents of the HTTP response, null if no response
      * @throws IOException Related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    private static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -94,4 +99,22 @@ public class TheMovieDbHttp {
             urlConnection.disconnect();
         }
     }
+/*
+Build the complete url you will need to fetch the image.
+
+The base URL will look like: http://image.tmdb.org/t/p/.
+Then you will need a ‘size’, which will be one of the following: "w92", "w154", "w185", "w342", "w500", "w780", or "original".
+For most phones we recommend using “w185”.
+And finally the poster path returned by the query, in this case “/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg”
+Combining these three parts gives us a final url of http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
+ */
+    public static String getFullPathToPoster(String imageFileName) {
+        return Uri.parse(MOVIEDB_IMAGE_URL).buildUpon()
+                .appendPath(IMAGE_WIDTH_ENDPOINT)
+                .appendPath(imageFileName)
+           //     .appendQueryParameter(API_KEY_PARAM, API_KEY_VALUE)
+                .build().toString();
+    }
 }
+
+

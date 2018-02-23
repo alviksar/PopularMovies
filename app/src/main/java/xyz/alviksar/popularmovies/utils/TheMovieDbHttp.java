@@ -15,7 +15,7 @@ import java.util.Scanner;
     The class to fetch popular movies from themoviedb.org.
     In order to request popular movies you will want to request data from
     the /movie/popular and /movie/top_rated endpoints. An API Key is required.
-    
+
     http://api.themoviedb.org/3/movie/popular?api_key=[YOUR_API_KEY]
     */
 

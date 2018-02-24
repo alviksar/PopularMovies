@@ -8,8 +8,12 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,11 +21,11 @@ import java.util.List;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
 /**
-Displays in the main layout via a grid of their corresponding movie poster thumbnails.
+ * Displays in the main layout via a grid of their corresponding movie poster thumbnails.
  */
 
-public class MainActivity extends AppCompatActivity  implements
-        LoaderManager.LoaderCallbacks<List<PopularMovie>>  {
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<List<PopularMovie>> {
 
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity  implements
             showErrorMessage(R.string.no_connection);
         }
     }
+
     /**
      * This method will hide everything except the TextView error message and set the appropriate text to it.
      */
@@ -98,6 +103,7 @@ public class MainActivity extends AppCompatActivity  implements
         mErrorMessage.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }
+
     @Override
     public Loader<List<PopularMovie>> onCreateLoader(int i, Bundle bundle) {
         return new PopularMoviesLoader(this, null, POSTER_WIDTH_INCHES);
@@ -118,5 +124,24 @@ public class MainActivity extends AppCompatActivity  implements
     @Override
     public void onLoaderReset(Loader<List<PopularMovie>> loader) {
         mPosterAdapter.swapData(null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        /*
+        Set spinner in menu bar
+        Thanks to
+        https://stackoverflow.com/questions/37250397/how-to-add-a-spinner-next-to-a-menu-in-the-toolba
+        & Dércia Silva
+        http://www.viralandroid.com/2016/03/how-to-add-spinner-dropdown-list-to-android-actionbar-toolbar.html
+        */
+        MenuItem item = menu.findItem(R.id.spinner);
+        Spinner spinner = (Spinner) item.getActionView();
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner_list_item_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        return true;
     }
 }

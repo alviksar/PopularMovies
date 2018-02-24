@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
 
     <!-- themoviedb urls -->
     <string name="themoviedb_api_base_url">http://api.themoviedb.org/3</string>
@@ -11,5 +11,9 @@
 
     <!-- error messages -->
     <string name="no_connection">No Internet connection.</string>
+
+    <!-- posters sorting -->
+    <string name="sort_by_most_popular">by most popular</string>
+    <string name="sort_by_top_rated">by top rated</string>
 
 </resources>

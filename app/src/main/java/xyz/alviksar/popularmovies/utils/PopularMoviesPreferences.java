@@ -20,7 +20,6 @@ public class PopularMoviesPreferences {
         editor.apply();
     }
 
-
     /**
      * Returns the sort criteria currently set in Preferences
      *

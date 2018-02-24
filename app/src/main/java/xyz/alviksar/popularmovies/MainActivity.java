@@ -2,13 +2,13 @@ package xyz.alviksar.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URL;
 import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements
     private int mPosition = RecyclerView.NO_POSITION;
 
     // The poster width on screen in inches
-    private static final float POSTER_WIDTH_INCHES = 1f;
+    private static final float POSTER_WIDTH_INCHES = 1.0f;
 
     private static final int MOVIES_LOADER_ID = 1;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements
             getLoaderManager().initLoader(MOVIES_LOADER_ID, null, this);
         } else {
             // Set no connection error message
-            showErrorMessage(R.string.no_connection);
+            showErrorMessage(R.string.no_connection_error_msg);
         }
     }
 
@@ -154,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mSpinner.getSelectedItem() != null) {
                     String sort  = (String) mSpinner.getSelectedItem();
-                    Toast.makeText(getApplicationContext(), sort, Toast.LENGTH_LONG).show();
+                    PopularMoviesPreferences.setSort(getApplicationContext(), sort);
+                    updateMovies(sort);
                 }
             }
 
@@ -164,6 +166,31 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
         return true;
+    }
+
+    /**
+     * This method tells an AsyncTaskLoader to perform the request with new sort criteria.
+     */
+    private void updateMovies(String sort) {
+        if (TextUtils.isEmpty(sort)) {
+            showErrorMessage(R.string.no_sort_error_msg);
+            return;
+        }
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+
+        /*
+         * We give the LoaderManager an ID and it returns a loader (if one exists). If
+         * one doesn't exist, we tell the LoaderManager to create one. If one does exist, we tell
+         * the LoaderManager to restart it.
+         */
+        LoaderManager loaderManager = getLoaderManager();
+        Loader<String> moviesLoader = loaderManager.getLoader(MOVIES_LOADER_ID);
+        if (moviesLoader == null) {
+            loaderManager.initLoader(MOVIES_LOADER_ID, queryBundle, this);
+        } else {
+            loaderManager.restartLoader(MOVIES_LOADER_ID, queryBundle, this);
+        }
     }
 
 }

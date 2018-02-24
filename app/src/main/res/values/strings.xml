@@ -10,7 +10,8 @@
     <string name="api_key_parameter" translatable="false">api_key</string>
 
     <!-- Error messages -->
-    <string name="no_connection">No Internet connection.</string>
+    <string name="no_connection_error_msg">No Internet connection.</string>
+    <string name="no_sort_error_msg">No sort criteria.</string>
 
     <!-- Posters sorting -->
     <string name="sort_by_most_popular">by most popular</string>
@@ -20,5 +21,6 @@
     <string name="pref_sort_key" translatable="false">sort_movies_by</string>
     <!-- Default sort for  preference -->
     <string name="pref_sort_default" translatable="false">@string/sort_by_most_popular</string>
+
 
 </resources>

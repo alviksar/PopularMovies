@@ -3,13 +3,16 @@ package xyz.alviksar.popularmovies;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
+import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
+
 
 /**
  * AsyncTaskLoader for the popular movies
@@ -21,9 +24,12 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
 
     // mJson will store the raw JSON result
     private List<PopularMovie> mStoredResult;
+    // Current sort criteria
+    private String mSort;
 
     public PopularMoviesLoader(Context context, final Bundle args, float posterWidthInches) {
         super(context);
+        mSort = PopularMoviesPreferences.getSort(context);
         TheMovieDbHttpUtils.init(context, posterWidthInches);
     }
 
@@ -34,13 +40,14 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
 //        if (args == null) {
 //            return;
 //        }
-
+        String newSort = PopularMoviesPreferences.getSort(getContext());
         // If we have already cached results, just deliver them.
         // If we don't have any cached results, force a load.
-        if (mStoredResult != null) {
+        if (mStoredResult != null && mSort.equals(newSort)) {
             deliverResult(mStoredResult);
         } else {
-           forceLoad();
+            mSort = newSort;
+            forceLoad();
         }
     }
 
@@ -57,9 +64,13 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
 
         List<PopularMovie> popularMovieList = null;
         try {
-            popularMovieList = TheMovieDbJsonUtils.getMoviesFromJson(TheMovieDbHttpUtils.getMoviesByPopularity());
+            String rawJson =  TheMovieDbHttpUtils.getMoviesBy(mSort);
+            if (TextUtils.isEmpty(rawJson)) {
+                Log.e(TAG, "No json received.");
+            }
+            popularMovieList = TheMovieDbJsonUtils.getMoviesFromJson(rawJson);
         } catch (Exception e) {
-            Log.e(TAG, "No response received", e);
+            Log.e(TAG, "No response received.", e);
         }
         return popularMovieList;
     }

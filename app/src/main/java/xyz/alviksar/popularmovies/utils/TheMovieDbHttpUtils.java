@@ -42,17 +42,27 @@ public class TheMovieDbHttpUtils {
     // The image width endpoint
     private static String image_width_endpoint = "w342";
 
+    private static String sort_by_popularity;
+    private static String sort_by_rating;
+
+
     public static void init(Context context, float posterSizeInches) {
+        sort_by_popularity = context.getString(R.string.sort_by_most_popular);
+        sort_by_rating = context.getString(R.string.sort_by_top_rated);
         api_key_value = context.getResources().getString(R.string.themoviedb_v3_key);
         image_width_endpoint = choosePosterWidth(context, posterSizeInches);
     }
 
-    public static String getMoviesByPopularity() throws IOException {
-        return getResponseFromHttpUrl(buildTheMovieDbUrl(TOP_RATED_ENDPOINT));
-    }
-
-    public static String getMoviesByRating() throws IOException {
-        return getResponseFromHttpUrl(buildTheMovieDbUrl(POPULAR_ENDPOINT));
+    public static String getMoviesBy(String sort) throws IOException {
+        if (sort.equals(sort_by_popularity)) {
+            return getResponseFromHttpUrl(buildTheMovieDbUrl(POPULAR_ENDPOINT));
+        } else {
+            if (sort.equals(sort_by_rating)) {
+                return getResponseFromHttpUrl(buildTheMovieDbUrl(TOP_RATED_ENDPOINT));
+            } else {
+                return "";
+            }
+        }
     }
 
     /**

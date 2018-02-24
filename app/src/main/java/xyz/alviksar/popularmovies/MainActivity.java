@@ -2,6 +2,7 @@ package xyz.alviksar.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -11,14 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
+import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
 
 /**
  * Displays in the main layout via a grid of their corresponding movie poster thumbnails.
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
     private TextView mErrorMessage;
+    private Spinner mSpinner;
 
     private PosterAdapter mPosterAdapter;
     private int mPosition = RecyclerView.NO_POSITION;
@@ -130,18 +135,36 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         /*
-        Set spinner in menu bar
-        Thanks to
-        https://stackoverflow.com/questions/37250397/how-to-add-a-spinner-next-to-a-menu-in-the-toolba
-        & Dércia Silva
+        Set spinner into menu bar
+        Thanks to Dércia Silva
         http://www.viralandroid.com/2016/03/how-to-add-spinner-dropdown-list-to-android-actionbar-toolbar.html
         */
         MenuItem item = menu.findItem(R.id.spinner);
-        Spinner spinner = (Spinner) item.getActionView();
+        mSpinner = (Spinner) item.getActionView();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner_list_item_array, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        mSpinner.setAdapter(adapter);
+        // Set spinner to the right state
+        int defPosition = adapter.getPosition(PopularMoviesPreferences.getSort(this));
+        mSpinner.setSelection(defPosition);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mSpinner.getSelectedItem() != null) {
+                    String sort  = (String) mSpinner.getSelectedItem();
+                    Toast.makeText(getApplicationContext(), sort, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         return true;
     }
+
 }
+

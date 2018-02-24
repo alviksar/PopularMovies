@@ -16,7 +16,7 @@ import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
-/*
+/**
 Displays in the main layout via a grid of their corresponding movie poster thumbnails.
  */
 
@@ -43,33 +43,39 @@ public class MainActivity extends AppCompatActivity  implements
         mErrorMessage = findViewById(R.id.tv_error_message);
 
         AutoSpanGridLayoutManager layoutManager =
-                new AutoSpanGridLayoutManager(this, 1);
+                new AutoSpanGridLayoutManager(this, POSTER_WIDTH_INCHES);
 
         mRecyclerView.setLayoutManager(layoutManager);
-      //  mRecyclerView.setHasFixedSize(true);
+        //  mRecyclerView.setHasFixedSize(true);
 
-        // Setting the adapter attaches it to the RecyclerView in our layout.
+        // Attach the adapter to the RecyclerView
         mPosterAdapter = new PosterAdapter(this);
         mRecyclerView.setAdapter(mPosterAdapter);
 
-//        ConnectivityManager cm =
-//                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-//
-//        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-//
-//        // If there is a network connection, fetch data
-//        if (networkInfo != null && networkInfo.isConnected()) {
+        // Check network connection
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
             showLoading();
             // Initialize the loader
-
             getLoaderManager().initLoader(MOVIES_LOADER_ID, null, this);
-//        } else {
-//            // Update empty state with no connection error message
-//            mPosterAdapter.swapData(null);
-//            mLoadingIndicator.setVisibility(View.GONE);
-//            // Otherwise, display error
-//            mErrorMessage.setText(R.string.no_connection);
-//        }
+        } else {
+            // Set no connection error message
+            showErrorMessage(R.string.no_connection);
+        }
+    }
+    /**
+     * This method will hide everything except the TextView error message and set the appropriate text to it.
+     */
+    private void showErrorMessage(int msgResId) {
+        mPosterAdapter.swapData(null);
+        mLoadingIndicator.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+        mErrorMessage.setVisibility(View.VISIBLE);
+        // Otherwise, display error
+        mErrorMessage.setText(msgResId);
     }
 
     /**

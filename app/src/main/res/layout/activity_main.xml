@@ -8,13 +8,15 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_movies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <!-- A text that will be shown to users if something goes wrong -->
     <TextView
         android:id="@+id/tv_error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/error_msg_text_size"
         android:visibility="invisible" />
 
     <!-- A progress bar that will be shown to users to indicate that movies data is loading -->

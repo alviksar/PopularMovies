@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/frame_width_1"
+    android:padding="@dimen/poster_frame_width_1"
     android:orientation="horizontal">
 
     <ImageView

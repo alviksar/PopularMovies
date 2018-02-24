@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity  implements
         mLoadingIndicator.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);
         mErrorMessage.setVisibility(View.VISIBLE);
-        // Otherwise, display error
         mErrorMessage.setText(msgResId);
     }
 
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity  implements
     }
     @Override
     public Loader<List<PopularMovie>> onCreateLoader(int i, Bundle bundle) {
-        return new PopularMoviesLoader(this);
+        return new PopularMoviesLoader(this, null);
     }
 
     @Override

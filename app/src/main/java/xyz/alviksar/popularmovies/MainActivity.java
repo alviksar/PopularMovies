@@ -30,7 +30,9 @@ public class MainActivity extends AppCompatActivity  implements
     private PosterAdapter mPosterAdapter;
     private int mPosition = RecyclerView.NO_POSITION;
 
-    private static final float POSTER_WIDTH_INCHES = 1.0f;
+    // The poster width on screen in inches
+    private static final float POSTER_WIDTH_INCHES = 1f;
+
     private static final int MOVIES_LOADER_ID = 1;
 
     @Override
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity  implements
     }
     @Override
     public Loader<List<PopularMovie>> onCreateLoader(int i, Bundle bundle) {
-        return new PopularMoviesLoader(this, null);
+        return new PopularMoviesLoader(this, null, POSTER_WIDTH_INCHES);
     }
 
     @Override

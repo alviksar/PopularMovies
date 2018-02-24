@@ -42,9 +42,9 @@ public class TheMovieDbHttpUtils {
     // The image width endpoint
     private static String image_width_endpoint = "w342";
 
-    public static void init(Context context) {
+    public static void init(Context context, float posterSizeInches) {
         api_key_value = context.getResources().getString(R.string.themoviedb_v3_key);
-        image_width_endpoint = choosePosterWidth(context);
+        image_width_endpoint = choosePosterWidth(context, posterSizeInches);
     }
 
     public static String getMoviesByPopularity() throws IOException {
@@ -116,7 +116,7 @@ public class TheMovieDbHttpUtils {
                 .build().toString();
     }
 
-    private static String choosePosterWidth(Context context) {
+    private static String choosePosterWidth(Context context, float posterSizeInches) {
         /*
         A poster width can be one of the following:
         "w92", "w154", "w185", "w342", "w500", "w780", or "original".
@@ -125,7 +125,7 @@ public class TheMovieDbHttpUtils {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
         for (int i = 0; i < posterWidth.length - 1; i++) {
-            if (metrics.xdpi < Float.parseFloat(posterWidth[i].substring(1)))
+            if (metrics.xdpi* posterSizeInches <= Float.parseFloat(posterWidth[i].substring(1)))
                 return posterWidth[i];
         }
         return "original";

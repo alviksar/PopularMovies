@@ -22,9 +22,9 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
     // mJson will store the raw JSON result
     private List<PopularMovie> mStoredResult;
 
-    public PopularMoviesLoader(Context context, final Bundle args) {
+    public PopularMoviesLoader(Context context, final Bundle args, float posterWidthInches) {
         super(context);
-        TheMovieDbHttpUtils.init(context);
+        TheMovieDbHttpUtils.init(context, posterWidthInches);
     }
 
     @Override

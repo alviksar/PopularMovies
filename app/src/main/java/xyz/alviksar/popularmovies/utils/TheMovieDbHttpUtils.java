@@ -1,7 +1,9 @@
 package xyz.alviksar.popularmovies.utils;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+
+import xyz.alviksar.popularmovies.R;
 
     /*
     The class to fetch popular movies from themoviedb.org.
@@ -31,15 +35,16 @@ public class TheMovieDbHttpUtils {
     private static final String POPULAR_ENDPOINT = "popular";
     // API KEY parameter
     private static final String API_KEY_PARAM = "api_key";
-    private static String API_KEY_VALUE = "";
+    private static String api_key_value = "";
 
     // The base URL for image
     private static final String MOVIEDB_IMAGE_URL = "http://image.tmdb.org/t/p";
     // The image width endpoint
-    private static final String IMAGE_WIDTH_ENDPOINT = "w342";
+    private static String image_width_endpoint = "w342";
 
-    public static void setAPI_KEY(String key) {
-        API_KEY_VALUE = key;
+    public static void init(Context context) {
+        api_key_value = context.getResources().getString(R.string.themoviedb_v3_key);
+        image_width_endpoint = choosePosterWidth(context);
     }
 
     public static String getMoviesByPopularity() throws IOException {
@@ -60,7 +65,7 @@ public class TheMovieDbHttpUtils {
     private static URL buildTheMovieDbUrl(String queryType) {
         Uri moviesQueryUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
                 .appendPath(queryType)
-                .appendQueryParameter(API_KEY_PARAM, API_KEY_VALUE)
+                .appendQueryParameter(API_KEY_PARAM, api_key_value)
                 .build();
 
         try {
@@ -99,21 +104,31 @@ public class TheMovieDbHttpUtils {
             urlConnection.disconnect();
         }
     }
-/*
-Build the complete url you will need to fetch the image.
 
-The base URL will look like: http://image.tmdb.org/t/p/.
-Then you will need a ‘size’, which will be one of the following: "w92", "w154", "w185", "w342", "w500", "w780", or "original".
-For most phones we recommend using “w185”.
-And finally the poster path returned by the query, in this case “/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg”
-Combining these three parts gives us a final url of http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
- */
+    /*
+    Build the complete url you will need to fetch the image.
+     */
     public static String getFullPathToPoster(String imageFileName) {
         return Uri.parse(MOVIEDB_IMAGE_URL).buildUpon()
-                .appendPath(IMAGE_WIDTH_ENDPOINT)
+                .appendPath(image_width_endpoint)
                 .appendPath(imageFileName)
-           //     .appendQueryParameter(API_KEY_PARAM, API_KEY_VALUE)
+                //     .appendQueryParameter(API_KEY_PARAM, API_KEY_VALUE)
                 .build().toString();
+    }
+
+    private static String choosePosterWidth(Context context) {
+        /*
+        A poster width can be one of the following:
+        "w92", "w154", "w185", "w342", "w500", "w780", or "original".
+       */
+        final String[] posterWidth = {"w92", "w154", "w185", "w342", "w500", "w780"};
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+
+        for (int i = 0; i < posterWidth.length - 1; i++) {
+            if (metrics.xdpi < Float.parseFloat(posterWidth[i].substring(1)))
+                return posterWidth[i];
+        }
+        return "original";
     }
 }
 

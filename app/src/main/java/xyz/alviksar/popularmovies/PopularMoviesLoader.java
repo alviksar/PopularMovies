@@ -3,9 +3,7 @@ package xyz.alviksar.popularmovies;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
 /**
- * Created by Alexey on 23.02.2018.
+ * AsyncTaskLoader for the popular movies
  */
 
 public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
@@ -26,7 +24,7 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
 
     public PopularMoviesLoader(Context context, final Bundle args) {
         super(context);
-        TheMovieDbHttpUtils.setAPI_KEY(context.getResources().getString(R.string.themoviedb_v3_key));
+        TheMovieDbHttpUtils.init(context);
     }
 
     @Override

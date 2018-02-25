@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/poster_frame_width_1"
+    android:background="@drawable/touch_selector"
     android:orientation="horizontal">
 
     <ImageView
@@ -13,8 +14,7 @@
         android:layout_height="wrap_content"
         tools:ignore="ContentDescription"
         android:scaleType="centerCrop"
+        android:background="@drawable/touch_selector"
         tools:src="@drawable/interstellar" />
-    <!--    android:scaleType="centerCrop" -->
-
 
 </FrameLayout>

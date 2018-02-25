@@ -97,6 +97,8 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         public PosterAdapterViewHolder(View itemView) {
             super(itemView);
             posterView = itemView.findViewById(R.id.iv_poster);
+
+            itemView.setOnClickListener(this);
         }
 
         /**

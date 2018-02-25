@@ -2,9 +2,11 @@ package xyz.alviksar.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +32,8 @@ import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
  */
 
 public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<List<PopularMovie>> {
+        LoaderManager.LoaderCallbacks<List<PopularMovie>>,
+        PosterAdapter.PosterAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
@@ -60,8 +63,9 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(layoutManager);
         //  mRecyclerView.setHasFixedSize(true);
 
+        // Create PosterAdapter with this context and this OnClickHandler
+        mPosterAdapter = new PosterAdapter(this, this);
         // Attach the adapter to the RecyclerView
-        mPosterAdapter = new PosterAdapter(this);
         mRecyclerView.setAdapter(mPosterAdapter);
 
         // Check network connection
@@ -197,5 +201,16 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * This method is for responding to clicks from our grid.
+     *
+     * @param movie
+     *
+     */
+    @Override
+    public void onClick(PopularMovie movie) {
+        Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        startActivity(movieDetailIntent);
+    }
 }
 

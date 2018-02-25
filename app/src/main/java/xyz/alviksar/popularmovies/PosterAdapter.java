@@ -20,17 +20,32 @@ import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
  */
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdapterViewHolder> {
+    /**
+     * The interface to handle clicks on items within this Adapter.
+     */
+    public interface PosterAdapterOnClickHandler {
+        void onClick(PopularMovie movie);
+    }
 
     private Context mContext;
+
     private List<PopularMovie> mPopularMovieList;
+    /**
+     * The member that receives onClick messages.
+     */
+    final private PosterAdapterOnClickHandler mClickHandler;
+
 
     /**
-     * Creates a ForecastAdapter.
+     * Creates a PosterAdapter.
      *
-     * @param context Used to talk to the UI and app resources
+     * @param context      Used to talk to the UI and app resources
+     * @param clickHandler Used to assign onClick receiver
+     *
      */
-    public PosterAdapter(@NonNull Context context) {
+    public PosterAdapter(@NonNull Context context, PosterAdapterOnClickHandler clickHandler) {
         mContext = context;
+        mClickHandler = clickHandler;
     }
 
     @Override
@@ -55,8 +70,6 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     @Override
     public int getItemCount() {
-        //   return  200;
-
         if (mPopularMovieList != null) {
             return mPopularMovieList.size();
         } else {
@@ -77,13 +90,29 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         notifyDataSetChanged();
     }
 
-    class PosterAdapterViewHolder extends RecyclerView.ViewHolder {
+    class PosterAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final ImageView posterView;
 
         public PosterAdapterViewHolder(View itemView) {
             super(itemView);
             posterView = itemView.findViewById(R.id.iv_poster);
+        }
+
+        /**
+         * This gets called by the child views during a click. We fetch the movie that has been
+         * selected, and then call the onClick handler registered with this adapter, passing that
+         * movie.
+         *
+         * @param v the View that was clicked
+         */
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            if (mPopularMovieList != null) {
+                PopularMovie movie = mPopularMovieList.get(adapterPosition);
+                mClickHandler.onClick(movie);
+            }
         }
     }
 

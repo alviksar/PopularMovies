@@ -71,8 +71,11 @@ public class MainActivity extends AppCompatActivity implements
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
             showLoading();
-            // Initialize the loader
-            getLoaderManager().initLoader(MOVIES_LOADER_ID, null, this);
+            // Get the sort criteria and initialize a loader
+            String sort = PopularMoviesPreferences.getSort(this);
+            Bundle queryBundle = new Bundle();
+            queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+            getLoaderManager().initLoader(MOVIES_LOADER_ID, queryBundle, this);
         } else {
             // Set no connection error message
             showErrorMessage(R.string.no_connection_error_msg);
@@ -111,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public Loader<List<PopularMovie>> onCreateLoader(int i, Bundle bundle) {
-        return new PopularMoviesLoader(this, null, POSTER_WIDTH_INCHES);
+    public Loader<List<PopularMovie>> onCreateLoader(int i, Bundle args) {
+        return new PopularMoviesLoader(this, args, POSTER_WIDTH_INCHES);
     }
 
     @Override
@@ -169,9 +172,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * This method tells an AsyncTaskLoader to perform the request with new sort criteria.
+     * This method tells an AsyncTaskLoader to perform the HTTP-request with new sort criteria.
      */
     private void updateMovies(String sort) {
+
         if (TextUtils.isEmpty(sort)) {
             showErrorMessage(R.string.no_sort_error_msg);
             return;

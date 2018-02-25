@@ -6,6 +6,6 @@
     android:text="@string/pref_sort_default"
     android:textSize="16sp"
     android:gravity="start"
-    android:textColor="@color/white"
+    android:textColor="@color/colorWhite"
     android:padding="4dp"
     />

@@ -26,6 +26,7 @@ import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
  * Displays in the main layout via a grid of their corresponding movie poster thumbnails.
@@ -210,6 +211,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClick(PopularMovie movie) {
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        movieDetailIntent.setData(
+                Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPosterImage())));
         startActivity(movieDetailIntent);
     }
 }

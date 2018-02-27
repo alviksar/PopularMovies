@@ -1,14 +1,15 @@
 package xyz.alviksar.popularmovies;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import xyz.alviksar.popularmovies.databinding.ActivityDetailBinding;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
 public class DetailActivity extends AppCompatActivity {
@@ -16,7 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     private PopularMovie mMovie;
 
     private ImageView mPoster;
-    private TextView mTitle;
+//    private TextView mTitle;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -27,6 +28,8 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
         Intent intent = getIntent();
         Uri imageUri = intent.getData();
 
@@ -36,20 +39,12 @@ public class DetailActivity extends AppCompatActivity {
 //        else {
 //           mMovie = savedInstanceState.getParcelable(getString(R.string.movie_parcel_key));
 //        }
+        ActivityDetailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        binding.setPopularMovie(mMovie);
 
         setTitle(mMovie.getTitle());
-        setContentView(R.layout.activity_detail);
+
         mPoster = findViewById(R.id.im_poster);
-
-        mTitle = findViewById(R.id.tv_original_title);
-        if (mMovie != null) {
-            mTitle.setText(mMovie.getOriginalTitle());
-        }
-
-
-
-
-
         Picasso.with(this)
                 .load(imageUri)
                 //     .placeholder(R.drawable.user_placeholder)

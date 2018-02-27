@@ -26,8 +26,24 @@ public class PopularMovie implements Parcelable {
     public PopularMovie() {
     }
 
+    public PopularMovie(int id,
+                        String title,
+                        String originalTitle,
+                        String poster,
+                        String plotSynopsis,
+                        Double userRating,
+                        String releaseDate) {
+        this.id = id;
+        this.title = title;
+        this.originalTitle = originalTitle;
+        this.poster = poster;
+        this.plotSynopsis = plotSynopsis;
+        this.userRating = userRating;
+        this.releaseDate = releaseDate;
+    }
+
     // Constructor from Parcel
-    private PopularMovie(Parcel in){
+    private PopularMovie(Parcel in) {
         id = in.readInt();
         title = in.readString();
         originalTitle = in.readString();
@@ -89,8 +105,8 @@ public class PopularMovie implements Parcelable {
         this.plotSynopsis = plotSynopsis;
     }
 
-    public Double getUserRating() {
-        return userRating;
+    public String getUserRating() {
+        return userRating.toString();
     }
 
     public void setUserRating(Double userRating) {

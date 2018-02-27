@@ -20,7 +20,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-    //    outState.putParcelable(getString(R.string.movie_parcel_key), mMovie);
+//        outState.putParcelable(getString(R.string.movie_parcel_key), mMovie);
         super.onSaveInstanceState(outState);
     }
 
@@ -30,13 +30,14 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Uri imageUri = intent.getData();
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_parcel_key))) {
+//        if(savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_parcel_key))) {
             mMovie = intent.getParcelableExtra(getString(R.string.movie_parcel_key));
-        }
-        else {
-   //         mMovie = savedInstanceState.getParcelable(getString(R.string.movie_parcel_key));
-        }
+//        }
+//        else {
+//           mMovie = savedInstanceState.getParcelable(getString(R.string.movie_parcel_key));
+//        }
 
+        setTitle(mMovie.getTitle());
         setContentView(R.layout.activity_detail);
         mPoster = findViewById(R.id.im_poster);
 

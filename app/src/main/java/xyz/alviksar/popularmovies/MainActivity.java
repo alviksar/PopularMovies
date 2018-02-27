@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
         movieDetailIntent.setData(
                 Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPoster())));
+        movieDetailIntent.putExtra(getString(R.string.movie_parcel_key), movie);
         startActivity(movieDetailIntent);
     }
 }

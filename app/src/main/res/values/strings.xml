@@ -22,5 +22,7 @@
     <!-- Default sort for  preference -->
     <string name="pref_sort_default" translatable="false">@string/sort_by_most_popular</string>
 
+    <string name="movie_parcel_key" translatable="false">movie</string>
+
 
 </resources>

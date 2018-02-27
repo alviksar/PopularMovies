@@ -53,6 +53,8 @@ public final class TheMovieDbJsonUtils {
     private static final String TMD_RESULTS = "results";
     // The record id
     private static final String TMD_ID = "id";
+    // The  title
+    private static final String TMD_TITLE = "title";
     // The original title
     private static final String TMD_ORIGINAL_TITLE = "original_title";
     // The path to the poster image
@@ -94,7 +96,8 @@ public final class TheMovieDbJsonUtils {
 
             popularMovie = new PopularMovie();
             popularMovie.setId(jsonMovieObject.getInt(TMD_ID));
-            popularMovie.setOriginalTitle(jsonMovieObject.optString(TMD_ID));
+            popularMovie.setTitle(jsonMovieObject.optString(TMD_TITLE));
+            popularMovie.setOriginalTitle(jsonMovieObject.optString(TMD_ORIGINAL_TITLE));
             popularMovie.setPlotSynopsis(jsonMovieObject.optString(TMD_OVERVIEW));
             String poster = jsonMovieObject.optString(TMD_POSTER_PATH);
             poster = TextUtils.substring(poster, 1, poster.length());

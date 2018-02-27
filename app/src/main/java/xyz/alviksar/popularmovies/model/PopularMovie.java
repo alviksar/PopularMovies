@@ -1,34 +1,68 @@
 package xyz.alviksar.popularmovies.model;
 
-import java.util.Date;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Represents movie data
  */
 
-public class PopularMovie {
+public class PopularMovie implements Parcelable {
     // movie record id
     private int id;
+    // title
+    private String title;
     // original title
     private String originalTitle;
     // movie poster image file name
-    private String posterImage;
+    private String poster;
     // A plot synopsis (called overview in the api)
     private String plotSynopsis;
     // A plot synopsis (called overview in the api)
     private Double userRating;
     // release date
-    private Date releaseDate;
+    private String releaseDate;
 
     public PopularMovie() {
-
     }
+
+    // Constructor from Parcel
+    private PopularMovie(Parcel in){
+        id = in.readInt();
+        title = in.readString();
+        originalTitle = in.readString();
+        poster = in.readString();
+        plotSynopsis = in.readString();
+        userRating = in.readDouble();
+        releaseDate = in.readString();
+    }
+
+    public static final Creator<PopularMovie> CREATOR = new Creator<PopularMovie>() {
+        @Override
+        public PopularMovie createFromParcel(Parcel in) {
+            return new PopularMovie(in);
+        }
+
+        @Override
+        public PopularMovie[] newArray(int size) {
+            return new PopularMovie[size];
+        }
+    };
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getOriginalTitle() {
@@ -39,12 +73,12 @@ public class PopularMovie {
         this.originalTitle = originalTitle;
     }
 
-    public String getPosterImage() {
-        return posterImage;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setPosterImage(String posterImage) {
-        this.posterImage = posterImage;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public String getPlotSynopsis() {
@@ -63,15 +97,29 @@ public class PopularMovie {
         this.userRating = userRating;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(originalTitle);
+        parcel.writeString(poster);
+        parcel.writeString(plotSynopsis);
+        parcel.writeDouble(userRating);
+        parcel.writeString(releaseDate);
+    }
 }
 /*
       {

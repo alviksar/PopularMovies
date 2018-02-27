@@ -59,7 +59,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
     @Override
     public void onBindViewHolder(PosterAdapterViewHolder holder, int position) {
         PopularMovie popularMovie = mPopularMovieList.get(position);
-        String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(popularMovie.getPosterImage());
+        String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(popularMovie.getPoster());
         Picasso.with(mContext)
                 .load(fullPathToPoster)
                 // .load(R.drawable.interstellar)

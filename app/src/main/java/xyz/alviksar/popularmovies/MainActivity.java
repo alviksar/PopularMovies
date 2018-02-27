@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onClick(PopularMovie movie) {
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
         movieDetailIntent.setData(
-                Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPosterImage())));
+                Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPoster())));
         startActivity(movieDetailIntent);
     }
 }

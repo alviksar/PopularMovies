@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/im_poster"
-            android:layout_width="185dp"
+            android:layout_width="@dimen/detail_image_width"
             android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/interstellar" />
@@ -62,7 +63,6 @@
             android:id="@+id/rb_movie_rating"
             style="?android:attr/ratingBarStyleSmall"
 
-            android:theme="@style/RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -71,6 +71,7 @@
             android:numStars="5"
             android:rating="3"
             android:stepSize="0.1"
+            android:theme="@style/RatingBar"
             android:visibility="visible"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

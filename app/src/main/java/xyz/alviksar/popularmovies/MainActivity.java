@@ -7,8 +7,8 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,25 +21,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.net.URL;
 import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
 /**
  * Displays in the main layout via a grid of their corresponding movie poster thumbnails.
  */
-
-import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<PopularMovie>>,
@@ -67,12 +60,9 @@ public class MainActivity extends AppCompatActivity implements
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
         mErrorMessage = findViewById(R.id.tv_error_message);
 
-//        AutoSpanGridLayoutManager layoutManager =
-//                new AutoSpanGridLayoutManager(this, POSTER_WIDTH_INCHES);
-
+        // Calculate the number of columns in the grid
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int mColumnWidthPixels = Math.round(POSTER_WIDTH_INCHES * metrics.xdpi);
-        int totalSpace;
+        int mColumnWidthPixels;
         if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
              mColumnWidthPixels = Math.round(POSTER_WIDTH_INCHES * metrics.ydpi);
 

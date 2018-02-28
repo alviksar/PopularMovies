@@ -1,10 +1,16 @@
 package xyz.alviksar.popularmovies.model;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RatingBar;
+
+import com.squareup.picasso.Picasso;
+
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
  * Represents movie data
@@ -144,6 +150,15 @@ public class PopularMovie implements Parcelable {
     public static void setRating(View view, String rating) {
         RatingBar rb = (RatingBar)view;
         rb.setRating(Float.parseFloat(rating));
+    }
+
+    @BindingAdapter({"bind:imageUrl", "bind:error"})
+    public static void loadImage(ImageView view, String url, Drawable error) {
+        TheMovieDbHttpUtils.getFullPathToPoster(url);
+        Picasso.with(view.getContext())
+                .load(TheMovieDbHttpUtils.getFullPathToPoster(url))
+                .error(error)
+                .into(view);
     }
 
 }

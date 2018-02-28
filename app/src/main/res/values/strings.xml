@@ -26,7 +26,7 @@
     <string name="movie_parcel_key" translatable="false">movie</string>
 
     <!-- String formats for DetailActivity -->
-    <string name="rating_format">Rating: %1$s</string>
-    <string name="release_date_format">Release: %1$s</string>
+    <string name="rating_format">Rating %1$s</string>
+    <string name="release_date_format">Release %1$s</string>
 
 </resources>

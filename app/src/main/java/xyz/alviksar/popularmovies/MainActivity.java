@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
-import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -226,8 +224,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClick(PopularMovie movie) {
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
-        movieDetailIntent.setData(
-                Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPoster())));
+//        movieDetailIntent.setData(
+//                Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPoster())));
         movieDetailIntent.putExtra(getString(R.string.movie_parcel_key), movie);
         startActivity(movieDetailIntent);
     }

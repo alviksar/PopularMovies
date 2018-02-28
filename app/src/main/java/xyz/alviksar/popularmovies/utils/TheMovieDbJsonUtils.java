@@ -102,8 +102,7 @@ public final class TheMovieDbJsonUtils {
             String poster = jsonMovieObject.optString(TMD_POSTER_PATH);
             poster = TextUtils.substring(poster, 1, poster.length());
             popularMovie.setPoster(poster);
-            // TODO: Convert string to date
-            //  popularMovie.setReleaseDate(new Date(TMD_RELEASE_DATE));
+            popularMovie.setReleaseDate(jsonMovieObject.optString(TMD_RELEASE_DATE));
             popularMovie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE));
 
             popularMovieList.add(popularMovie);

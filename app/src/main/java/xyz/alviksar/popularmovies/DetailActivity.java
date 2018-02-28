@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import xyz.alviksar.popularmovies.databinding.ActivityDetailBinding;
+import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
 public class DetailActivity extends AppCompatActivity {
@@ -28,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.detail_activity);
 
         Intent intent = getIntent();
         Uri imageUri = intent.getData();
@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
 //        else {
 //           mMovie = savedInstanceState.getParcelable(getString(R.string.movie_parcel_key));
 //        }
-        ActivityDetailBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        DetailActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
         binding.setPopularMovie(mMovie);
 
         setTitle(mMovie.getTitle());

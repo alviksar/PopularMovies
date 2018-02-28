@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         mRecyclerView = findViewById(R.id.rv_movies);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);

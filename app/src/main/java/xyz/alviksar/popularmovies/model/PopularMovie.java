@@ -1,7 +1,10 @@
 package xyz.alviksar.popularmovies.model;
 
+import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
+import android.widget.RatingBar;
 
 /**
  * Represents movie data
@@ -26,21 +29,21 @@ public class PopularMovie implements Parcelable {
     public PopularMovie() {
     }
 
-    public PopularMovie(int id,
-                        String title,
-                        String originalTitle,
-                        String poster,
-                        String plotSynopsis,
-                        Double userRating,
-                        String releaseDate) {
-        this.id = id;
-        this.title = title;
-        this.originalTitle = originalTitle;
-        this.poster = poster;
-        this.plotSynopsis = plotSynopsis;
-        this.userRating = userRating;
-        this.releaseDate = releaseDate;
-    }
+//    public PopularMovie(int id,
+//                        String title,
+//                        String originalTitle,
+//                        String poster,
+//                        String plotSynopsis,
+//                        Double userRating,
+//                        String releaseDate) {
+//        this.id = id;
+//        this.title = title;
+//        this.originalTitle = originalTitle;
+//        this.poster = poster;
+//        this.plotSynopsis = plotSynopsis;
+//        this.userRating = userRating;
+//        this.releaseDate = releaseDate;
+//    }
 
     // Constructor from Parcel
     private PopularMovie(Parcel in) {
@@ -136,6 +139,13 @@ public class PopularMovie implements Parcelable {
         parcel.writeDouble(userRating);
         parcel.writeString(releaseDate);
     }
+
+    @BindingAdapter("android:rating")
+    public static void setRating(View view, String rating) {
+        RatingBar rb = (RatingBar)view;
+        rb.setRating(Float.parseFloat(rating));
+    }
+
 }
 /*
       {

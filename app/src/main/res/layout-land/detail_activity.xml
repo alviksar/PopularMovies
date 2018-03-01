@@ -11,11 +11,6 @@
             type="xyz.alviksar.popularmovies.model.PopularMovie" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,11 +22,9 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/poster_description"
                 android:scaleType="centerCrop"
-                app:error="@{@drawable/interstellar}"
                 app:imageUrl="@{popularMovie.poster}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/interstellar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -116,7 +109,5 @@
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
 
 </layout>

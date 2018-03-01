@@ -2,7 +2,6 @@ package xyz.alviksar.popularmovies;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 
 import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;

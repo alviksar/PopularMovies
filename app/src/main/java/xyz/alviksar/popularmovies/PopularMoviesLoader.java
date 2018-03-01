@@ -26,13 +26,13 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
     // Current sort criteria
     private static String sSort = "";
 
-    private Boolean sortChanged;
+    private Boolean mSortChanged;
 
     public PopularMoviesLoader(Context context, Bundle args, float posterWidthInches) {
         super(context);
         String sort = args.getString(context.getResources().getString(R.string.pref_sort_key));
-        sortChanged = !sSort.equals(sort);
-        if (sortChanged) {
+        mSortChanged = !sSort.equals(sort);
+        if (mSortChanged) {
             sSort = sort;
         }
         TheMovieDbHttpUtils.init(context, posterWidthInches);
@@ -41,7 +41,7 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
     @Override
     protected void onStartLoading() {
         // If we have already cached valid results, just deliver them
-        if (sStoredResult != null && !sortChanged ) {
+        if (sStoredResult != null && !mSortChanged) {
             deliverResult(sStoredResult);
         } else {
             forceLoad();

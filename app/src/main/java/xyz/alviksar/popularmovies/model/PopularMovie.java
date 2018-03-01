@@ -1,7 +1,6 @@
 package xyz.alviksar.popularmovies.model;
 
 import android.databinding.BindingAdapter;
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
@@ -139,12 +138,12 @@ public class PopularMovie implements Parcelable {
     }
 
     // Uses with dataBinding to set a poster image
-    @BindingAdapter({"bind:imageUrl", "bind:error"})
-    public static void loadImage(ImageView view, String url, Drawable error) {
+    @BindingAdapter({"bind:imageUrl"})
+    public static void loadImage(ImageView view, String url) {
         TheMovieDbHttpUtils.getFullPathToPoster(url);
         Picasso.with(view.getContext())
                 .load(TheMovieDbHttpUtils.getFullPathToPoster(url))
-                .error(error)
+             //   .error(error)
                 .into(view);
     }
 

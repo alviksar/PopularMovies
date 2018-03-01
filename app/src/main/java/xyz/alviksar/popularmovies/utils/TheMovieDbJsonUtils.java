@@ -12,7 +12,7 @@ import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
-/**
+/*
  * Sample:
  * {
  * "page":1,

@@ -14,7 +14,7 @@ import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
 
 /**
- * AsyncTaskLoader for the popular movies
+ * AsyncTaskLoader for loading a list of movies
  */
 
 public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
@@ -30,7 +30,6 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
 
     public PopularMoviesLoader(Context context, Bundle args, float posterWidthInches) {
         super(context);
-      //  mSort = PopularMoviesPreferences.getSort(context);
         String sort = args.getString(context.getResources().getString(R.string.pref_sort_key));
         sortChanged = !sSort.equals(sort);
         if (sortChanged) {
@@ -41,7 +40,7 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
 
     @Override
     protected void onStartLoading() {
-        // If we have already cached valid results, just deliver them.
+        // If we have already cached valid results, just deliver them
         if (sStoredResult != null && !sortChanged ) {
             deliverResult(sStoredResult);
         } else {

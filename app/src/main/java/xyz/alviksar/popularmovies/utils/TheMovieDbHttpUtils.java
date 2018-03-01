@@ -45,14 +45,23 @@ public class TheMovieDbHttpUtils {
     private static String sort_by_popularity;
     private static String sort_by_rating;
 
-
+    /**
+     *  Initializes the global parameters
+     */
     public static void init(Context context, float posterSizeInches) {
         sort_by_popularity = context.getString(R.string.sort_by_most_popular);
         sort_by_rating = context.getString(R.string.sort_by_top_rated);
         api_key_value = context.getResources().getString(R.string.themoviedb_v3_key);
+
+        // Set width for images
         image_width_endpoint = choosePosterWidth(context, posterSizeInches);
     }
-
+    /**
+     *   Returns a json response by sort criteria
+     *
+     * @param sort The type of sorting movies
+     * @return The json response from the movie db server
+     */
     public static String getMoviesBy(String sort) throws IOException {
         if (sort.equals(sort_by_popularity)) {
             return getResponseFromHttpUrl(buildTheMovieDbUrl(POPULAR_ENDPOINT));
@@ -66,15 +75,15 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     * Builds the URL used to talk to the movie db server
+     * Builds the URL used to talk to the movie themoviedb server
      *
-     * @param queryType The type of sorting movies
-     * @return The Url to use to query the movie db server
+     * @param sort The type of sorting movies
+     * @return The Url to use to query the themoviedb server
      */
     @Nullable
-    private static URL buildTheMovieDbUrl(String queryType) {
+    private static URL buildTheMovieDbUrl(String sort) {
         Uri moviesQueryUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
-                .appendPath(queryType)
+                .appendPath(sort)
                 .appendQueryParameter(API_KEY_PARAM, api_key_value)
                 .build();
 
@@ -89,9 +98,9 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     * This method returns the entire result from the HTTP response.
+     * Returns the entire result from the HTTP response
      *
-     * @param url The URL to fetch the HTTP response from.
+     * @param url The URL to fetch the HTTP response from
      * @return The contents of the HTTP response, null if no response
      * @throws IOException Related to network and stream reading
      */
@@ -115,8 +124,8 @@ public class TheMovieDbHttpUtils {
         }
     }
 
-    /*
-    Build the complete url you will need to fetch the image.
+    /**
+     * Build the complete url you will need to fetch the image.
      */
     public static String getFullPathToPoster(String imageFileName) {
         return Uri.parse(MOVIEDB_IMAGE_URL).buildUpon()
@@ -126,6 +135,13 @@ public class TheMovieDbHttpUtils {
                 .build().toString();
     }
 
+    /**
+     *  Chooses the width image depending on the screen resolution
+     *
+     * @param context App context
+     * @param posterSizeInches  The image width in inches
+     * @return The string for URL to image at the themoviedb  server
+     */
     private static String choosePosterWidth(Context context, float posterSizeInches) {
         /*
         A poster width can be one of the following:

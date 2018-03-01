@@ -29,7 +29,7 @@ import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 /**
- * Displays in the main layout via a grid of their corresponding movie poster thumbnails.
+ * Displays movies in the main layout via a grid of their corresponding poster thumbnails
  */
 
 public class MainActivity extends AppCompatActivity implements
@@ -198,6 +198,8 @@ public class MainActivity extends AppCompatActivity implements
             showErrorMessage(R.string.no_sort_error_msg);
             return;
         }
+
+        // Put sort criteria to the bundle for Loader
         Bundle queryBundle = new Bundle();
         queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
 
@@ -218,14 +220,12 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * This method is for responding to clicks from our grid.
      *
-     * @param movie
+     * @param movie The movie that was clicked
      *
      */
     @Override
     public void onClick(PopularMovie movie) {
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
-//        movieDetailIntent.setData(
-//                Uri.parse(TheMovieDbHttpUtils.getFullPathToPoster(movie.getPoster())));
         movieDetailIntent.putExtra(getString(R.string.movie_parcel_key), movie);
         startActivity(movieDetailIntent);
     }

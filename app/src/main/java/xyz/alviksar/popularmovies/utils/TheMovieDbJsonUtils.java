@@ -47,6 +47,10 @@ import xyz.alviksar.popularmovies.model.PopularMovie;
  * release date
  */
 
+/**
+ * Parses a JSON string to movie objects
+ */
+
 public final class TheMovieDbJsonUtils {
 
     // The array of movie records
@@ -67,7 +71,7 @@ public final class TheMovieDbJsonUtils {
     private static final String TMD_RELEASE_DATE = "release_date";
 
     /**
-     * This method parses JSON from a web response and returns a list of movies
+     * This method parses JSON from a web response and returns a list of movie objects
      *
      * @param jsonStr JSON response from server
      * @return a list of movie objects
@@ -80,7 +84,7 @@ public final class TheMovieDbJsonUtils {
         JSONObject forecastJson = new JSONObject(jsonStr);
 
         if (!forecastJson.has(TMD_RESULTS)) {
-            // Something goes wrong
+            // Something went wrong
             return null;
         }
 
@@ -93,7 +97,7 @@ public final class TheMovieDbJsonUtils {
 
             // Get the JSON object representing the popularMovie record
             JSONObject jsonMovieObject = jsonMoviesArray.getJSONObject(i);
-
+            // Create a movie object
             popularMovie = new PopularMovie();
             popularMovie.setId(jsonMovieObject.getInt(TMD_ID));
             popularMovie.setTitle(jsonMovieObject.optString(TMD_TITLE));
@@ -104,7 +108,7 @@ public final class TheMovieDbJsonUtils {
             popularMovie.setPoster(poster);
             popularMovie.setReleaseDate(jsonMovieObject.optString(TMD_RELEASE_DATE));
             popularMovie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE));
-
+            // Add a movie object to the list
             popularMovieList.add(popularMovie);
         }
         return popularMovieList;

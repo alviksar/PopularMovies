@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
- * Represents movie data
+ * Provides movie data
  */
 
 public class PopularMovie implements Parcelable {
@@ -34,22 +34,6 @@ public class PopularMovie implements Parcelable {
 
     public PopularMovie() {
     }
-
-//    public PopularMovie(int id,
-//                        String title,
-//                        String originalTitle,
-//                        String poster,
-//                        String plotSynopsis,
-//                        Double userRating,
-//                        String releaseDate) {
-//        this.id = id;
-//        this.title = title;
-//        this.originalTitle = originalTitle;
-//        this.poster = poster;
-//        this.plotSynopsis = plotSynopsis;
-//        this.userRating = userRating;
-//        this.releaseDate = releaseDate;
-//    }
 
     // Constructor from Parcel
     private PopularMovie(Parcel in) {
@@ -135,6 +119,7 @@ public class PopularMovie implements Parcelable {
         return 0;
     }
 
+    // Pack a PopularMovie object into the parcel
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
@@ -146,12 +131,14 @@ public class PopularMovie implements Parcelable {
         parcel.writeString(releaseDate);
     }
 
+    // Uses with dataBinding to set RatingBar
     @BindingAdapter("android:rating")
     public static void setRating(View view, String rating) {
         RatingBar rb = (RatingBar)view;
         rb.setRating(Float.parseFloat(rating));
     }
 
+    // Uses with dataBinding to set a poster image
     @BindingAdapter({"bind:imageUrl", "bind:error"})
     public static void loadImage(ImageView view, String url, Drawable error) {
         TheMovieDbHttpUtils.getFullPathToPoster(url);
@@ -162,7 +149,9 @@ public class PopularMovie implements Parcelable {
     }
 
 }
-/*
+
+/*  JSON sample
+
       {
          "vote_count":119,
          "id":441614,

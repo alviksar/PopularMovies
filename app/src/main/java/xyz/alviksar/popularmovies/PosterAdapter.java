@@ -21,7 +21,7 @@ import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdapterViewHolder> {
     /**
-     * The interface to handle clicks on items within this Adapter.
+     * The interface to handle clicks on items within this Adapter
      */
     public interface PosterAdapterOnClickHandler {
         void onClick(PopularMovie movie);
@@ -31,7 +31,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     private List<PopularMovie> mPopularMovieList;
     /**
-     * The member that receives onClick messages.
+     * The member that receives onClick messages
      */
     final private PosterAdapterOnClickHandler mClickHandler;
 
@@ -62,7 +62,6 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(popularMovie.getPoster());
         Picasso.with(mContext)
                 .load(fullPathToPoster)
-                // .load(R.drawable.interstellar)
                 //     .placeholder(R.drawable.user_placeholder)
                 //      .error(R.drawable.user_placeholder_error)
                 .into(holder.posterView);

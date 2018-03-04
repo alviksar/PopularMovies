@@ -43,6 +43,7 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
         mSortChanged = !sSort.equals(sort);
         if (mSortChanged) {
             sSort = sort;
+            mSortChanged = false;
         }
         TheMovieDbHttpUtils.init(context, posterWidthInches);
     }

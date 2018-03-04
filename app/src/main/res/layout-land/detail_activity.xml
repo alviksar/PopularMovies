@@ -11,9 +11,13 @@
             type="xyz.alviksar.popularmovies.model.PopularMovie" />
     </data>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -28,7 +32,7 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <RatingBar
                     android:id="@+id/rb_movie_rating"
@@ -86,28 +90,24 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_original_title"
                     tools:text="Release Date" />
 
-                <ScrollView
+                <TextView
+                    android:id="@+id/tv_plot_synopsis"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:text="@{popularMovie.plotSynopsis}"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <TextView
-                        android:id="@+id/tv_plot_synopsis"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:text="@{popularMovie.plotSynopsis}"
-                        android:textSize="16sp"
-                        tools:text="A plot synopsis (called overview in the api)" />
-                </ScrollView>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_release_date"
+                    tools:text="A plot synopsis (called overview in the api)" />
 
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
+    </ScrollView>
 
 </layout>

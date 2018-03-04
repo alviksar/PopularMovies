@@ -2,6 +2,7 @@ package xyz.alviksar.popularmovies.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -10,12 +11,41 @@ import android.support.annotation.Nullable;
 import xyz.alviksar.popularmovies.PopularMoviesLoader;
 
 /**
- *  This ContentProvider provides movie data.
+ * This ContentProvider provides movie data.
  */
 
 public class PopularMoviesContentProvider extends ContentProvider {
 
     private static final String TAG = PopularMoviesContentProvider.class.getSimpleName();
+
+    /**
+     * These constant will be used to match URIs with the data they are looking for.
+     */
+    public static final int MATCH_THEMOVIEDB = 100;
+    public static final int MATCH_THEMOVIEDB_BY_ID = 101;
+
+    public static final int MATCH_FAVORITE = 200;
+    public static final int MATCH_FAVORITE_BY_ID = 201;
+
+    /*
+     * The URI Matcher used by this content provider.
+     */
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+    /**
+     * Creates the UriMatcher that will match each URI to constants defined above.
+     *
+     * @return A UriMatcher that correctly matches the constants.
+     */
+    public static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = PopularMoviesContract.CONTENT_AUTHORITY;
+        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*", MATCH_THEMOVIEDB);
+        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/#", MATCH_THEMOVIEDB_BY_ID);
+        matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/*", MATCH_FAVORITE);
+        matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/#", MATCH_FAVORITE_BY_ID);
+        return matcher;
+    }
 
     @Override
     public boolean onCreate() {

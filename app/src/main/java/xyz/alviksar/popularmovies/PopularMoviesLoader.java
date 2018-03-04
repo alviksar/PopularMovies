@@ -22,11 +22,20 @@ public class PopularMoviesLoader extends AsyncTaskLoader<List<PopularMovie>> {
     private static final String TAG = PopularMoviesLoader.class.getSimpleName();
 
     // mJson will store the raw JSON result
-    private static List<PopularMovie> sStoredResult;
+    private List<PopularMovie> sStoredResult;
     // Current sort criteria
-    private static String sSort = "";
+    private String sSort = "";
 
     private Boolean mSortChanged;
+    /*
+    You might have noticed the static keyword when declaring the JsonAsyncTaskLoader.
+    It is incredibly important that your Loader does not contain any reference
+    to any containing Activity or Fragment and that includes the implicit reference created
+    by non-static inner classes.
+    Obviously, if you’re not declaring your Loader as an inner class,
+    you won’t need the static keyword.
+    https://medium.com/google-developers/making-loading-data-on-android-lifecycle-aware-897e12760832
+    */
 
     public PopularMoviesLoader(Context context, Bundle args, float posterWidthInches) {
         super(context);

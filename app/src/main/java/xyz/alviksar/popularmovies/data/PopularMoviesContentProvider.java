@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,7 +56,33 @@ public class PopularMoviesContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+
+        Cursor cursor = null;
+        switch (sUriMatcher.match(uri)) {
+
+            case MATCH_THEMOVIEDB: {
+                // Code for querying with a date
+
+                break;
+            }
+            case MATCH_FAVORITE: {
+                // Code for querying with a date
+                break;
+            }
+            case MATCH_THEMOVIEDB_BY_ID:
+            case   MATCH_FAVORITE_BY_ID:
+                {
+                // Code for querying the movie by id
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (cursor != null) {
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        }
+        return cursor;
+
     }
 
     @Nullable

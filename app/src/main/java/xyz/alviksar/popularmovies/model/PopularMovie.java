@@ -22,13 +22,15 @@ public class PopularMovie implements Parcelable {
     private String title;
     // original title
     private String originalTitle;
-    // movie poster image file name
+    // a movie poster image file name
     private String poster;
-    // A plot synopsis (called overview in the api)
+    // a plot synopsis (called overview in the api)
     private String plotSynopsis;
-    // A plot synopsis (called overview in the api)
+    //
     private Double userRating;
-    // release date
+    //
+    private Double popularity;
+    //
     private String releaseDate;
 
     public PopularMovie() {
@@ -42,6 +44,7 @@ public class PopularMovie implements Parcelable {
         poster = in.readString();
         plotSynopsis = in.readString();
         userRating = in.readDouble();
+        popularity = in.readDouble();
         releaseDate = in.readString();
     }
 
@@ -105,6 +108,14 @@ public class PopularMovie implements Parcelable {
         this.userRating = userRating;
     }
 
+    public Double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Double popularity) {
+        this.popularity = popularity;
+    }
+
     public String getReleaseDate() {
         return releaseDate;
     }
@@ -127,6 +138,7 @@ public class PopularMovie implements Parcelable {
         parcel.writeString(poster);
         parcel.writeString(plotSynopsis);
         parcel.writeDouble(userRating);
+        parcel.writeDouble(popularity);
         parcel.writeString(releaseDate);
     }
 
@@ -146,6 +158,7 @@ public class PopularMovie implements Parcelable {
              //   .error(error)
                 .into(view);
     }
+
 
 }
 

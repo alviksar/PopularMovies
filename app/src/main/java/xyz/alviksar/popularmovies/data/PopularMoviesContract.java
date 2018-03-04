@@ -1,9 +1,14 @@
 package xyz.alviksar.popularmovies.data;
 
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 import java.net.URI;
+import java.util.List;
+
+import xyz.alviksar.popularmovies.model.PopularMovie;
 
 /**
  * Defines table and column names for the movie database.
@@ -36,12 +41,39 @@ public class PopularMoviesContract {
      */
     private static final String POPULAR_ENDPOINT = "popular";
 
-    public static final class FavoriteMoviesEntry implements BaseColumns {
+    public static final class MoviesEntry implements BaseColumns {
 
-        /* The base CONTENT_URI used to query the FavoriteMovies table from the content provider */
+        /* The base CONTENT_URI used to query the movies table from the content provider */
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_FAVORITE_MOVIE)
                 .build();
+
+        private final static String[] columnNames = {
+
+        };
+
+        public static Cursor fromList(List<PopularMovie> movieList) {
+
+            MatrixCursor cursor = new MatrixCursor(columnNames);
+
+                /*
+                String[] columns = {
+   BaseColumns._ID,
+   SearchManager.SUGGEST_COLUMN_TEXT_1,
+   SearchManager.SUGGEST_COLUMN_INTENT_DATA
+};
+
+MatrixCursor cursor = new MatrixCursor(columns);
+
+for (int i = 0; i < arr.length(); i++)
+{
+  String[] tmp = {Integer.toString(i), arr.getString(i), arr.getString(i)};
+  cursor.addRow(tmp);
+}
+return cursor;
+                 */
+                return cursor;
+        }
     }
 
 }

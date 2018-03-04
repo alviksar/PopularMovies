@@ -1,5 +1,6 @@
 package xyz.alviksar.popularmovies.utils;
 
+import android.database.MatrixCursor;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -67,6 +68,8 @@ public final class TheMovieDbJsonUtils {
     private static final String TMD_OVERVIEW = "overview";
     // The user rating
     private static final String TMD_VOTE_AVERAGE = "vote_average";
+    // The move popularity
+    private static final String TMD_POPULARITY = "popularity";
     // The release date
     private static final String TMD_RELEASE_DATE = "release_date";
 
@@ -106,8 +109,9 @@ public final class TheMovieDbJsonUtils {
             String poster = jsonMovieObject.optString(TMD_POSTER_PATH);
             poster = TextUtils.substring(poster, 1, poster.length());
             popularMovie.setPoster(poster);
-            popularMovie.setReleaseDate(jsonMovieObject.optString(TMD_RELEASE_DATE));
             popularMovie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE));
+            popularMovie.setPopularity(jsonMovieObject.getDouble(TMD_POPULARITY));
+            popularMovie.setReleaseDate(jsonMovieObject.optString(TMD_RELEASE_DATE));
             // Add a movie object to the list
             popularMovieList.add(popularMovie);
         }

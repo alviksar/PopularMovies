@@ -30,6 +30,11 @@
                 android:value=".MainActivity"/>
         </activity>
 
+        <provider
+            android:authorities="xyz.alviksar.popularmovies"
+            android:name="xyz.alviksar.popularmovies.data.PopularMoviesContentProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

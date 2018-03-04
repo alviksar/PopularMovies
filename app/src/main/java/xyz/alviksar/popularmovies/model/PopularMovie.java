@@ -108,8 +108,8 @@ public class PopularMovie implements Parcelable {
         this.userRating = userRating;
     }
 
-    public Double getPopularity() {
-        return popularity;
+    public String getPopularity() {
+        return popularity.toString();
     }
 
     public void setPopularity(Double popularity) {

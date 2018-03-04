@@ -4,20 +4,21 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
-import xyz.alviksar.popularmovies.PopularMoviesLoader;
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
+import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
 /**
  * This ContentProvider provides movie data.
  */
 
-public class PopularMoviesContentProvider extends ContentProvider {
+public class PopularMoviesProvider extends ContentProvider {
 
-    private static final String TAG = PopularMoviesContentProvider.class.getSimpleName();
+    private static final String TAG = PopularMoviesProvider.class.getSimpleName();
 
     /**
      * These constant will be used to match URIs with the data they are looking for.
@@ -62,7 +63,17 @@ public class PopularMoviesContentProvider extends ContentProvider {
 
             case MATCH_THEMOVIEDB: {
                 // Code for querying with a date
-
+                String sort = uri.getLastPathSegment();
+                try {
+                    cursor = PopularMoviesContract.MoviesEntry.fromList(
+                            TheMovieDbJsonUtils.getMoviesFromJson(
+                                    TheMovieDbHttpUtils.getMoviesBy(sort)
+                            )
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "URI: "+ uri.toString());
+                }
                 break;
             }
             case MATCH_FAVORITE: {

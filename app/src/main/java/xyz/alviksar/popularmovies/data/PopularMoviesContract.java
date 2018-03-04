@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
@@ -48,31 +49,42 @@ public class PopularMoviesContract {
                 .appendPath(PATH_FAVORITE_MOVIE)
                 .build();
 
-        private final static String[] columnNames = {
+        public static final String TABLE_NAME = "movie";
 
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_ORIGINALTITLE = "originalTitle";
+        public static final String COLUMN_POSTER = "poster";
+        public static final String COLUMN_PLOTSYNOPSIS = "plotSynopsis";
+        public static final String COLUMN_USERRATING = "userRating";
+        public static final String COLUMN_POPULARITY = "popularity)";
+        public static final String COLUMN_RELEASEDATE = "releaseDate";
+
+        private final static String[] columnNames = {
+                COLUMN_ORIGINALTITLE,
+                COLUMN_TITLE,
+                COLUMN_POSTER,
+                COLUMN_PLOTSYNOPSIS,
+                COLUMN_USERRATING,
+                COLUMN_POPULARITY,
+                COLUMN_RELEASEDATE
         };
 
-        public static Cursor fromList(List<PopularMovie> movieList) {
-
+        public static Cursor fromList(List<PopularMovie> movies) {
             MatrixCursor cursor = new MatrixCursor(columnNames);
-
-                /*
-                String[] columns = {
-   BaseColumns._ID,
-   SearchManager.SUGGEST_COLUMN_TEXT_1,
-   SearchManager.SUGGEST_COLUMN_INTENT_DATA
-};
-
-MatrixCursor cursor = new MatrixCursor(columns);
-
-for (int i = 0; i < arr.length(); i++)
-{
-  String[] tmp = {Integer.toString(i), arr.getString(i), arr.getString(i)};
-  cursor.addRow(tmp);
-}
-return cursor;
-                 */
-                return cursor;
+            for (int i = 0; i < movies.size(); i++) {
+                String[] tmp = {
+                        String.valueOf(movies.get(i).getId()),
+                        movies.get(i).getOriginalTitle(),
+                        movies.get(i).getTitle(),
+                        movies.get(i).getPoster(),
+                        movies.get(i).getPlotSynopsis(),
+                        movies.get(i).getUserRating(),
+                        movies.get(i).getPopularity(),
+                        movies.get(i).getReleaseDate()
+                };
+                cursor.addRow(tmp);
+            }
+            return cursor;
         }
     }
 

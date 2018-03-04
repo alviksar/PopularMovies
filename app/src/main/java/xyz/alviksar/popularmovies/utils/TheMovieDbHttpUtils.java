@@ -30,9 +30,9 @@ public class TheMovieDbHttpUtils {
     // The base URL for a list
     private static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/movie";
     // The top rated endpoint
-    private static final String TOP_RATED_ENDPOINT = "top_rated";
+    public static final String TOP_RATED_ENDPOINT = "top_rated";
     // The popular endpoint
-    private static final String POPULAR_ENDPOINT = "popular";
+    public static final String POPULAR_ENDPOINT = "popular";
     // API KEY parameter
     private static final String API_KEY_PARAM = "api_key";
     private static String api_key_value = "";
@@ -46,7 +46,7 @@ public class TheMovieDbHttpUtils {
     private static String sort_by_rating;
 
     /**
-     *  Initializes the global parameters
+     * Initializes the global parameters
      */
     public static void init(Context context, float posterSizeInches) {
         sort_by_popularity = context.getString(R.string.sort_by_most_popular);
@@ -56,8 +56,9 @@ public class TheMovieDbHttpUtils {
         // Set width for images
         image_width_endpoint = choosePosterWidth(context, posterSizeInches);
     }
+
     /**
-     *   Returns a json response by sort criteria
+     * Returns a json response by sort criteria
      *
      * @param sort The type of sorting movies
      * @return The json response from the movie db server
@@ -72,6 +73,10 @@ public class TheMovieDbHttpUtils {
                 return "";
             }
         }
+    }
+
+    public static String getPopularMoviesByEndPoint(String endPoint) throws IOException {
+        return getResponseFromHttpUrl(buildTheMovieDbUrl(endPoint));
     }
 
     /**
@@ -136,10 +141,10 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     *  Chooses the width image depending on the screen resolution
+     * Chooses the width image depending on the screen resolution
      *
-     * @param context App context
-     * @param posterSizeInches  The image width in inches
+     * @param context          App context
+     * @param posterSizeInches The image width in inches
      * @return The string for URL to image at the themoviedb  server
      */
     private static String choosePosterWidth(Context context, float posterSizeInches) {
@@ -151,7 +156,7 @@ public class TheMovieDbHttpUtils {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
         for (int i = 0; i < posterWidth.length - 1; i++) {
-            if (metrics.xdpi* posterSizeInches <= Float.parseFloat(posterWidth[i].substring(1)))
+            if (metrics.xdpi * posterSizeInches <= Float.parseFloat(posterWidth[i].substring(1)))
                 return posterWidth[i];
         }
         return "original";

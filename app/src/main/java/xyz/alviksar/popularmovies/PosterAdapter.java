@@ -1,6 +1,7 @@
 package xyz.alviksar.popularmovies;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
@@ -24,12 +26,13 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
      * The interface to handle clicks on items within this Adapter
      */
     public interface PosterAdapterOnClickHandler {
-        void onClick(PopularMovie movie);
+        void onClick(int movieId);
     }
 
     private Context mContext;
 
-    private List<PopularMovie> mPopularMovieList;
+    private Cursor mCursor;
+
     /**
      * The member that receives onClick messages
      */
@@ -41,7 +44,6 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
      *
      * @param context      Used to talk to the UI and app resources
      * @param clickHandler Used to assign onClick receiver
-     *
      */
     public PosterAdapter(@NonNull Context context, PosterAdapterOnClickHandler clickHandler) {
         mContext = context;
@@ -58,8 +60,11 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     @Override
     public void onBindViewHolder(PosterAdapterViewHolder holder, int position) {
-        PopularMovie popularMovie = mPopularMovieList.get(position);
-        String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(popularMovie.getPoster());
+        mCursor.moveToPosition(position);
+        int columnIndex = mCursor.getColumnIndex(
+                PopularMoviesContract.MoviesEntry.COLUMN_POSTER);
+        String poster = mCursor.getString(columnIndex);
+        String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(poster);
         Picasso.with(mContext)
                 .load(fullPathToPoster)
                 //     .placeholder(R.drawable.user_placeholder)
@@ -69,8 +74,8 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     @Override
     public int getItemCount() {
-        if (mPopularMovieList != null) {
-            return mPopularMovieList.size();
+        if (mCursor != null) {
+            return mCursor.getCount();
         } else {
             return 0;
         }
@@ -82,10 +87,11 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
      * the movie data is reset. When this method is called, we assume we have a completely new
      * set of data, so we call notifyDataSetChanged to tell the RecyclerView to update.
      *
-     * @param data the new data to use as PosterAdapter's data source
+     * @param cursor the new cursor to use as PosterAdapter's data source
      */
-    void swapData(List<PopularMovie> data) {
-        mPopularMovieList = data;
+    void swapData(Cursor cursor) {
+        mCursor = cursor;
+        // After the new Cursor is set, call notifyDataSetChanged
         notifyDataSetChanged();
     }
 
@@ -101,18 +107,20 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         }
 
         /**
-         * This gets called by the child views during a click. We fetch the movie that has been
+         * This gets called by the child views during a click. We fetch the movie id that has been
          * selected, and then call the onClick handler registered with this adapter, passing that
-         * movie.
+         * movie id.
          *
          * @param v the View that was clicked
          */
         @Override
         public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            if (mPopularMovieList != null) {
-                PopularMovie movie = mPopularMovieList.get(adapterPosition);
-                mClickHandler.onClick(movie);
+            int position = getAdapterPosition();
+            if (mCursor != null) {
+                mCursor.moveToPosition(position);
+                int movieId = mCursor.getInt(mCursor.getColumnIndex(
+                        PopularMoviesContract.MoviesEntry._ID));
+                mClickHandler.onClick(movieId);
             }
         }
     }

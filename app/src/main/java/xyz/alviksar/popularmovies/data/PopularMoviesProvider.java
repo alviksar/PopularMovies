@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import xyz.alviksar.popularmovies.MainActivity;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
@@ -63,15 +64,17 @@ public class PopularMoviesProvider extends ContentProvider {
 
             case MATCH_THEMOVIEDB: {
                 // Code for querying with a date
-                String sort = uri.getLastPathSegment();
+                String endPoint = uri.getLastPathSegment();
+                TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
                 try {
                     cursor = PopularMoviesContract.MoviesEntry.fromList(
                             TheMovieDbJsonUtils.getMoviesFromJson(
-                                    TheMovieDbHttpUtils.getMoviesBy(sort)
+                                    TheMovieDbHttpUtils.getPopularMoviesByEndPoint(endPoint)
                             )
                     );
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
                     Log.e(TAG, "URI: "+ uri.toString());
                 }
                 break;

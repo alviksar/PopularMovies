@@ -2,8 +2,11 @@ package xyz.alviksar.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+
 import android.content.Loader;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
 
@@ -33,7 +37,7 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
  */
 
 public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<List<PopularMovie>>,
+        LoaderManager.LoaderCallbacks<Cursor>,
         PosterAdapter.PosterAdapterOnClickHandler {
 
     private RecyclerView mRecyclerView;
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     private int mPosition = RecyclerView.NO_POSITION;
 
     // The poster width on screen in inches
-    private static final float POSTER_WIDTH_INCHES = 1.0f;
+    public static final float POSTER_WIDTH_INCHES = 1.0f;
 
     private static final int MOVIES_LOADER_ID = 1;
 
@@ -131,26 +135,37 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
+
     @Override
-    public Loader<List<PopularMovie>> onCreateLoader(int i, Bundle args) {
-        return new PopularMoviesLoader(this, args, POSTER_WIDTH_INCHES);
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(this,
+                PopularMoviesContract.BASE_CONTENT_URI.buildUpon()
+                        .appendPath(PopularMoviesContract.PATH_THEMOVIEDB)
+                        .appendPath(PopularMoviesContract.POPULAR_ENDPOINT)
+                        .build(),
+                null,
+                null,
+                null,
+                null);
+        //  return new PopularMoviesLoader(this, args, POSTER_WIDTH_INCHES);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<PopularMovie>> loader, List<PopularMovie> popularMovies) {
-        if (popularMovies != null) {
-            mPosterAdapter.swapData(popularMovies);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null) {
+            mPosterAdapter.swapData(cursor);
             if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
             mRecyclerView.smoothScrollToPosition(mPosition);
-            if (popularMovies.size() != 0) {
+            if (cursor.getCount() != 0) {
                 showData();
             }
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<PopularMovie>> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         mPosterAdapter.swapData(null);
+
     }
 
     @Override
@@ -220,14 +235,17 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * This method is for responding to clicks from our grid.
      *
-     * @param movie The movie that was clicked
+     * @param movieId The movie id that was clicked
      *
      */
     @Override
-    public void onClick(PopularMovie movie) {
+    public void onClick(int movieId) {
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        PopularMovie movie = new PopularMovie();
+        // TODO: Init movie by id
         movieDetailIntent.putExtra(getString(R.string.movie_parcel_key), movie);
         startActivity(movieDetailIntent);
     }
+
 }
 

@@ -36,11 +36,11 @@ public class PopularMoviesContract {
     /**
      * The top rated endpoint
      */
-    private static final String TOP_RATED_ENDPOINT = "top_rated";
+    public static final String TOP_RATED_ENDPOINT = "top_rated";
     /**
      * The popular endpoint.
      */
-    private static final String POPULAR_ENDPOINT = "popular";
+    public static final String POPULAR_ENDPOINT = "popular";
 
     public static final class MoviesEntry implements BaseColumns {
 
@@ -60,6 +60,7 @@ public class PopularMoviesContract {
         public static final String COLUMN_RELEASEDATE = "releaseDate";
 
         private final static String[] columnNames = {
+                BaseColumns._ID,
                 COLUMN_ORIGINALTITLE,
                 COLUMN_TITLE,
                 COLUMN_POSTER,

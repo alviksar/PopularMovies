@@ -11,8 +11,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
@@ -26,7 +24,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
      * The interface to handle clicks on items within this Adapter
      */
     public interface PosterAdapterOnClickHandler {
-        void onClick(int movieId);
+        void onClick(PopularMovie movie);
     }
 
     private Context mContext;
@@ -118,9 +116,9 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
             int position = getAdapterPosition();
             if (mCursor != null) {
                 mCursor.moveToPosition(position);
-                int movieId = mCursor.getInt(mCursor.getColumnIndex(
-                        PopularMoviesContract.MoviesEntry._ID));
-                mClickHandler.onClick(movieId);
+                PopularMovie movie = PopularMoviesContract.MoviesEntry.buildFromCursor(mCursor);
+//                int movieId = mCursor.getInt(mCursor.getColumnIndex(PopularMoviesContract.MoviesEntry._ID));
+                mClickHandler.onClick(movie);
             }
         }
     }

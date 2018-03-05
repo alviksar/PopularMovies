@@ -4,7 +4,6 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
-
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -23,8 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.List;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
@@ -138,10 +135,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        String sort = bundle.getString(getResources().getString(R.string.pref_sort_key));
+        String endpoint = "";
+       if (getString(R.string.sort_by_most_popular).equals(sort)) {
+           endpoint = PopularMoviesContract.POPULAR_ENDPOINT;
+        } else if (getString(R.string.sort_by_top_rated).equals(sort)) {
+            endpoint = PopularMoviesContract.TOP_RATED_ENDPOINT;
+        }
         return new CursorLoader(this,
                 PopularMoviesContract.BASE_CONTENT_URI.buildUpon()
                         .appendPath(PopularMoviesContract.PATH_THEMOVIEDB)
-                        .appendPath(PopularMoviesContract.POPULAR_ENDPOINT)
+                        .appendPath(endpoint)
                         .build(),
                 null,
                 null,
@@ -235,14 +239,11 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * This method is for responding to clicks from our grid.
      *
-     * @param movieId The movie id that was clicked
-     *
+     * @param movie The movie that was clicked
      */
     @Override
-    public void onClick(int movieId) {
+    public void onClick(PopularMovie movie) {
         Intent movieDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
-        PopularMovie movie = new PopularMovie();
-        // TODO: Init movie by id
         movieDetailIntent.putExtra(getString(R.string.movie_parcel_key), movie);
         startActivity(movieDetailIntent);
     }

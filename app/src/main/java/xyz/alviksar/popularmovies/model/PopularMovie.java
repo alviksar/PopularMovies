@@ -36,6 +36,24 @@ public class PopularMovie implements Parcelable {
     public PopularMovie() {
     }
 
+    public PopularMovie(int id,
+                        String title,
+                        String originalTitle,
+                        String poster,
+                        String plotSynopsis,
+                        Double userRating,
+                        Double popularity,
+                        String releaseDate) {
+        this.id = id;
+        this.title = title;
+        this.originalTitle = originalTitle;
+        this.poster = poster;
+        this.plotSynopsis = plotSynopsis;
+        this.userRating = userRating;
+        this.popularity = popularity;
+        this.releaseDate = releaseDate;
+    }
+
     // Constructor from Parcel
     private PopularMovie(Parcel in) {
         id = in.readInt();
@@ -145,7 +163,7 @@ public class PopularMovie implements Parcelable {
     // Uses with dataBinding to set RatingBar
     @BindingAdapter("android:rating")
     public static void setRating(View view, String rating) {
-        RatingBar rb = (RatingBar)view;
+        RatingBar rb = (RatingBar) view;
         rb.setRating(Float.parseFloat(rating));
     }
 
@@ -155,7 +173,7 @@ public class PopularMovie implements Parcelable {
         TheMovieDbHttpUtils.getFullPathToPoster(url);
         Picasso.with(view.getContext())
                 .load(TheMovieDbHttpUtils.getFullPathToPoster(url))
-             //   .error(error)
+                //   .error(error)
                 .into(view);
     }
 

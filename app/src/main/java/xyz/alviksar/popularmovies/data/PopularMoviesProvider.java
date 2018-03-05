@@ -64,12 +64,12 @@ public class PopularMoviesProvider extends ContentProvider {
 
             case MATCH_THEMOVIEDB: {
                 // Code for querying with a date
-                String endPoint = uri.getLastPathSegment();
+                String endpoint = uri.getLastPathSegment();
                 TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
                 try {
                     cursor = PopularMoviesContract.MoviesEntry.fromList(
                             TheMovieDbJsonUtils.getMoviesFromJson(
-                                    TheMovieDbHttpUtils.getPopularMoviesByEndPoint(endPoint)
+                                    TheMovieDbHttpUtils.getPopularMoviesByEndPoint(endpoint)
                             )
                     );
                 } catch (Exception e) {

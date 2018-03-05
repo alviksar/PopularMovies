@@ -5,8 +5,6 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import xyz.alviksar.popularmovies.model.PopularMovie;
@@ -73,19 +71,39 @@ public class PopularMoviesContract {
         public static Cursor fromList(List<PopularMovie> movies) {
             MatrixCursor cursor = new MatrixCursor(columnNames);
             for (int i = 0; i < movies.size(); i++) {
-                String[] tmp = {
-                        String.valueOf(movies.get(i).getId()),
+                cursor.addRow(new Object[]{
+                        movies.get(i).getId(),
                         movies.get(i).getOriginalTitle(),
                         movies.get(i).getTitle(),
                         movies.get(i).getPoster(),
                         movies.get(i).getPlotSynopsis(),
-                        movies.get(i).getUserRating(),
-                        movies.get(i).getPopularity(),
-                        movies.get(i).getReleaseDate()
-                };
-                cursor.addRow(tmp);
+                        Double.parseDouble(movies.get(i).getUserRating()),
+                        Double.parseDouble(movies.get(i).getPopularity()),
+                        movies.get(i).getReleaseDate()});
             }
             return cursor;
+        }
+
+        public static PopularMovie buildFromCursor(Cursor cursor) {
+
+            return new PopularMovie(
+                    // id
+                    cursor.getInt(cursor.getColumnIndexOrThrow(MoviesEntry._ID)),
+                    // title
+                    cursor.getString(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_TITLE)),
+                    // originalTitle
+                    cursor.getString(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_ORIGINALTITLE)),
+                    // poster
+                    cursor.getString(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_POSTER)),
+                    // plotSynopsis
+                    cursor.getString(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_PLOTSYNOPSIS)),
+                    // userRating
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_USERRATING)),
+                    // popularity
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_POPULARITY)),
+                    // releaseDate
+                    cursor.getString(cursor.getColumnIndexOrThrow(MoviesEntry.COLUMN_RELEASEDATE))
+            );
         }
     }
 

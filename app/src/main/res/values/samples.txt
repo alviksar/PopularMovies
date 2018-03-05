@@ -1,0 +1,100 @@
+https://api.themoviedb.org/3/movie/19404/videos?api_key=<>
+
+{
+  "id": 19404,
+  "results": [
+    {
+      "id": "5581bd68c3a3685df70000c6",
+      "iso_639_1": "en",
+      "iso_3166_1": "US",
+      "key": "c25GKl5VNeY",
+      "name": "Trailer 1",
+      "site": "YouTube",
+      "size": 720,
+      "type": "Trailer"
+    },
+    {
+      "id": "58e9bfb6925141351f02fde0",
+      "iso_639_1": "en",
+      "iso_3166_1": "US",
+      "key": "Y9JvS2TmSvA",
+      "name": "Mere Khwabon Mein - song by CinePlusPlus",
+      "site": "YouTube",
+      "size": 720,
+      "type": "Clip"
+    },
+    {
+      "id": "58e9bf11c3a36872ee070b9a",
+      "iso_639_1": "en",
+      "iso_3166_1": "US",
+      "key": "H74COj0UQ_Q",
+      "name": "Zara Sa Jhoom Loon Main - song by CinePlusPlus",
+      "site": "YouTube",
+      "size": 720,
+      "type": "Clip"
+    },
+    {
+      "id": "58e9c00792514152ac020a34",
+      "iso_639_1": "en",
+      "iso_3166_1": "US",
+      "key": "OkjXMqK1G0o",
+      "name": "Ho Gaya Hai Tujhko To Pyar Sajna - song by CinePlusPlus",
+      "site": "YouTube",
+      "size": 720,
+      "type": "Clip"
+    },
+    {
+      "id": "58e9c034c3a36872ee070c84",
+      "iso_639_1": "en",
+      "iso_3166_1": "US",
+      "key": "7NhoeyoR_XA",
+      "name": "Mehndi Laga Ke Rakhna - song by CinePlusPlus",
+      "site": "YouTube",
+      "size": 720,
+      "type": "Clip"
+    },
+    {
+      "id": "58e9c07f9251414b2802a16e",
+      "iso_639_1": "en",
+      "iso_3166_1": "US",
+      "key": "Ee-cCwP7VPQ",
+      "name": "Tujhe dekha to  Ye Jaana Sanam - song by CinePlus",
+      "site": "YouTube",
+      "size": 480,
+      "type": "Clip"
+    }
+  ]
+}
+
+https://www.youtube.com/watch?v=Ee-cCwP7VPQ
+
+
+https://api.themoviedb.org/3/movie/278/reviews?api_key=<>
+https://api.themoviedb.org/3/movie/278/reviews?api_ke
+
+{
+  "id": 278,
+  "page": 1,
+  "results": [
+    {
+      "id": "5723a329c3a3682e720005db",
+      "author": "elshaarawy",
+      "content": "very good movie 9.5/10 محمد الشعراوى",
+      "url": "https://www.themoviedb.org/review/5723a329c3a3682e720005db"
+    },
+    {
+      "id": "578193f29251417c28001764",
+      "author": "John Chard",
+      "content": "Some birds aren't meant to be caged.\r\n\r\nThe Shawshank Redemption is written and directed by Frank Darabont. It is an adaptation of the Stephen King novella Rita Hayworth and Shawshank Redemption. Starring Tim Robbins and Morgan Freeman, the film portrays the story of Andy Dufresne (Robbins), a banker who is sentenced to two life sentences at Shawshank State Prison for apparently murdering his wife and her lover. Andy finds it tough going but finds solace in the friendship he forms with fellow inmate, Ellis \"Red\" Redding (Freeman). While things start to pick up when the warden finds Andy a prison job more befitting his talents as a banker. However, the arrival of another inmate is going to vastly change things for all of them.\r\n\r\nThere was no fanfare or bunting put out for the release of the film back in 94, with a title that didn't give much inkling to anyone about what it was about, and with Columbia Pictures unsure how to market it, Shawshank Redemption barely registered at the box office. However, come Academy Award time the film received several nominations, and although it won none, it stirred up interest in the film for its home entertainment release. The rest, as they say, is history. For the film finally found an audience that saw the film propelled to almost mythical proportions as an endearing modern day classic. Something that has delighted its fans, whilst simultaneously baffling its detractors. One thing is for sure, though, is that which ever side of the Shawshank fence you sit on, the film continues to gather new fans and simply will never go away.\r\n\r\nIt's possibly the simplicity of it all that sends some haters of the film into cinematic spasms. The implausible plot and an apparent sentimental edge that makes a nonsense of prison life, are but two chief complaints from those that dislike the film with a passion. But when characters are this richly drawn, and so movingly performed, it strikes me as churlish to do down a human drama that's dealing in hope, friendship and faith. The sentimental aspect is indeed there, but that acts as a counterpoint to the suffering, degradation and shattering of the soul involving our protagonist. Cosy prison life you say? No chance. The need for human connection is never more needed than during incarceration, surely? And given the quite terrific performances of Robbins (never better) & Freeman (sublimely making it easy), it's the easiest thing in the world to warm to Andy and Red.\r\n\r\nThose in support aren't faring too bad either. Bob Gunton is coiled spring smarm as Warden Norton, James Whitmore is heart achingly great as the \"Birdman Of Shawshank,\" Clancy Brown is menacing as antagonist Capt. Byron Hadley, William Sadler amusing as Heywood & Mark Rolston is impressively vile as Bogs Diamond. Then there's Roger Deakins' lush cinematography as the camera gracefully glides in and out of the prison offering almost ethereal hope to our characters (yes, they are ours). The music pings in conjunction with the emotional flow of the movie too. Thomas Newman's score is mostly piano based, dovetailing neatly with Andy's state of mind, while the excellently selected soundtrack ranges from the likes of Hank Williams to the gorgeous Le Nozze di Figaro by Mozart.\r\n\r\nIf you love Shawshank then it's a love that lasts a lifetime. Every viewing brings the same array of emotions - anger - revilement - happiness - sadness - inspiration and a warmth that can reduce the most hardened into misty eyed wonderment. Above all else, though, Shawshank offers hope - not just for characters in a movie, but for a better life and a better world for all of us. 10/10",
+      "url": "https://www.themoviedb.org/review/578193f29251417c28001764"
+    },
+    {
+      "id": "5a0712aec3a3687914014a4b",
+      "author": "deliciousdildo",
+      "content": "Make way for the best film ever made people. **Make way.**",
+      "url": "https://www.themoviedb.org/review/5a0712aec3a3687914014a4b"
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 3
+}

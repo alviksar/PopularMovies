@@ -11,93 +11,94 @@
             type="xyz.alviksar.popularmovies.model.PopularMovie" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/im_poster"
-                android:layout_width="@dimen/detail_image_width"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/poster_description"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{popularMovie.poster}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <RatingBar
-                    android:id="@+id/rb_movie_rating"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/im_poster"
+                    android:layout_width="@dimen/detail_image_width"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:isIndicator="true"
-                    android:numStars="10"
-                    android:rating="@{popularMovie.userRating}"
-                    android:stepSize="0.1"
-                    android:theme="@style/RatingBar"
-                    android:visibility="visible"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:contentDescription="@string/poster_description"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{popularMovie.poster}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_user_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@{@string/rating_format(popularMovie.userRating)}"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rb_movie_rating"
-                    tools:text="User Rating" />
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_original_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:maxLines="4"
-                    android:text="@{popularMovie.originalTitle}"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/title_text_size"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_user_rating"
-                    tools:text="Original Title" />
+                    <RatingBar
+                        android:id="@+id/rb_movie_rating"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:isIndicator="true"
+                        android:numStars="10"
+                        android:rating="@{popularMovie.userRating}"
+                        android:stepSize="0.1"
+                        android:theme="@style/RatingBar"
+                        android:visibility="visible"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_release_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@{@string/release_date_format(popularMovie.releaseDate)}"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="Release Date" />
+                    <TextView
+                        android:id="@+id/tv_user_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@{@string/rating_format(popularMovie.userRating)}"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rb_movie_rating"
+                        tools:text="User Rating" />
 
-            </android.support.constraint.ConstraintLayout>
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_original_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:maxLines="4"
+                        android:text="@{popularMovie.originalTitle}"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/title_text_size"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_user_rating"
+                        tools:text="Original Title" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_release_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{@string/release_date_format(popularMovie.releaseDate)}"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="Release Date" />
+
+                </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_plot_synopsis"
@@ -109,8 +110,15 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:text="A plot synopsis (called overview in the api)" />
-        </ScrollView>
-    </LinearLayout>
 
+
+            <include
+                android:id="@+id/extra_details"
+                layout="@layout/tab_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </layout>

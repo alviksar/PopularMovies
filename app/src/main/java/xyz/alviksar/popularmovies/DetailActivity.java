@@ -2,6 +2,8 @@ package xyz.alviksar.popularmovies;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;
@@ -24,6 +26,17 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
+
+        // Find the view pager that will allow the user to swipe between fragments
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        // Create an adapter that knows which fragment should be shown on each page
+        ExtraInfoPagerAdapter adapter = new ExtraInfoPagerAdapter(this, getSupportFragmentManager());
+        // Set the adapter onto the view pager
+        viewPager.setAdapter(adapter);
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
         if(savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_parcel_key))) {
             mMovie = getIntent().getParcelableExtra(getString(R.string.movie_parcel_key));
         }

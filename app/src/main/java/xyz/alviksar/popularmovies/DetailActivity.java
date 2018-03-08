@@ -25,18 +25,18 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_activity);
+        setContentView(R.layout.detail2_activity);
 
         // Find the view pager that will allow the user to swipe between fragments
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         // Create an adapter that knows which fragment should be shown on each page
-        ExtraInfoPagerAdapter adapter = new ExtraInfoPagerAdapter(this, getSupportFragmentManager());
+        DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+/*
         if(savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_parcel_key))) {
             mMovie = getIntent().getParcelableExtra(getString(R.string.movie_parcel_key));
         }
@@ -49,5 +49,7 @@ public class DetailActivity extends AppCompatActivity {
         // Uses dataBinding
         DetailActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
         binding.setPopularMovie(mMovie);
+        */
+
     }
 }

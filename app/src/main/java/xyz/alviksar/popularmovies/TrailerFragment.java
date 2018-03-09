@@ -1,30 +1,52 @@
 package xyz.alviksar.popularmovies;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import xyz.alviksar.popularmovies.data.PopularMoviesContract;
+
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass.
+ *
  */
 
-public class TrailerFragment extends Fragment {
+public class TrailerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-        public TrailerFragment() {
-            // Required empty public constructor
-        }
+    private static final int TRAILERS_LOADER = 800;
+    private TrailerAdapter mTrailerAdapter;
+
+    public TrailerFragment() {
+        // Required empty public constructor
+    }
 
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.extra_info_list, container, false);
-            // Create a list of words
+        View rootView = inflater.inflate(R.layout.extra_info_list, container, false);
+
+
+        // Find the ListView which will be populated with the trailers
+        ListView listView = (ListView) rootView.findViewById(R.id.extra_list);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+//        View emptyView = rootView.findViewById(R.id.empty_view);
+//        listView.setEmptyView(emptyView);
+
+        mTrailerAdapter = new TrailerAdapter(rootView.getContext(), null);
+        listView.setAdapter(mTrailerAdapter);
+
+        getLoaderManager().initLoader(TRAILERS_LOADER, null, this);
+        // Create a list of words
 //            final ArrayList<Word> words = new ArrayList<Word>();
 //            words.add(new Word("Where are you going?", "minto wuksus",
 //                    R.raw.phrase_where_are_you_going));
@@ -53,12 +75,31 @@ public class TrailerFragment extends Fragment {
 //            listView.setAdapter(adapter);
 //            listView.setOnItemClickListener(new WordClickListener(getActivity()));
 
-            return rootView;
-        }
+        return rootView;
+    }
 
 
-        @Override
-        public void onStop() {
-            super.onStop();
-        }
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        return new CursorLoader(this.getContext(),
+                PopularMoviesContract.TrailersEntry.CONTENT_URI.buildUpon().appendPath("19404").build(),
+                null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        mTrailerAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        mTrailerAdapter.swapCursor(null);
+    }
 }

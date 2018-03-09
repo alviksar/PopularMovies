@@ -39,6 +39,11 @@ public class PopularMoviesContract {
      * The popular endpoint.
      */
     public static final String POPULAR_ENDPOINT = "popular";
+    /**
+     * The path for looking at trailers
+     */
+    public static final String PATH_TRAILERS = "trailers";
+
 
     public static final class MoviesEntry implements BaseColumns {
 
@@ -107,4 +112,19 @@ public class PopularMoviesContract {
         }
     }
 
+    public static final class TrailersEntry implements BaseColumns {
+
+        /* The base CONTENT_URI used to query the movies table from the content provider */
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_TRAILERS)
+                .build();
+
+        public static final String TABLE_NAME = "trailers";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_KEY = "key";
+        public static final String COLUMN_SITE = "site";
+
+    }
 }

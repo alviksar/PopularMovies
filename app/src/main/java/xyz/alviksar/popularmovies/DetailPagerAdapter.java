@@ -1,9 +1,6 @@
 package xyz.alviksar.popularmovies;
 
 import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -11,12 +8,6 @@ import android.content.Context;
 
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Layout;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;
 
 /**
  * Provides the appropriate {@link Fragment} for a view pager.
@@ -57,9 +48,9 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ReviewFragment();
+            return new TrailerFragment();
         } else {
-            return new ReviewFragment();
+            return new TrailerFragment();
         }
     }
 

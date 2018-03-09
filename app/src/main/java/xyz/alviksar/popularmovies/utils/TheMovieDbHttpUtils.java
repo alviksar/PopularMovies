@@ -93,7 +93,6 @@ public class TheMovieDbHttpUtils {
                 .appendPath(sort)
                 .appendQueryParameter(API_KEY_PARAM, api_key_value)
                 .build();
-
         try {
             URL moviesQueryUrl = new URL(moviesQueryUri.toString());
             Log.v(TAG, "URL: " + moviesQueryUri);
@@ -170,8 +169,10 @@ public class TheMovieDbHttpUtils {
      * @param movie_id The movie id
      * @return The json response from the movie db server
      */
-    public String getTrailersByMovieId(String movie_id) {
-        /* URL sample:
+    @Nullable
+    public static String getTrailersByMovieId(String movie_id) {
+        /*
+        * URL sample:
         * https://api.themoviedb.org/3/movie/19404/videos?api_key=<>
         */
         Uri moviesQueryUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
@@ -179,12 +180,10 @@ public class TheMovieDbHttpUtils {
                 .appendPath(TRAILERS_ENDPOINT)
                 .appendQueryParameter(API_KEY_PARAM, api_key_value)
                 .build();
-
         try {
-            URL moviesQueryUrl = new URL(moviesQueryUri.toString());
+            URL trailersQueryUrl = new URL(moviesQueryUri.toString());
             Log.v(TAG, "URL: " + moviesQueryUri);
-
-            return getResponseFromHttpUrl(moviesQueryUrl);
+            return getResponseFromHttpUrl(trailersQueryUrl);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

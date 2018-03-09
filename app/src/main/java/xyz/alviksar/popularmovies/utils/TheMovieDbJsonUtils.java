@@ -1,6 +1,8 @@
 package xyz.alviksar.popularmovies.utils;
 
+import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -11,7 +13,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
+
+import static xyz.alviksar.popularmovies.data.PopularMoviesContract.TrailersEntry.COLUMN_NAME;
 
 /*
  * Sample:
@@ -54,7 +59,7 @@ import xyz.alviksar.popularmovies.model.PopularMovie;
 
 public final class TheMovieDbJsonUtils {
 
-    // The array of movie records
+    // The array of records
     private static final String TMD_RESULTS = "results";
     // The record id
     private static final String TMD_ID = "id";
@@ -73,6 +78,15 @@ public final class TheMovieDbJsonUtils {
     // The release date
     private static final String TMD_RELEASE_DATE = "release_date";
 
+    /*
+    *  The object names of the movie trailers response
+    */
+    private static final String TMD_TRAILER_NAME = "name";
+    private static final String TMD_TRAILER_TYPE = "type";
+    private static final String TMD_TRAILER_SITE = "site";
+    private static final String TMD_TRAILER_KEY = "key";
+
+
     /**
      * This method parses JSON from a web response and returns a list of movie objects
      *
@@ -84,6 +98,51 @@ public final class TheMovieDbJsonUtils {
     public static List<PopularMovie> getMoviesFromJson(String jsonStr)
             throws JSONException {
 
+            JSONObject forecastJson = new JSONObject(jsonStr);
+
+            if (!forecastJson.has(TMD_RESULTS)) {
+                // Something went wrong
+                return null;
+            }
+
+            JSONArray jsonMoviesArray = forecastJson.getJSONArray(TMD_RESULTS);
+
+            ArrayList<PopularMovie> popularMovieList = new ArrayList<>(jsonMoviesArray.length());
+            PopularMovie popularMovie;
+
+            for (int i = 0; i < jsonMoviesArray.length(); i++) {
+
+                // Get the JSON object representing the popularMovie record
+                JSONObject jsonMovieObject = jsonMoviesArray.getJSONObject(i);
+                // Create a movie object
+                popularMovie = new PopularMovie();
+                popularMovie.setId(jsonMovieObject.getInt(TMD_ID));
+                popularMovie.setTitle(jsonMovieObject.optString(TMD_TITLE));
+                popularMovie.setOriginalTitle(jsonMovieObject.optString(TMD_ORIGINAL_TITLE));
+                popularMovie.setPlotSynopsis(jsonMovieObject.optString(TMD_OVERVIEW));
+                String poster = jsonMovieObject.optString(TMD_POSTER_PATH);
+                poster = TextUtils.substring(poster, 1, poster.length());
+                popularMovie.setPoster(poster);
+                popularMovie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE));
+                popularMovie.setPopularity(jsonMovieObject.getDouble(TMD_POPULARITY));
+                popularMovie.setReleaseDate(jsonMovieObject.optString(TMD_RELEASE_DATE));
+                // Add a movie object to the list
+                popularMovieList.add(popularMovie);
+            }
+            return popularMovieList;
+    }
+
+    /**
+     * This method parses JSON from a web response and returns a cursor for the movie trailers
+     *
+     * @param jsonStr JSON response from server
+     * @return  a cursor for the movie trailers
+     * @throws JSONException If JSON data cannot be properly parsed
+     */
+    @Nullable
+    public static Cursor getTrailersFromJson(String jsonStr)
+            throws JSONException {
+
         JSONObject forecastJson = new JSONObject(jsonStr);
 
         if (!forecastJson.has(TMD_RESULTS)) {
@@ -93,30 +152,29 @@ public final class TheMovieDbJsonUtils {
 
         JSONArray jsonMoviesArray = forecastJson.getJSONArray(TMD_RESULTS);
 
-        ArrayList<PopularMovie> popularMovieList = new ArrayList<>(jsonMoviesArray.length());
-        PopularMovie popularMovie;
+        String[] columnNames = {
+                BaseColumns._ID,
+                PopularMoviesContract.TrailersEntry.COLUMN_NAME,
+                PopularMoviesContract.TrailersEntry.COLUMN_TYPE,
+                PopularMoviesContract.TrailersEntry.COLUMN_SITE,
+                PopularMoviesContract.TrailersEntry.COLUMN_KEY
+        };
+        MatrixCursor cursor = new MatrixCursor(columnNames);
 
         for (int i = 0; i < jsonMoviesArray.length(); i++) {
 
             // Get the JSON object representing the popularMovie record
             JSONObject jsonMovieObject = jsonMoviesArray.getJSONObject(i);
             // Create a movie object
-            popularMovie = new PopularMovie();
-            popularMovie.setId(jsonMovieObject.getInt(TMD_ID));
-            popularMovie.setTitle(jsonMovieObject.optString(TMD_TITLE));
-            popularMovie.setOriginalTitle(jsonMovieObject.optString(TMD_ORIGINAL_TITLE));
-            popularMovie.setPlotSynopsis(jsonMovieObject.optString(TMD_OVERVIEW));
-            String poster = jsonMovieObject.optString(TMD_POSTER_PATH);
-            poster = TextUtils.substring(poster, 1, poster.length());
-            popularMovie.setPoster(poster);
-            popularMovie.setUserRating(jsonMovieObject.getDouble(TMD_VOTE_AVERAGE));
-            popularMovie.setPopularity(jsonMovieObject.getDouble(TMD_POPULARITY));
-            popularMovie.setReleaseDate(jsonMovieObject.optString(TMD_RELEASE_DATE));
-            // Add a movie object to the list
-            popularMovieList.add(popularMovie);
+
+            cursor.addRow(new Object[]{
+                    i,
+                    jsonMovieObject.optString(TMD_TRAILER_NAME),
+                    jsonMovieObject.optString(TMD_TRAILER_TYPE),
+                    jsonMovieObject.optString(TMD_TRAILER_SITE),
+                    jsonMovieObject.optString(TMD_TRAILER_KEY)}
+            );
         }
-        return popularMovieList;
-
+        return cursor;
     }
-
 }

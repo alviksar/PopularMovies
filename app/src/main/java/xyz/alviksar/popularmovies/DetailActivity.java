@@ -43,6 +43,7 @@ public class DetailActivity extends AppCompatActivity {
        DetailActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
         DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
        binding.setPagerAdapter(adapter);
+       binding.slidingTabs.setupWithViewPager(binding.viewpager);
        binding.setPopularMovie(mMovie);
 /*
         // Find the view pager that will allow the user to swipe between fragments
@@ -51,6 +52,7 @@ public class DetailActivity extends AppCompatActivity {
         DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
+
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);

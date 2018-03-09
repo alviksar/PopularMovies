@@ -3,6 +3,7 @@ package xyz.alviksar.popularmovies;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -85,6 +86,13 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @BindingAdapter(value = {"android:pagerAdapter"}, requireAll = false)
     public static void setViewPager(ViewPager viewPager, FragmentPagerAdapter adapter) {
         viewPager.setAdapter(adapter);
+    }
+
+
+    @BindingAdapter(value = {"android:tabLayout"}, requireAll = false)
+    public static void setTabLayout(TabLayout tabLayout, ViewPager viewPager) {
+        // Give the TabLayout the ViewPager
+        tabLayout.setupWithViewPager(viewPager);
     }
 }
 

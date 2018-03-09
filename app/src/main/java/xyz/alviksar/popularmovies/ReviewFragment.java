@@ -22,7 +22,7 @@ public class ReviewFragment extends Fragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.test_layout, container, false);
+           View rootView = inflater.inflate(R.layout.test_layout, container, false);
 
 /*
             // Create an {@link WordAdapter}, whose data source is a list of {@link Word}s. The

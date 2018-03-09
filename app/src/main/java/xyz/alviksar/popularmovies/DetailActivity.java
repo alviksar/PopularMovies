@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;
+import xyz.alviksar.popularmovies.databinding.DetailLayoutBinding;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
 /**
@@ -25,18 +26,10 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail2_activity);
+ //  !!!     setContentView(R.layout.include_layout);
 
-        // Find the view pager that will allow the user to swipe between fragments
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        // Create an adapter that knows which fragment should be shown on each page
-        DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
-        // Set the adapter onto the view pager
-        viewPager.setAdapter(adapter);
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-/*
+
+
         if(savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_parcel_key))) {
             mMovie = getIntent().getParcelableExtra(getString(R.string.movie_parcel_key));
         }
@@ -47,9 +40,19 @@ public class DetailActivity extends AppCompatActivity {
         setTitle(mMovie.getTitle());
 
         // Uses dataBinding
-        DetailActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
-        binding.setPopularMovie(mMovie);
-        */
+       DetailLayoutBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_layout);
+       binding.setPopularMovie(mMovie);
+/*
+        // Find the view pager that will allow the user to swipe between fragments
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        // Create an adapter that knows which fragment should be shown on each page
+        DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
+        // Set the adapter onto the view pager
+        viewPager.setAdapter(adapter);
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+*/
 
     }
 }

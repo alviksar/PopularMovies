@@ -30,6 +30,9 @@ public class PopularMoviesProvider extends ContentProvider {
     public static final int MATCH_FAVORITE = 200;
     public static final int MATCH_FAVORITE_BY_ID = 201;
 
+    public static final int MATCH_TRAILERS_BY_ID = 800;
+    public static final int MATCH_REVIEWS_BY_ID = 900;
+
     /*
      * The URI Matcher used by this content provider.
      */
@@ -47,6 +50,10 @@ public class PopularMoviesProvider extends ContentProvider {
         matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/#", MATCH_THEMOVIEDB_BY_ID);
         matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/*", MATCH_FAVORITE);
         matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/#", MATCH_FAVORITE_BY_ID);
+
+        matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS + "/#", MATCH_TRAILERS_BY_ID);
+        matcher.addURI(authority, PopularMoviesContract.PATH_REVIEWS + "/#", MATCH_REVIEWS_BY_ID);
+
         return matcher;
     }
 
@@ -77,6 +84,22 @@ public class PopularMoviesProvider extends ContentProvider {
                     Log.e(TAG, e.getMessage());
                     Log.e(TAG, "URI: "+ uri.toString());
                 }
+                break;
+            }
+            case MATCH_TRAILERS_BY_ID: {
+                try {
+                    String movie_id = uri.getLastPathSegment();
+                    cursor = TheMovieDbJsonUtils.getTrailersFromJson(
+                                    TheMovieDbHttpUtils.getTrailersByMovieId(movie_id)
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, "URI: "+ uri.toString());
+                }
+                break;
+            }
+            case MATCH_REVIEWS_BY_ID: {
                 break;
             }
             case MATCH_FAVORITE: {

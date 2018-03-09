@@ -45,6 +45,8 @@ public class TheMovieDbHttpUtils {
     private static String sort_by_popularity;
     private static String sort_by_rating;
 
+    public static final String TRAILERS_ENDPOINT = "videos";
+
     /**
      * Initializes the global parameters
      */
@@ -160,6 +162,33 @@ public class TheMovieDbHttpUtils {
                 return posterWidth[i];
         }
         return "original";
+    }
+
+    /**
+     * Returns a json response by movie_id criteria
+     *
+     * @param movie_id The movie id
+     * @return The json response from the movie db server
+     */
+    public String getTrailersByMovieId(String movie_id) {
+        /* URL sample:
+        * https://api.themoviedb.org/3/movie/19404/videos?api_key=<>
+        */
+        Uri moviesQueryUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                .appendPath(movie_id)
+                .appendPath(TRAILERS_ENDPOINT)
+                .appendQueryParameter(API_KEY_PARAM, api_key_value)
+                .build();
+
+        try {
+            URL moviesQueryUrl = new URL(moviesQueryUri.toString());
+            Log.v(TAG, "URL: " + moviesQueryUri);
+
+            return getResponseFromHttpUrl(moviesQueryUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

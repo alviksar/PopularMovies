@@ -43,6 +43,7 @@ public class PopularMoviesContract {
      * The path for looking at trailers
      */
     public static final String PATH_TRAILERS = "trailers";
+    public static final String PATH_REVIEWS = "reviews";
 
 
     public static final class MoviesEntry implements BaseColumns {

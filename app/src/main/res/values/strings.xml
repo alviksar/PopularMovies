@@ -22,5 +22,7 @@
     <!-- String formats for DetailActivity -->
     <string name="rating_format">Rating %1$s</string>
     <string name="release_date_format">Release %1$s</string>
+    <string name="TrailersHeader">Trailers</string>
+    <string name="ReviewsHeader">Reviews</string>
 
 </resources>

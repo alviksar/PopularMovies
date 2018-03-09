@@ -5,4 +5,5 @@
     <dimen name="error_msg_text_size">22sp</dimen>
     <dimen name="detail_image_width">185dp</dimen>
     <dimen name="title_text_size">22sp</dimen>
+    <dimen name="list_item_height">80dp</dimen>
 </resources>

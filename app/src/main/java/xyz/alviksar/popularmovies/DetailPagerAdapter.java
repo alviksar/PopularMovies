@@ -71,12 +71,13 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
-            return "Trailers";
+            return mContext.getString(R.string.TrailersHeader);
 
         } else {
-            return "Reviews";
+            return mContext.getString(R.string.ReviewsHeader);
         }
     }
+
 
     /**
      * Add this method into databinding for setting PagerAdapter
@@ -88,11 +89,5 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
         viewPager.setAdapter(adapter);
     }
 
-
-    @BindingAdapter(value = {"android:tabLayout"}, requireAll = false)
-    public static void setTabLayout(TabLayout tabLayout, ViewPager viewPager) {
-        // Give the TabLayout the ViewPager
-        tabLayout.setupWithViewPager(viewPager);
-    }
 }
 

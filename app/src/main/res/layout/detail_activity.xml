@@ -14,9 +14,6 @@
             name="pagerAdapter"
             type="android.support.v4.app.FragmentPagerAdapter" />
 
-        <variable
-            name="tabLayout"
-            type="android.support.design.widget.TabLayout" />
     </data>
 
     <ScrollView

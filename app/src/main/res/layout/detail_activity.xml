@@ -5,6 +5,9 @@
     tools:context="xyz.alviksar.popularmovies.DetailActivity">
 
     <data>
+        <variable
+            name="pagerAdapter"
+            type="android.support.v4.app.FragmentPagerAdapter"/>
 
         <variable
             name="popularMovie"
@@ -117,17 +120,24 @@
                 android:orientation="vertical">
 
 
-                <android.support.design.widget.TabLayout
+                <!--android.support.design.widget.TabLayout
                     android:id="@+id/sliding_tabs"
                     style="@style/CategoryTab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabMode="fixed" />
+                    app:tabMode="fixed" /-->
+
+                <!--android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" /-->
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:pagerAdapter="@{pagerAdapter}"/>
+
             </LinearLayout>
 
         </LinearLayout>

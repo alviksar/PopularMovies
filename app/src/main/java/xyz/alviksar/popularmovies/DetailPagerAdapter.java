@@ -1,5 +1,6 @@
 package xyz.alviksar.popularmovies;
 
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +75,16 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
         } else {
             return "Reviews";
         }
+    }
+
+    /**
+     * Add this method into databinding for setting PagerAdapter
+     *
+    https://codedesignpattern.wordpress.com/2016/09/16/view-pager-with-databinding-custom-setter/
+     */
+    @BindingAdapter(value = {"android:pagerAdapter"}, requireAll = false)
+    public static void setViewPager(ViewPager viewPager, FragmentPagerAdapter adapter) {
+        viewPager.setAdapter(adapter);
     }
 }
 

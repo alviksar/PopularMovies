@@ -26,7 +26,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
- //  !!!     setContentView(R.layout.include_layout);
+        setContentView(R.layout.include_layout);
 
 
 
@@ -40,7 +40,9 @@ public class DetailActivity extends AppCompatActivity {
         setTitle(mMovie.getTitle());
 
         // Uses dataBinding
-       DetailLayoutBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_layout);
+       DetailActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.detail_activity);
+        DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
+       binding.setPagerAdapter(adapter);
        binding.setPopularMovie(mMovie);
 /*
         // Find the view pager that will allow the user to swipe between fragments

@@ -30,7 +30,8 @@ public class TrailerAdapter extends android.widget.CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.trailer_list_item, parent, false);
+        return LayoutInflater.from(context).inflate(
+                R.layout.trailer_list_item, parent, false);
     }
 
     /**

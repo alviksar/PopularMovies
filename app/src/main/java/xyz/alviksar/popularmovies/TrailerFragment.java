@@ -1,23 +1,36 @@
 package xyz.alviksar.popularmovies;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
- *  This Fragment shows a movie trailer list in DetailActivity
+ * This Fragment shows a movie trailer list in DetailActivity
  */
 
 public class TrailerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = TrailerFragment.class.getSimpleName();
+
 
     private String mMovieId;
     private static final int TRAILERS_LOADER = 8;
@@ -38,14 +51,30 @@ public class TrailerFragment extends Fragment implements LoaderManager.LoaderCal
 
         mTrailerAdapter = new TrailerAdapter(rootView.getContext(), null);
         listView.setAdapter(mTrailerAdapter);
+
+        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final String YOUTUBEWATCH = "https://www.youtube.com/watch";
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                String site = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_SITE));
+                String key = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_KEY));
+                if ("YouTube".equals(site)) {
+                    Uri trailerUri = Uri.parse(YOUTUBEWATCH).buildUpon()
+                            .appendQueryParameter("v", key).build();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, trailerUri);
+                    if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                    // Sample:
+                    // "https://www.youtube.com/watch?v=MS7GN2Lgdas")
+                }
+
+            }
+        });
+
         Bundle bundle = getArguments();
         getLoaderManager().initLoader(TRAILERS_LOADER, bundle, this);
-
-//            // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
-//            // {@link ListView} will display list items for each {@link Word} in the list.
-//            listView.setAdapter(adapter);
-//            listView.setOnItemClickListener(new WordClickListener(getActivity()));
-
         return rootView;
     }
 

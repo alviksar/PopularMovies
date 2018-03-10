@@ -72,7 +72,7 @@ public class TrailerFragment extends Fragment implements LoaderManager.LoaderCal
 
             }
         });
-
+        // Provide the package with the movie ID to the loader
         Bundle bundle = getArguments();
         getLoaderManager().initLoader(TRAILERS_LOADER, bundle, this);
         return rootView;

@@ -1,6 +1,8 @@
 package xyz.alviksar.popularmovies;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -9,11 +11,13 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
+
 /**
- *  This Fragment shows a review list in DetailActivity
+ * This Fragment shows a review list in DetailActivity
  */
 
 public class ReviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -37,13 +41,22 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
 
         mReviewAdapter = new ReviewAdapter(rootView.getContext(), null);
         listView.setAdapter(mReviewAdapter);
+
+        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                String url = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_URL));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
+        // Provide the package with the movie ID to the loader
         Bundle bundle = getArguments();
         getLoaderManager().initLoader(REVIEW_LOADER, bundle, this);
-
-//            // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
-//            // {@link ListView} will display list items for each {@link Word} in the list.
-//            listView.setAdapter(adapter);
-//            listView.setOnItemClickListener(new WordClickListener(getActivity()));
 
         return rootView;
     }
@@ -76,4 +89,4 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
         mReviewAdapter.swapCursor(null);
     }
 
-    }
+}

@@ -35,7 +35,8 @@ public class DetailActivity extends AppCompatActivity {
 
         // Uses dataBinding
         DetailActivityBinding binding = DataBindingUtil.setContentView(DetailActivity.this, R.layout.detail_activity);
-        DetailPagerAdapter adapter = new DetailPagerAdapter(this, getSupportFragmentManager());
+        DetailPagerAdapter adapter = new DetailPagerAdapter(this,
+                String.valueOf(mMovie.getId()), getSupportFragmentManager());
         binding.setPagerAdapter(adapter);
         binding.slidingTabs.setupWithViewPager(binding.viewpager);
         binding.setPopularMovie(mMovie);

@@ -1,6 +1,7 @@
 package xyz.alviksar.popularmovies;
 
 import android.databinding.BindingAdapter;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -14,7 +15,8 @@ import android.support.v4.view.ViewPager;
  */
 public class DetailPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 2;
+    private final int PAGE_COUNT = 2;
+    private String mMoveId;
 
 
     /**
@@ -29,28 +31,22 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
      * @param fm      is the fragment manager that will keep each fragment's state in the adapter
      *                across swipes.
      */
-    public DetailPagerAdapter(Context context, FragmentManager fm) {
+    public DetailPagerAdapter(Context context, String movieId, FragmentManager fm) {
         super(fm);
         mContext = context;
+        mMoveId = movieId;
     }
-
-//    @Override
-//    public Object instantiateItem(ViewGroup container, int position) {
-//      //  return super.instantiateItem(container, position);
-//        DetailActivityBinding layout =
-//       DataBindingUtil.inflate(
-//                LayoutInflater.from(mContext), R.layout.test_layout, container, false);
-//// Set your databinding up here
-//        container.addView(layout.getRoot());
-//        return layout.getRoot();
-//    }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new TrailerFragment();
+            TrailerFragment trailerFragment= new TrailerFragment();
+            Bundle bundle = new Bundle(1);
+            bundle.putString(mContext.getString(R.string.movie_id_key), mMoveId);
+            trailerFragment.setArguments(bundle);
+            return trailerFragment;
         } else {
-            return new TrailerFragment();
+            return new ReviewFragment();
         }
     }
 

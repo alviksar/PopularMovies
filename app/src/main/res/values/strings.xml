@@ -26,5 +26,6 @@
     <string name="ReviewsHeader">Reviews</string>
     <string name="play_button_name">Play Button</string>
     <string name="no_data_message">No any data.</string>
+    <string name="movie_id_key">movie_id</string>
 
 </resources>

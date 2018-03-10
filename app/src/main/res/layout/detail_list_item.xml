@@ -29,7 +29,7 @@
         android:layout_below="@id/top_text_view"
         android:gravity="top"
         android:textColor="@color/colorSecondaryText"
-        android:textAppearance="?android:textAppearanceMedium"
+        android:textAppearance="?android:textAppearanceSmall"
         tools:text="Clip" />
 
     <ImageView

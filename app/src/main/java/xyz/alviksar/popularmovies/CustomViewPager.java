@@ -26,20 +26,25 @@ public class CustomViewPager extends ViewPager {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
         int height = 0;
         for(int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            int h = child.getMeasuredHeight();
+
             // Add a ListView multiplicator
             int n = 1;
-            ListView listView = findViewById(R.id.extra_list);
+            ListView listView = child.findViewById(R.id.extra_list);
             if (listView != null) {
                 n = listView.getCount();
             }
-            int h = child.getMeasuredHeight() *n;
-            if(h > height) height = h;
+            if(h*n > height) height = h*n;
         }
+
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+
     }
 }

@@ -31,7 +31,7 @@ public class TrailerAdapter extends android.widget.CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(
-                R.layout.trailer_list_item, parent, false);
+                R.layout.detail_list_item, parent, false);
     }
 
     /**
@@ -46,8 +46,8 @@ public class TrailerAdapter extends android.widget.CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView tvName = (TextView) view.findViewById(R.id.name_text_view);
-        TextView tvType = (TextView) view.findViewById(R.id.type_text_view);
+        TextView tvName = (TextView) view.findViewById(R.id.top_text_view);
+        TextView tvType = (TextView) view.findViewById(R.id.bottom_text_view);
         // Extract properties from cursor
         String name_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_NAME));
         String type_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_TYPE));

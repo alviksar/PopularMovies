@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
@@ -31,7 +32,7 @@ public class ReviewAdapter extends android.widget.CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.trailer_list_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.detail_list_item, parent, false);
     }
 
     /**
@@ -46,8 +47,10 @@ public class ReviewAdapter extends android.widget.CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView tvName = (TextView) view.findViewById(R.id.name_text_view);
-        TextView tvType = (TextView) view.findViewById(R.id.type_text_view);
+        TextView tvName = (TextView) view.findViewById(R.id.top_text_view);
+        TextView tvType = (TextView) view.findViewById(R.id.bottom_text_view);
+        ImageView imageView = view.findViewById(R.id.play_button_image);
+        imageView.setVisibility(View.GONE);
         // Extract properties from cursor
         String name_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_AUTHOR));
         String type_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_CONTENT));

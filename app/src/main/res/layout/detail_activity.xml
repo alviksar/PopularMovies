@@ -69,7 +69,8 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
                         android:text="@{@string/rating_format(popularMovie.userRating)}"
-                        android:textSize="14sp"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:textColor="@color/colorSecondaryText"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/rb_movie_rating"
                         tools:text="User Rating" />
@@ -84,6 +85,7 @@
                         android:maxLines="4"
                         android:text="@{popularMovie.originalTitle}"
                         android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryText"
                         android:textSize="@dimen/title_text_size"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +98,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:text="@{@string/release_date_format(popularMovie.releaseDate)}"
-                        android:textSize="14sp"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:textColor="@color/colorSecondaryText"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         tools:text="Release Date" />
@@ -111,7 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@{popularMovie.plotSynopsis}"
-                android:textSize="16sp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/colorSecondaryText"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:text="A plot synopsis (called overview in the api)" />

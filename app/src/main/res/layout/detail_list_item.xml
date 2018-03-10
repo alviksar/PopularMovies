@@ -13,25 +13,27 @@
     android:paddingEnd="16dp">
 
     <TextView
-        android:id="@+id/name_text_view"
+        android:id="@+id/top_text_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="bottom"
-        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@color/colorPrimaryText"
+        android:textAppearance="?android:textAppearanceMedium"
         android:maxLines="1"
-        android:textStyle="bold"
-        tools:text="Trailer Title" />
+        tools:text="Trailer Title"/>
 
     <TextView
-        android:id="@+id/type_text_view"
+        android:id="@+id/bottom_text_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@id/name_text_view"
+        android:layout_below="@id/top_text_view"
         android:gravity="top"
-        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@color/colorSecondaryText"
+        android:textAppearance="?android:textAppearanceMedium"
         tools:text="Clip" />
 
     <ImageView
+        android:id="@+id/play_button_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"

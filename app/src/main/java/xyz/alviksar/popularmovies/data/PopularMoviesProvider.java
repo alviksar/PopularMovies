@@ -100,6 +100,16 @@ public class PopularMoviesProvider extends ContentProvider {
                 break;
             }
             case MATCH_REVIEWS_BY_ID: {
+                try {
+                    String movie_id = uri.getLastPathSegment();
+                    cursor = TheMovieDbJsonUtils.getReviewsFromJson(
+                            TheMovieDbHttpUtils.getReviewsByMovieId(movie_id)
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, "URI: "+ uri.toString());
+                }
                 break;
             }
             case MATCH_FAVORITE: {

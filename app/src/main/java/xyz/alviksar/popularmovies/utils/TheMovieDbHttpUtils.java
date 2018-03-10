@@ -46,6 +46,7 @@ public class TheMovieDbHttpUtils {
     private static String sort_by_rating;
 
     public static final String TRAILERS_ENDPOINT = "videos";
+    public static final String REVIEWS_ENDPOINT = "reviews";
 
     /**
      * Initializes the global parameters
@@ -164,7 +165,7 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     * Returns a json response by movie_id criteria
+     * Returns a trailers by movie_id
      *
      * @param movie_id The movie id
      * @return The json response from the movie db server
@@ -178,6 +179,28 @@ public class TheMovieDbHttpUtils {
         Uri moviesQueryUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
                 .appendPath(movie_id)
                 .appendPath(TRAILERS_ENDPOINT)
+                .appendQueryParameter(API_KEY_PARAM, api_key_value)
+                .build();
+        try {
+            URL trailersQueryUrl = new URL(moviesQueryUri.toString());
+            Log.v(TAG, "URL: " + moviesQueryUri);
+            return getResponseFromHttpUrl(trailersQueryUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * Returns a reviews by movie_id
+     *
+     * @param movie_id The movie id
+     * @return The json response from the movie db server
+     */
+    @Nullable
+    public static String getReviewsByMovieId(String movie_id) {
+        Uri moviesQueryUri = Uri.parse(MOVIEDB_BASE_URL).buildUpon()
+                .appendPath(movie_id)
+                .appendPath(REVIEWS_ENDPOINT)
                 .appendQueryParameter(API_KEY_PARAM, api_key_value)
                 .build();
         try {

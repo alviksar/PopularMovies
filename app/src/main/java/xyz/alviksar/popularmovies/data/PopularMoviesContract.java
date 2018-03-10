@@ -120,12 +120,23 @@ public class PopularMoviesContract {
                 .appendPath(PATH_TRAILERS)
                 .build();
 
-        public static final String TABLE_NAME = "trailers";
-
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_KEY = "key";
         public static final String COLUMN_SITE = "site";
+
+    }
+    public static final class ReviewsEntry implements BaseColumns {
+
+        /* The base CONTENT_URI used to query the movies table from the content provider */
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_REVIEWS)
+                .build();
+
+        public static final String COLUMN_REVIEW_ID = "review_id";
+        public static final String COLUMN_AUTHOR = "author";
+        public static final String COLUMN_CONTENT = "content";
+        public static final String COLUMN_URL = "url";
 
     }
 }

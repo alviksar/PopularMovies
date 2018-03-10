@@ -85,7 +85,13 @@ public final class TheMovieDbJsonUtils {
     private static final String TMD_TRAILER_TYPE = "type";
     private static final String TMD_TRAILER_SITE = "site";
     private static final String TMD_TRAILER_KEY = "key";
-
+    /*
+    *  The object names of the movie reviews response
+    */
+    private static final String TMD_REVIEWS_ID = "id";
+    private static final String TMD_REVIEWS_AUTHOR = "author";
+    private static final String TMD_REVIEWS_CONTENT = "content";
+    private static final String TMD_REVIEWS_URL = "url";
 
     /**
      * This method parses JSON from a web response and returns a list of movie objects
@@ -133,7 +139,7 @@ public final class TheMovieDbJsonUtils {
     }
 
     /**
-     * This method parses JSON from a web response and returns a cursor for the movie trailers
+     * Returns a cursor for the movie trailers
      *
      * @param jsonStr JSON response from server
      * @return  a cursor for the movie trailers
@@ -177,4 +183,51 @@ public final class TheMovieDbJsonUtils {
         }
         return cursor;
     }
+
+    /**
+     * Returns a cursor for the movie reviews
+     *
+     * @param jsonStr JSON response from server
+     * @return  a cursor for reviews
+     * @throws JSONException If JSON data cannot be properly parsed
+     */
+    @Nullable
+    public static Cursor getReviewsFromJson(String jsonStr)
+            throws JSONException {
+
+        JSONObject forecastJson = new JSONObject(jsonStr);
+
+        if (!forecastJson.has(TMD_RESULTS)) {
+            // Something went wrong
+            return null;
+        }
+
+        JSONArray jsonMoviesArray = forecastJson.getJSONArray(TMD_RESULTS);
+
+        String[] columnNames = {
+                BaseColumns._ID,
+                PopularMoviesContract.ReviewsEntry.COLUMN_REVIEW_ID,
+                PopularMoviesContract.ReviewsEntry.COLUMN_AUTHOR,
+                PopularMoviesContract.ReviewsEntry.COLUMN_CONTENT,
+                PopularMoviesContract.ReviewsEntry.COLUMN_URL
+        };
+        MatrixCursor cursor = new MatrixCursor(columnNames);
+
+        for (int i = 0; i < jsonMoviesArray.length(); i++) {
+
+            // Get the JSON object representing the popularMovie record
+            JSONObject jsonMovieObject = jsonMoviesArray.getJSONObject(i);
+            // Create a movie object
+
+            cursor.addRow(new Object[]{
+                    i,
+                    jsonMovieObject.optString(TMD_REVIEWS_ID),
+                    jsonMovieObject.optString(TMD_REVIEWS_AUTHOR),
+                    jsonMovieObject.optString(TMD_REVIEWS_CONTENT),
+                    jsonMovieObject.optString(TMD_REVIEWS_URL)}
+            );
+        }
+        return cursor;
+    }
+
 }

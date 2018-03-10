@@ -39,15 +39,16 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Fragment fragment;
         if (position == 0) {
-            TrailerFragment trailerFragment= new TrailerFragment();
-            Bundle bundle = new Bundle(1);
-            bundle.putString(mContext.getString(R.string.movie_id_key), mMoveId);
-            trailerFragment.setArguments(bundle);
-            return trailerFragment;
+            fragment = new ReviewFragment();
         } else {
-            return new ReviewFragment();
+            fragment = new TrailerFragment();
         }
+        Bundle bundle = new Bundle(1);
+        bundle.putString(mContext.getString(R.string.movie_id_key), mMoveId);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -58,18 +59,18 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
-            return mContext.getString(R.string.TrailersHeader);
-
-        } else {
             return mContext.getString(R.string.ReviewsHeader);
+        } else {
+
+            return mContext.getString(R.string.TrailersHeader);
         }
     }
 
 
     /**
      * Add this method into databinding for setting PagerAdapter
-     *
-    https://codedesignpattern.wordpress.com/2016/09/16/view-pager-with-databinding-custom-setter/
+     * <p>
+     * https://codedesignpattern.wordpress.com/2016/09/16/view-pager-with-databinding-custom-setter/
      */
     @BindingAdapter(value = {"android:pagerAdapter"}, requireAll = false)
     public static void setViewPager(ViewPager viewPager, FragmentPagerAdapter adapter) {

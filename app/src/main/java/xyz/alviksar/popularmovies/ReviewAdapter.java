@@ -11,11 +11,12 @@ import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
 /**
  * An adapter for a list or grid view
- * that uses a of trailers as its data source.
+ * that uses a of reviewa as its data source.
  */
-public class TrailerAdapter extends android.widget.CursorAdapter {
 
-    public TrailerAdapter(Context context, Cursor c) {
+public class ReviewAdapter extends android.widget.CursorAdapter {
+
+    public ReviewAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
 
@@ -48,8 +49,8 @@ public class TrailerAdapter extends android.widget.CursorAdapter {
         TextView tvName = (TextView) view.findViewById(R.id.name_text_view);
         TextView tvType = (TextView) view.findViewById(R.id.type_text_view);
         // Extract properties from cursor
-        String name_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_NAME));
-        String type_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_TYPE));
+        String name_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_AUTHOR));
+        String type_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_CONTENT));
         // Populate fields with extracted properties
         tvName.setText(name_trailer);
         tvType.setText(type_trailer);

@@ -25,5 +25,6 @@
     <string name="TrailersHeader">Trailers</string>
     <string name="ReviewsHeader">Reviews</string>
     <string name="play_button_name">Play Button</string>
+    <string name="no_data_message">No any data.</string>
 
 </resources>

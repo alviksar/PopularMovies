@@ -116,29 +116,22 @@
                 app:layout_constraintRight_toRightOf="parent"
                 tools:text="A plot synopsis (called overview in the api)" />
 
-            <LinearLayout
+            <android.support.design.widget.TabLayout
+                android:id="@+id/sliding_tabs"
+                style="@style/CategoryTab"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:tabMode="fixed" />
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/sliding_tabs"
-                    style="@style/CategoryTab"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    app:tabMode="fixed" />
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:pagerAdapter="@{pagerAdapter}" />
-
-            </LinearLayout>
+            <!-- android.support.v4.view.ViewPager -->
+            <xyz.alviksar.popularmovies.CustomViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:pagerAdapter="@{pagerAdapter}" />
 
         </LinearLayout>
-
     </ScrollView>
 
 </layout>

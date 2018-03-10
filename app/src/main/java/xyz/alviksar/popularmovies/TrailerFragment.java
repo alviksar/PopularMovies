@@ -22,6 +22,7 @@ public class TrailerFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final int TRAILERS_LOADER = 800;
     private TrailerAdapter mTrailerAdapter;
+    private android.support.v4.view.ViewPager mViewPager;
 
     public TrailerFragment() {
         // Required empty public constructor
@@ -37,6 +38,7 @@ public class TrailerFragment extends Fragment implements LoaderManager.LoaderCal
 
         // Find the ListView which will be populated with the trailers
         ListView listView = (ListView) rootView.findViewById(R.id.extra_list);
+        mViewPager = rootView.findViewById(R.id.viewpager);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
 //        View emptyView = rootView.findViewById(R.id.empty_view);
@@ -92,6 +94,7 @@ public class TrailerFragment extends Fragment implements LoaderManager.LoaderCal
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
+   //    mViewPager.setMeasuredDimension(getMeasuredWidth(), measureHeight(heightMeasureSpec, view));
         mTrailerAdapter.swapCursor(cursor);
     }
 

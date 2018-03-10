@@ -78,6 +78,7 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @BindingAdapter(value = {"android:pagerAdapter"}, requireAll = false)
     public static void setViewPager(ViewPager viewPager, FragmentPagerAdapter adapter) {
         viewPager.setAdapter(adapter);
+
     }
 
 }

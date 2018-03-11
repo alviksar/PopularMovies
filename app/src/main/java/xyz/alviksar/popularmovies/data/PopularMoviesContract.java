@@ -55,18 +55,18 @@ public class PopularMoviesContract {
 
         public static final String TABLE_NAME = "movie";
 
-        public static final String COLUMN_TITLE = "title";
-        public static final String COLUMN_ORIGINALTITLE = "originalTitle";
-        public static final String COLUMN_POSTER = "poster";
-        public static final String COLUMN_PLOTSYNOPSIS = "plotSynopsis";
-        public static final String COLUMN_USERRATING = "userRating";
-        public static final String COLUMN_POPULARITY = "popularity)";
-        public static final String COLUMN_RELEASEDATE = "releaseDate";
+        public static final String COLUMN_TITLE = "Title";
+        public static final String COLUMN_ORIGINALTITLE = "OriginalTitle";
+        public static final String COLUMN_POSTER = "Poster";
+        public static final String COLUMN_PLOTSYNOPSIS = "PlotSynopsis";
+        public static final String COLUMN_USERRATING = "UserRating";
+        public static final String COLUMN_POPULARITY = "Popularity";
+        public static final String COLUMN_RELEASEDATE = "ReleaseDate";
 
         private final static String[] columnNames = {
                 BaseColumns._ID,
-                COLUMN_ORIGINALTITLE,
                 COLUMN_TITLE,
+                COLUMN_ORIGINALTITLE,
                 COLUMN_POSTER,
                 COLUMN_PLOTSYNOPSIS,
                 COLUMN_USERRATING,
@@ -79,8 +79,8 @@ public class PopularMoviesContract {
             for (int i = 0; i < movies.size(); i++) {
                 cursor.addRow(new Object[]{
                         movies.get(i).getId(),
-                        movies.get(i).getOriginalTitle(),
                         movies.get(i).getTitle(),
+                        movies.get(i).getOriginalTitle(),
                         movies.get(i).getPoster(),
                         movies.get(i).getPlotSynopsis(),
                         Double.parseDouble(movies.get(i).getUserRating()),

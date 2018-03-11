@@ -27,5 +27,6 @@
     <string name="play_button_name">Play Button</string>
     <string name="no_data_message">No any data.</string>
     <string name="movie_id_key">movie_id</string>
-
+    <string name="mark_as_favorite">Mark As Favorite</string>
+    <string name="remove_from_favorite">Remove From Favorite</string>
 </resources>

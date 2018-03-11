@@ -40,7 +40,7 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment;
-        if (position == 0) {
+        if (position == 1) {
             fragment = new ReviewFragment();
         } else {
             fragment = new TrailerFragment();
@@ -58,7 +58,7 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if (position == 0) {
+        if (position == 1) {
             return mContext.getString(R.string.ReviewsHeader);
         } else {
 

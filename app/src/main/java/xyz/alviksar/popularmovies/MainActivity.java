@@ -23,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.facebook.stetho.Stetho;
+
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // A debug tool: http://facebook.github.io/stetho/
+        Stetho.initializeWithDefaults(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 

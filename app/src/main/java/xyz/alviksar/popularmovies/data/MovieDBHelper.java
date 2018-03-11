@@ -46,8 +46,8 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                         MoviesEntry.COLUMN_POPULARITY + " REAL NULL, " +
                         MoviesEntry.COLUMN_RELEASEDATE + " TEXT NULL); " ;
 
-                        // Create the movie db
-                        sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
+        // Create the movie db
+        sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
     }
 
     /**

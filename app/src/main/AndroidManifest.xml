@@ -32,7 +32,7 @@
 
         <provider
             android:authorities="xyz.alviksar.popularmovies"
-            android:name=".data.PopularMoviesProvider"
+            android:name=".data.MoviesProvider"
             android:exported="false"/>
 
     </application>

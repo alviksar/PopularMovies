@@ -15,13 +15,15 @@ import xyz.alviksar.popularmovies.MainActivity;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
+import xyz.alviksar.popularmovies.data.PopularMoviesContract;
+
 /**
  * This ContentProvider provides movie data from themoviedb.org or from a local SQLite database.
  */
 
-public class PopularMoviesProvider extends ContentProvider {
+public class MoviesProvider extends ContentProvider {
 
-    private static final String TAG = PopularMoviesProvider.class.getSimpleName();
+    private static final String TAG = MoviesProvider.class.getSimpleName();
 
     /**
      * These constant will be used to match URIs with the data they are looking for.
@@ -52,7 +54,8 @@ public class PopularMoviesProvider extends ContentProvider {
         final String authority = PopularMoviesContract.CONTENT_AUTHORITY;
         matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*", MATCH_THEMOVIEDB);
 //        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/#", MATCH_THEMOVIEDB_BY_ID);
-        matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/*", MATCH_FAVORITE);
+        matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "", MATCH_FAVORITE);
+        //PopularMoviesContract.MoviesEntry.CONTENT_URI
         matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/#", MATCH_FAVORITE_BY_ID);
 
         matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS + "/#", MATCH_TRAILERS_BY_ID);
@@ -151,6 +154,7 @@ public class PopularMoviesProvider extends ContentProvider {
                 break;
             }
             default:
+                Log.e(TAG, "Unknown uri: " + uri.toString());
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         if (cursor != null) {
@@ -175,9 +179,13 @@ public class PopularMoviesProvider extends ContentProvider {
             case MATCH_FAVORITE:
                 newRowId = db.insert(PopularMoviesContract.MoviesEntry.TABLE_NAME, null, values);
                 break;
+            default:
+                Log.e(TAG, "Unknown uri: " + uri.toString());
+                break;
         }
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (newRowId == -1) {
+            Log.e(TAG, "Wrong uri: " + uri.toString());
             throw new UnsupportedOperationException("Failed to insert row for " + uri);
         }
         else {
@@ -201,6 +209,7 @@ public class PopularMoviesProvider extends ContentProvider {
                 numRowsDeleted = database.delete(PopularMoviesContract.MoviesEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
+                Log.e(TAG, "Unknown uri: " + uri.toString());
                 throw new UnsupportedOperationException("Deletion is not supported for " + uri);
         }
         /* If we actually deleted any rows, notify that a change has occurred to this URI */

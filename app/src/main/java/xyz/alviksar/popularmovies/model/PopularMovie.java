@@ -32,8 +32,12 @@ public class PopularMovie implements Parcelable {
     private Double popularity;
     //
     private String releaseDate;
+    // "1" if the movie marked as  favorite, "0" - else
+    private int isFavorite;
+
 
     public PopularMovie() {
+        setIsFavorite(false);
     }
 
     public PopularMovie(int id,
@@ -52,6 +56,7 @@ public class PopularMovie implements Parcelable {
         this.userRating = userRating;
         this.popularity = popularity;
         this.releaseDate = releaseDate;
+        this.setIsFavorite(false);
     }
 
     // Constructor from Parcel
@@ -64,6 +69,7 @@ public class PopularMovie implements Parcelable {
         userRating = in.readDouble();
         popularity = in.readDouble();
         releaseDate = in.readString();
+        isFavorite = in.readInt();
     }
 
     public static final Creator<PopularMovie> CREATOR = new Creator<PopularMovie>() {
@@ -158,6 +164,7 @@ public class PopularMovie implements Parcelable {
         parcel.writeDouble(userRating);
         parcel.writeDouble(popularity);
         parcel.writeString(releaseDate);
+        parcel.writeInt(isFavorite);
     }
 
     // Uses with dataBinding to set RatingBar
@@ -178,6 +185,16 @@ public class PopularMovie implements Parcelable {
     }
 
 
+    public boolean getIsFavorite() {
+        return isFavorite == 1;
+    }
+
+    public void setIsFavorite(boolean isFavorite) {
+       if (isFavorite)
+           this.isFavorite = 1;
+       else
+           this.isFavorite = 0;
+    }
 }
 
 /*  JSON sample

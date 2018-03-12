@@ -1,13 +1,10 @@
 package xyz.alviksar.popularmovies;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -63,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
                     if (!isFavorite) {
                         isFavorite = markMovieAsFavorite();
                     } else {
-                        isFavorite = false; //  TODO: !!!
+                        isFavorite = !removeMovieFromFavorites();
                     }
                 } finally {
                     mMovie.setIsFavorite(isFavorite);
@@ -99,15 +96,41 @@ public class DetailActivity extends AppCompatActivity {
         // Show a toast message depending on whether or not the insertion was successful
         if (newUri != null) {
             // If the new content URI is null, then there was an error with insertion.
-            Toast.makeText(this, "The movie is marked as favorites",
+            Toast.makeText(this, R.string.marked_message,
                     Toast.LENGTH_SHORT).show();
             return true;
         } else {
             // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(this, "Mark failed",
+            Toast.makeText(this, R.string.mark_failed_message,
                     Toast.LENGTH_SHORT).show();
             return false;
 
         }
     }
+    private boolean removeMovieFromFavorites() {
+
+     //   ContentValues values = new ContentValues();
+      //  values.put(PopularMoviesContract.MoviesEntry._ID, mMovie.getId());
+        int rowDeleted  = getContentResolver().delete(
+                ContentUris.appendId(
+                PopularMoviesContract.MoviesEntry.CONTENT_URI.buildUpon(), mMovie.getId()).build(),
+                null,
+                null
+        );
+
+        // Show a toast message depending on whether or not the insertion was successful
+        if (rowDeleted != 0) {
+            // If the new content URI is null, then there was an error with insertion.
+            Toast.makeText(this, R.string.mark_removed_message,
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            // Otherwise, the insertion was successful and we can display a toast.
+            Toast.makeText(this, R.string.mark_failed_message,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
+    }
+
 }

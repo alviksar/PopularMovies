@@ -22,11 +22,14 @@
     <!-- String formats for DetailActivity -->
     <string name="rating_format">Rating %1$s</string>
     <string name="release_date_format">Release %1$s</string>
-    <string name="TrailersHeader">Trailers</string>
-    <string name="ReviewsHeader">Reviews</string>
+    <string name="trailers_header">Trailers</string>
+    <string name="reviews_header">Reviews</string>
     <string name="play_button_name">Play Button</string>
     <string name="no_data_message">No any data.</string>
     <string name="movie_id_key">movie_id</string>
     <string name="mark_as_favorite">Mark As Favorite</string>
-    <string name="remove_from_favorite">Remove From Favorite</string>
+    <string name="remove_from_favorite">Remove From Favorites</string>
+    <string name="marked_message">The movie is marked as favorite.</string>
+    <string name="mark_failed_message">Mark failed.</string>
+    <string name="mark_removed_message">The movie was removed from favorites.</string>
 </resources>

@@ -59,10 +59,10 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 1) {
-            return mContext.getString(R.string.ReviewsHeader);
+            return mContext.getString(R.string.reviews_header);
         } else {
 
-            return mContext.getString(R.string.TrailersHeader);
+            return mContext.getString(R.string.trailers_header);
         }
     }
 

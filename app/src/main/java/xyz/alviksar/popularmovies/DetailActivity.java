@@ -6,11 +6,15 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;
@@ -19,10 +23,11 @@ import xyz.alviksar.popularmovies.model.PopularMovie;
 /**
  * Displays a screen with additional information
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private PopularMovie mMovie;
 
+    private static final int MOVIE_DETAIL_LOADER_ID = 11;
     // The button to mark a movie as favorite
     private Button mMarkButton;
 
@@ -52,12 +57,6 @@ public class DetailActivity extends AppCompatActivity {
         binding.setPagerAdapter(adapter);
         binding.slidingTabs.setupWithViewPager(binding.viewpager);
         binding.setPopularMovie(mMovie);
-        mMovie.setIsFavorite(checkMovieIsFavorite());
-        if (mMovie.getIsFavorite()) {
-            Toast.makeText(this, "It is a favorite movie", Toast.LENGTH_LONG).show();
-        }
-        //   TODO: Move to the loader
-        // showMovieState();
 
         // Setup button to mark movie as favorite
         mMarkButton = findViewById(R.id.btn_mark);
@@ -77,6 +76,9 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Connect our activity into the loader lifecycle
+        getSupportLoaderManager().initLoader(MOVIE_DETAIL_LOADER_ID, null, this);
     }
 
     private boolean markMovieAsFavorite() {
@@ -96,63 +98,18 @@ public class DetailActivity extends AppCompatActivity {
                 values                          // the values to insert
         );
         return (newUri != null);
-        // Show a toast message depending on whether or not the insertion was successful
-//        if (newUri != null) {
-//            // If the new content URI is null, then there was an error with insertion.
-//            Toast.makeText(this, R.string.marked_message,
-//                    Toast.LENGTH_SHORT).show();
-//            return true;
-//        } else {
-//            // Otherwise, the insertion was successful and we can display a toast.
-//            Toast.makeText(this, R.string.mark_failed_message,
-//                    Toast.LENGTH_SHORT).show();
-//            return false;
-//
-//        }
     }
 
     private boolean removeMovieFromFavorites() {
-        //   ContentValues values = new ContentValues();
-        //  values.put(PopularMoviesContract.MoviesEntry._ID, mMovie.getId());
         int rowDeleted = getContentResolver().delete(
                 ContentUris.appendId(
-                        PopularMoviesContract.MoviesEntry.CONTENT_URI.buildUpon(), mMovie.getId()).build(),
+                        PopularMoviesContract.MoviesEntry.CONTENT_URI.buildUpon(),
+                        mMovie.getId()
+                ).build(),
                 null,
                 null
         );
         return (rowDeleted != 0);
-//        // Show a toast message depending on whether or not the insertion was successful
-//        if (rowDeleted != 0) {
-//            // If the new content URI is null, then there was an error with insertion.
-//            Toast.makeText(this, R.string.mark_removed_message,
-//                    Toast.LENGTH_SHORT).show();
-//            return true;
-//        } else {
-//            // Otherwise, the insertion was successful and we can display a toast.
-//            Toast.makeText(this, R.string.mark_failed_message,
-//                    Toast.LENGTH_SHORT).show();
-//            return false;
-//
-//        }
-    }
-
-    private boolean checkMovieIsFavorite() {
-
-        Cursor cursor = getContentResolver().query(
-                ContentUris.appendId(
-                        PopularMoviesContract.MoviesEntry.CONTENT_URI.buildUpon(), mMovie.getId()).build(),
-                null,
-                null,
-                null,
-                null);
-
-        int rows = 0;
-        if (cursor != null) {
-            rows = cursor.getCount();
-            cursor.close();
-        }
-        if (rows > 1) throw new RuntimeException("Inconsistent data.");
-        return (rows == 1);
 
     }
 
@@ -164,5 +121,52 @@ public class DetailActivity extends AppCompatActivity {
             mMarkButton.setText(R.string.mark_as_favorite);
             mMarkButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
         }
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        switch (id) {
+            case MOVIE_DETAIL_LOADER_ID:
+                Uri uri = ContentUris.appendId(
+                        PopularMoviesContract.MoviesEntry.CONTENT_URI.buildUpon(),
+                        mMovie.getId()
+                ).build();
+                String[] projection = {
+                        PopularMoviesContract.MoviesEntry._ID
+                };
+                return new CursorLoader(this,
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+
+        int rows;
+        if (cursor != null) {
+            rows = cursor.getCount();
+            // cursor.close();
+            if (rows == 1) {
+                mMovie.setIsFavorite(true);
+            } else if (rows == 0) {
+                mMovie.setIsFavorite(false);
+            } else {
+                throw new RuntimeException("Inconsistent data.");
+            }
+        }
+        showMovieState();
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
     }
 }

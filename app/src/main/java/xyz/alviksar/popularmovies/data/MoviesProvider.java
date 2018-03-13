@@ -49,12 +49,10 @@ public class MoviesProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PopularMoviesContract.CONTENT_AUTHORITY;
-        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*", MATCH_THEMOVIEDB);
-//        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/#", MATCH_THEMOVIEDB_BY_ID);
-        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "", MATCH_FAVORITE);
-        //PopularMoviesContract.MoviesEntry.CONTENT_URI
-        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "/#", MATCH_FAVORITE_BY_ID);
 
+        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*", MATCH_THEMOVIEDB);
+        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "", MATCH_FAVORITE);
+        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "/#", MATCH_FAVORITE_BY_ID);
         matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS + "/#", MATCH_TRAILERS_BY_ID);
         matcher.addURI(authority, PopularMoviesContract.PATH_REVIEWS + "/#", MATCH_REVIEWS_BY_ID);
 
@@ -72,82 +70,73 @@ public class MoviesProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor = null;
-        switch (sUriMatcher.match(uri)) {
+        try {
+            switch (sUriMatcher.match(uri)) {
 
-            case MATCH_THEMOVIEDB: {
-                // Code for querying with a date from themoviedb.org
-                String endpoint = uri.getLastPathSegment();
-                TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
-                try {
+                case MATCH_THEMOVIEDB: {
+                    // Code for querying with a date from themoviedb.org
+                    String endpoint = uri.getLastPathSegment();
+                    TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
                     cursor = PopularMoviesContract.MoviesEntry.fromList(
                             TheMovieDbJsonUtils.getMoviesFromJson(
                                     TheMovieDbHttpUtils.getPopularMoviesByEndPoint(endpoint)
                             )
                     );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(TAG, e.getMessage());
-                    Log.e(TAG, "URI: " + uri.toString());
                 }
                 break;
-            }
-            case MATCH_FAVORITE: {
-                // Select all favorites
-                cursor = mMovieDbHelper.getReadableDatabase().query(
+                case MATCH_FAVORITE: {
+                    // Select all favorites
+                    cursor = mMovieDbHelper.getReadableDatabase().query(
                         /* Table we are going to query */
-                        PopularMoviesContract.MoviesEntry.TABLE_NAME,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        PopularMoviesContract.MoviesEntry._ID);
-                break;
-            }
-            case MATCH_FAVORITE_BY_ID: {
-                // Select a single row given by the ID in the URI
-                selection = PopularMoviesContract.MoviesEntry._ID + "=?";
-                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                cursor = mMovieDbHelper.getReadableDatabase().query(
+                            PopularMoviesContract.MoviesEntry.TABLE_NAME,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            PopularMoviesContract.MoviesEntry._ID);
+                    break;
+                }
+                case MATCH_FAVORITE_BY_ID: {
+                    // Select a single row given by the ID in the URI
+                    selection = PopularMoviesContract.MoviesEntry._ID + "=?";
+                    selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                    cursor = mMovieDbHelper.getReadableDatabase().query(
                         /* Table we are going to query */
-                        PopularMoviesContract.MoviesEntry.TABLE_NAME,
-                        null,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
-                break;
-            }
-            case MATCH_TRAILERS_BY_ID: {
-                try {
+                            PopularMoviesContract.MoviesEntry.TABLE_NAME,
+                            null,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder);
+                    break;
+                }
+                case MATCH_TRAILERS_BY_ID: {
                     String movie_id = uri.getLastPathSegment();
                     cursor = TheMovieDbJsonUtils.getTrailersFromJson(
                             TheMovieDbHttpUtils.getTrailersByMovieId(movie_id)
                     );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(TAG, e.getMessage());
-                    Log.e(TAG, "URI: " + uri.toString());
+
+                    break;
                 }
-                break;
-            }
-            case MATCH_REVIEWS_BY_ID: {
-                try {
+                case MATCH_REVIEWS_BY_ID: {
                     String movie_id = uri.getLastPathSegment();
                     cursor = TheMovieDbJsonUtils.getReviewsFromJson(
                             TheMovieDbHttpUtils.getReviewsByMovieId(movie_id)
                     );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(TAG, e.getMessage());
-                    Log.e(TAG, "URI: " + uri.toString());
+
+                    break;
                 }
-                break;
+                default:
+                    Log.e(TAG, "Unknown uri: " + uri.toString());
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
-            default:
-                Log.e(TAG, "Unknown uri: " + uri.toString());
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "URI: " + uri.toString());
         }
         if (cursor != null) {
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -177,10 +166,9 @@ public class MoviesProvider extends ContentProvider {
         }
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (newRowId == -1) {
-            Log.e(TAG, "Wrong uri: " + uri.toString());
+            Log.e(TAG, "Failed to insert row for " + uri.toString());
             throw new UnsupportedOperationException("Failed to insert row for " + uri);
-        }
-        else {
+        } else {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         // Once we know the ID of the new row in the table,
@@ -201,7 +189,7 @@ public class MoviesProvider extends ContentProvider {
                 numRowsDeleted = database.delete(PopularMoviesContract.MoviesEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
-                Log.e(TAG, "Unknown uri: " + uri.toString());
+                Log.e(TAG, "Deletion is not supported for " + uri.toString());
                 throw new UnsupportedOperationException("Deletion is not supported for " + uri);
         }
         /* If we actually deleted any rows, notify that a change has occurred to this URI */
@@ -210,7 +198,6 @@ public class MoviesProvider extends ContentProvider {
         }
 
         return numRowsDeleted;
-
     }
 
     @Override

@@ -58,6 +58,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
 
     @Override
     public void onBindViewHolder(PosterAdapterViewHolder holder, int position) {
+        if (mCursor == null || mCursor.getCount() == 0) return;
         mCursor.moveToPosition(position);
         int columnIndex = mCursor.getColumnIndex(
                 PopularMoviesContract.MoviesEntry.COLUMN_POSTER);

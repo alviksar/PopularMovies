@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             return null;
         }
-        //  return new PopularMoviesLoader(this, args, POSTER_WIDTH_INCHES);
     }
 
     @Override
@@ -180,9 +179,7 @@ public class MainActivity extends AppCompatActivity implements
             mPosterAdapter.swapData(cursor);
             if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
             mRecyclerView.smoothScrollToPosition(mPosition);
-            if (cursor.getCount() != 0) {
-                showData();
-            }
+            showData();
         }
     }
 
@@ -229,10 +226,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * This method tells an AsyncTaskLoader to perform the HTTP-request with new sort criteria.
+     * This method tells an loader to perform the HTTP-request with new sort criteria.
      */
     private void updateMovies(String sort) {
 
+        mPosterAdapter.swapData(null);
         if (TextUtils.isEmpty(sort)) {
             showErrorMessage(R.string.no_sort_error_msg);
             return;

@@ -44,7 +44,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         //  setContentView(R.layout.detail_activity);
 
-
         if (savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movie_parcel_key))) {
             mMovie = getIntent().getParcelableExtra(getString(R.string.movie_parcel_key));
         } else {
@@ -68,15 +67,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 boolean isFavorite = mMovie.getIsFavorite();
                 try {
                     if (!isFavorite) {
-                       // isFavorite =
-                                markMovieAsFavorite();
+                        markMovieAsFavorite();
                     } else {
-                      //  isFavorite = !removeMovieFromFavorites();
-                      //  isFavorite = !
-                                removeConfirmationDialog();
+                        removeConfirmationDialog();
                     }
                 } finally {
-                  //  mMovie.setIsFavorite(isFavorite);
                     showMovieState();
                 }
             }
@@ -99,7 +94,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         values.put(PopularMoviesContract.MoviesEntry.COLUMN_RELEASEDATE, mMovie.getReleaseDate());
 
         Uri newUri = getContentResolver().insert(
-                PopularMoviesContract.MoviesEntry.CONTENT_URI,   // the user dictionary content URI
+                PopularMoviesContract.MoviesEntry.CONTENT_URI,
                 values                          // the values to insert
         );
         return (newUri != null);

@@ -37,7 +37,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.extra_info_list, container, false);
 
         // Find the ListView which will be populated with the trailers
-        ListView listView = (ListView) rootView.findViewById(R.id.extra_list);
+        ListView listView = (ListView)rootView.findViewById(R.id.extra_list);
 
         mReviewAdapter = new ReviewAdapter(rootView.getContext(), null);
         listView.setAdapter(mReviewAdapter);

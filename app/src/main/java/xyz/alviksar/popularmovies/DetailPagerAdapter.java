@@ -18,7 +18,6 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 2;
     private String mMoveId;
 
-
     /**
      * Context of the app
      */
@@ -61,7 +60,6 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
         if (position == 1) {
             return mContext.getString(R.string.reviews_header);
         } else {
-
             return mContext.getString(R.string.trailers_header);
         }
     }

@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -69,16 +70,16 @@ public class MainActivity extends AppCompatActivity implements
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int mColumnWidthPixels;
         if (getResources().getConfiguration().orientation == ORIENTATION_LANDSCAPE) {
-             mColumnWidthPixels = Math.round(POSTER_WIDTH_INCHES * metrics.ydpi);
+            mColumnWidthPixels = Math.round(POSTER_WIDTH_INCHES * metrics.ydpi);
 
         } else {   // ORIENTATION_PORTRAIT
-             mColumnWidthPixels = Math.round(POSTER_WIDTH_INCHES * metrics.xdpi);
+            mColumnWidthPixels = Math.round(POSTER_WIDTH_INCHES * metrics.xdpi);
 
         }
         int columns = Math.max(1, metrics.widthPixels / mColumnWidthPixels);
 
 
-       GridLayoutManager layoutManager =
+        GridLayoutManager layoutManager =
                 new GridLayoutManager(this, columns);
 
         mRecyclerView.setLayoutManager(layoutManager);
@@ -89,17 +90,20 @@ public class MainActivity extends AppCompatActivity implements
         // Attach the adapter to the RecyclerView
         mRecyclerView.setAdapter(mPosterAdapter);
 
+        // Get the sort criteria and initialize a loader
+        String sort = PopularMoviesPreferences.getSort(this);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+
         // Check network connection
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         // If there is a network connection, fetch data
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if ((networkInfo != null && networkInfo.isConnected())
+                || (sort.equals(getString(R.string.show_favorites)))) {
             showLoading();
-            // Get the sort criteria and initialize a loader
-            String sort = PopularMoviesPreferences.getSort(this);
-            Bundle queryBundle = new Bundle();
-            queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+
             getLoaderManager().initLoader(MOVIES_LOADER_ID, queryBundle, this);
         } else {
             // Set no connection error message
@@ -142,21 +146,31 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String sort = bundle.getString(getResources().getString(R.string.pref_sort_key));
+        Uri uri = null;
         String endpoint = "";
-       if (getString(R.string.sort_by_most_popular).equals(sort)) {
-           endpoint = PopularMoviesContract.POPULAR_ENDPOINT;
+        if (getString(R.string.sort_by_most_popular).equals(sort)) {
+            uri = PopularMoviesContract.BASE_CONTENT_URI.buildUpon()
+                    .appendPath(PopularMoviesContract.PATH_THEMOVIEDB)
+                    .appendPath(PopularMoviesContract.POPULAR_ENDPOINT)
+                    .build();
         } else if (getString(R.string.sort_by_top_rated).equals(sort)) {
-            endpoint = PopularMoviesContract.TOP_RATED_ENDPOINT;
+            uri = PopularMoviesContract.BASE_CONTENT_URI.buildUpon()
+                    .appendPath(PopularMoviesContract.PATH_THEMOVIEDB)
+                    .appendPath(PopularMoviesContract.TOP_RATED_ENDPOINT)
+                    .build();
+        } else if (getString(R.string.show_favorites).equals(sort)) {
+            uri = PopularMoviesContract.MoviesEntry.CONTENT_URI;
         }
-        return new CursorLoader(this,
-                PopularMoviesContract.BASE_CONTENT_URI.buildUpon()
-                        .appendPath(PopularMoviesContract.PATH_THEMOVIEDB)
-                        .appendPath(endpoint)
-                        .build(),
-                null,
-                null,
-                null,
-                null);
+        if (uri != null) {
+            return new CursorLoader(this,
+                    uri,
+                    null,
+                    null,
+                    null,
+                    null);
+        } else {
+            return null;
+        }
         //  return new PopularMoviesLoader(this, args, POSTER_WIDTH_INCHES);
     }
 
@@ -200,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (mSpinner.getSelectedItem() != null) {
-                    String sort  = (String) mSpinner.getSelectedItem();
+                    String sort = (String) mSpinner.getSelectedItem();
                     PopularMoviesPreferences.setSort(getApplicationContext(), sort);
                     updateMovies(sort);
                 }

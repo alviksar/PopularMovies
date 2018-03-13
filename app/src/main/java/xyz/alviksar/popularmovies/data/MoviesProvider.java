@@ -15,8 +15,6 @@ import xyz.alviksar.popularmovies.MainActivity;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
-import xyz.alviksar.popularmovies.data.PopularMoviesContract;
-
 /**
  * This ContentProvider provides movie data from themoviedb.org or from a local SQLite database.
  */
@@ -29,7 +27,6 @@ public class MoviesProvider extends ContentProvider {
      * These constant will be used to match URIs with the data they are looking for.
      */
     public static final int MATCH_THEMOVIEDB = 100;
-    public static final int MATCH_THEMOVIEDB_BY_ID = 101;
 
     public static final int MATCH_FAVORITE = 200;
     public static final int MATCH_FAVORITE_BY_ID = 201;
@@ -54,9 +51,9 @@ public class MoviesProvider extends ContentProvider {
         final String authority = PopularMoviesContract.CONTENT_AUTHORITY;
         matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*", MATCH_THEMOVIEDB);
 //        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/#", MATCH_THEMOVIEDB_BY_ID);
-        matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "", MATCH_FAVORITE);
+        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "", MATCH_FAVORITE);
         //PopularMoviesContract.MoviesEntry.CONTENT_URI
-        matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIE + "/#", MATCH_FAVORITE_BY_ID);
+        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "/#", MATCH_FAVORITE_BY_ID);
 
         matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS + "/#", MATCH_TRAILERS_BY_ID);
         matcher.addURI(authority, PopularMoviesContract.PATH_REVIEWS + "/#", MATCH_REVIEWS_BY_ID);
@@ -95,12 +92,7 @@ public class MoviesProvider extends ContentProvider {
                 break;
             }
             case MATCH_FAVORITE: {
-                // Code for querying with a date from local db
-                if (sortOrder == null) {
-                    sortOrder = uri.getLastPathSegment();
-                }
-                // Select all favorite sorted by the last path segment.
-                // This supposes that the last segment of the path equals one of the field names.
+                // Select all favorites
                 cursor = mMovieDbHelper.getReadableDatabase().query(
                         /* Table we are going to query */
                         PopularMoviesContract.MoviesEntry.TABLE_NAME,
@@ -109,7 +101,7 @@ public class MoviesProvider extends ContentProvider {
                         null,
                         null,
                         null,
-                        sortOrder);
+                        PopularMoviesContract.MoviesEntry._ID);
                 break;
             }
             case MATCH_FAVORITE_BY_ID: {

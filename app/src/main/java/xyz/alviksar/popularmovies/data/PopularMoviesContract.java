@@ -30,7 +30,7 @@ public class PopularMoviesContract {
     /**
      * The path for looking at movie data from the favorite movie database
      */
-    public static final String PATH_FAVORITE_MOVIE = "my_favorite_movie";
+    public static final String FAVORITE_MOVIE_ENDPOINT = "my_favorites";
     /**
      * The top rated endpoint
      */
@@ -50,7 +50,7 @@ public class PopularMoviesContract {
 
         /* The base CONTENT_URI used to query the movies table from the content provider */
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
-                .appendPath(PATH_FAVORITE_MOVIE)
+                .appendPath(FAVORITE_MOVIE_ENDPOINT)
                 .build();
 
         public static final String TABLE_NAME = "movie";

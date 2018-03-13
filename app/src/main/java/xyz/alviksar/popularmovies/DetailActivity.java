@@ -1,7 +1,9 @@
 package xyz.alviksar.popularmovies;
 
+import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -66,12 +68,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 boolean isFavorite = mMovie.getIsFavorite();
                 try {
                     if (!isFavorite) {
-                        isFavorite = markMovieAsFavorite();
+                       // isFavorite =
+                                markMovieAsFavorite();
                     } else {
-                        isFavorite = !removeMovieFromFavorites();
+                      //  isFavorite = !removeMovieFromFavorites();
+                      //  isFavorite = !
+                                removeConfirmationDialog();
                     }
                 } finally {
-                    mMovie.setIsFavorite(isFavorite);
+                  //  mMovie.setIsFavorite(isFavorite);
                     showMovieState();
                 }
             }
@@ -168,5 +173,31 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    private void removeConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        boolean result = false;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.remove_movie_dialog_question);
+        builder.setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Remove" button, so remove the movie from favorites
+                removeMovieFromFavorites();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

@@ -33,4 +33,11 @@
     <string name="marked_message">The movie is marked as favorite.</string>
     <string name="mark_failed_message">Mark failed.</string>
     <string name="mark_removed_message">The movie was removed from favorites.</string>
+
+    <!-- Dialog message to ask the user to confirm removing the movie from favorites [CHAR LIMIT=NONE] -->
+    <string name="remove_movie_dialog_question">Remove this movie from favorites?</string>
+    <!-- Dialog button text for the option to confirm removing the movie from favorites [CHAR LIMIT=20] -->
+    <string name="remove">Remove</string>
+    <!-- Dialog button text for the option to cancel removing the movie from favorites [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
 </resources>

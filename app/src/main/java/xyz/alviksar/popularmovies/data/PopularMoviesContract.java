@@ -46,6 +46,10 @@ public class PopularMoviesContract {
     public static final String PATH_REVIEWS = "reviews";
 
 
+    // The image directory to save the favorite movie posters
+    public static final String IMAGE_DIR = "posters";
+
+
     public static final class MoviesEntry implements BaseColumns {
 
         /* The base CONTENT_URI used to query the movies table from the content provider */

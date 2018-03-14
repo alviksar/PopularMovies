@@ -1,11 +1,13 @@
 package xyz.alviksar.popularmovies.utils;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -14,6 +16,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import xyz.alviksar.popularmovies.R;
+import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
     /*
     The class to fetch popular movies from themoviedb.org.
@@ -24,6 +27,8 @@ import xyz.alviksar.popularmovies.R;
     */
 
 public class TheMovieDbHttpUtils {
+
+    private static Context mContext;
 
     private static final String TAG = TheMovieDbHttpUtils.class.getSimpleName();
 
@@ -52,6 +57,7 @@ public class TheMovieDbHttpUtils {
      * Initializes the global parameters
      */
     public static void init(Context context, float posterSizeInches) {
+        mContext = context;
         sort_by_popularity = context.getString(R.string.sort_by_most_popular);
         sort_by_rating = context.getString(R.string.sort_by_top_rated);
         api_key_value = context.getResources().getString(R.string.themoviedb_v3_key);
@@ -134,12 +140,21 @@ public class TheMovieDbHttpUtils {
     /**
      * Build the complete url you will need to fetch the image.
      */
-    public static String getFullPathToPoster(String imageFileName) {
-        return Uri.parse(MOVIEDB_IMAGE_URL).buildUpon()
-                .appendPath(image_width_endpoint)
-                .appendPath(imageFileName)
-                //     .appendQueryParameter(API_KEY_PARAM, API_KEY_VALUE)
-                .build().toString();
+    public static String getFullPathToPoster(String poster) {
+        // if there is a local file take it
+        ContextWrapper cw = new ContextWrapper(mContext);
+        File directory = cw.getDir(PopularMoviesContract.IMAGE_DIR, Context.MODE_PRIVATE);
+        File file = new File(directory, poster);
+        if (file.exists()) {
+            return  Uri.fromFile(file).toString();
+            // .getAbsolutePath()
+        } else {
+            return Uri.parse(MOVIEDB_IMAGE_URL).buildUpon()
+                    .appendPath(image_width_endpoint)
+                    .appendPath(poster)
+                    //     .appendQueryParameter(API_KEY_PARAM, API_KEY_VALUE)
+                    .build().toString();
+        }
     }
 
     /**

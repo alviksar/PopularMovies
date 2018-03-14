@@ -70,13 +70,14 @@ public class MoviesProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor = null;
+        TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
+
         try {
             switch (sUriMatcher.match(uri)) {
 
                 case MATCH_THEMOVIEDB: {
                     // Code for querying with a date from themoviedb.org
                     String endpoint = uri.getLastPathSegment();
-                    TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
                     cursor = PopularMoviesContract.MoviesEntry.fromList(
                             TheMovieDbJsonUtils.getMoviesFromJson(
                                     TheMovieDbHttpUtils.getPopularMoviesByEndPoint(endpoint)
@@ -202,6 +203,6 @@ public class MoviesProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        throw new RuntimeException("The update method is not implemented.");
+        return -1;
     }
 }

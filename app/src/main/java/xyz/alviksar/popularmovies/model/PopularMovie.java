@@ -176,14 +176,13 @@ public class PopularMovie implements Parcelable {
 
     // Uses with dataBinding to set a poster image
     @BindingAdapter({"bind:imageUrl"})
-    public static void loadImage(ImageView view, String url) {
-        TheMovieDbHttpUtils.getFullPathToPoster(url);
+    public static void loadImage(ImageView view, String poster) {
+        String url = TheMovieDbHttpUtils.getFullPathToPoster(poster);
         Picasso.with(view.getContext())
-                .load(TheMovieDbHttpUtils.getFullPathToPoster(url))
+                .load(url)
                 //   .error(error)
                 .into(view);
     }
-
 
     public boolean getIsFavorite() {
         return isFavorite == 1;
@@ -195,6 +194,7 @@ public class PopularMovie implements Parcelable {
        else
            this.isFavorite = 0;
     }
+
 }
 
 /*  JSON sample

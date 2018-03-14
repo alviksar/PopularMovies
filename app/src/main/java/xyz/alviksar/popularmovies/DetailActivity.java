@@ -3,9 +3,13 @@ package xyz.alviksar.popularmovies;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,17 +19,30 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.databinding.DetailActivityBinding;
 import xyz.alviksar.popularmovies.model.PopularMovie;
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
  * Displays a screen with additional information
  */
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = DetailActivity.class.getSimpleName();
+
+    DetailActivityBinding mBinding;
 
     private PopularMovie mMovie;
 
@@ -53,11 +70,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         setTitle(mMovie.getTitle());
 
         // Uses dataBinding
-        DetailActivityBinding binding = DataBindingUtil.setContentView(DetailActivity.this, R.layout.detail_activity);
+        mBinding = DataBindingUtil.setContentView(DetailActivity.this, R.layout.detail_activity);
         DetailPagerAdapter adapter = new DetailPagerAdapter(this, String.valueOf(mMovie.getId()), getSupportFragmentManager());
-        binding.setPagerAdapter(adapter);
-        binding.slidingTabs.setupWithViewPager(binding.viewpager);
-        binding.setPopularMovie(mMovie);
+        mBinding.setPagerAdapter(adapter);
+        mBinding.slidingTabs.setupWithViewPager(mBinding.viewpager);
+        mBinding.setPopularMovie(mMovie);
 
         // Setup button to mark movie as favorite
         mMarkButton = findViewById(R.id.btn_mark);
@@ -81,7 +98,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         getSupportLoaderManager().initLoader(MOVIE_DETAIL_LOADER_ID, null, this);
     }
 
-    private boolean markMovieAsFavorite() {
+    private void markMovieAsFavorite() {
 
         ContentValues values = new ContentValues();
         values.put(PopularMoviesContract.MoviesEntry._ID, mMovie.getId());
@@ -97,10 +114,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 PopularMoviesContract.MoviesEntry.CONTENT_URI,
                 values                          // the values to insert
         );
-        return (newUri != null);
+
+        // Save this poster to local file
+        savePosterImageToFile();
     }
 
-    private boolean removeMovieFromFavorites() {
+    private void removeMovieFromFavorites() {
         int rowDeleted = getContentResolver().delete(
                 ContentUris.appendId(
                         PopularMoviesContract.MoviesEntry.CONTENT_URI.buildUpon(),
@@ -109,8 +128,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 null,
                 null
         );
-        return (rowDeleted != 0);
-
     }
 
     private void showMovieState() {
@@ -180,6 +197,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Remove" button, so remove the movie from favorites
                 removeMovieFromFavorites();
+                deletePosterFile();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -194,5 +212,63 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void savePosterImageToFile() {
+        Picasso.with(this).load(TheMovieDbHttpUtils.getFullPathToPoster(mMovie.getPoster()))
+                .into(picassoImageTarget(getApplicationContext(),
+                        PopularMoviesContract.IMAGE_DIR,
+                        mMovie.getPoster()));
+
+    }
+
+    private void deletePosterFile() {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir(PopularMoviesContract.IMAGE_DIR, Context.MODE_PRIVATE);
+        File myImageFile = new File(directory, mMovie.getPoster());
+        if (myImageFile.delete())
+            Log.d(TAG,"Image on the disk deleted successfully!");
+    }
+
+    /*
+    * http://www.codexpedia.com/android/android-download-and-save-image-through-picasso/
+    */
+    private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
+
+        ContextWrapper cw = new ContextWrapper(context);
+        final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE); // path to /data/data/yourapp/app_imageDir
+        return new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final File myImageFile = new File(directory, imageName); // Create image file
+                        FileOutputStream fos = null;
+                        try {
+                            fos = new FileOutputStream(myImageFile);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            try {
+                                fos.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Log.v(TAG, "image saved to " + myImageFile.getAbsolutePath());
+
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+            }
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+            }
+        };
     }
 }

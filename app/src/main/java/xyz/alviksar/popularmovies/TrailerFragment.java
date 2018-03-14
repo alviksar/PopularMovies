@@ -20,7 +20,7 @@ import android.widget.ListView;
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
 /**
- * This Fragment shows a movie trailer list in DetailActivity
+ * This Fragment shows a movie trailer list in DetailActivity.
  */
 
 public class TrailerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {

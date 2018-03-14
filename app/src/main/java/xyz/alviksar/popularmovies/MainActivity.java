@@ -2,6 +2,7 @@ package xyz.alviksar.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -24,11 +25,14 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.facebook.stetho.Stetho;
+// import com.facebook.stetho.Stetho;
+
+import java.io.File;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
+import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -57,10 +61,19 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
 
         // A debug tool: http://facebook.github.io/stetho/
-        Stetho.initializeWithDefaults(this);
+//        Stetho.initializeWithDefaults(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        ContextWrapper cw = new ContextWrapper(this);
+        File directory = cw.getDir(PopularMoviesContract.IMAGE_DIR, Context.MODE_PRIVATE);
+
+        // Set parameters for http requests
+        TheMovieDbHttpUtils.init(directory,
+                MainActivity.POSTER_WIDTH_INCHES,
+                getResources().getDisplayMetrics(),
+                getResources().getString(R.string.themoviedb_v3_key));
 
         mRecyclerView = findViewById(R.id.rv_movies);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);

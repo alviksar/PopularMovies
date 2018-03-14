@@ -11,20 +11,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
- * Provides the appropriate {@link Fragment} for a view pager.
+ * Provides an appropriate fragment (TrailerFragment or ReviewFragment) for a view pager.
  */
 public class DetailPagerAdapter extends FragmentPagerAdapter {
 
+    private Context mContext;
+
     private final int PAGE_COUNT = 2;
+
+    // The move ID of DetailActivity
     private String mMoveId;
 
     /**
-     * Context of the app
-     */
-    private Context mContext;
-
-    /**
-     * Create a new {@link DetailPagerAdapter} object.
+     * Creates a new object.
      *
      * @param context is the context of the app
      * @param fm      is the fragment manager that will keep each fragment's state in the adapter
@@ -66,8 +65,8 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
 
 
     /**
-     * Add this method into databinding for setting PagerAdapter
-     * <p>
+     * Sets PagerAdapter into databinding
+     *
      * https://codedesignpattern.wordpress.com/2016/09/16/view-pager-with-databinding-custom-setter/
      */
     @BindingAdapter(value = {"android:pagerAdapter"}, requireAll = false)

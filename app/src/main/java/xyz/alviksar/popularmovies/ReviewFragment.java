@@ -20,7 +20,7 @@ import android.widget.ListView;
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
 /**
- * This Fragment shows a review list in DetailActivity
+ * This Fragment shows a review list in DetailActivity.
  */
 
 public class ReviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {

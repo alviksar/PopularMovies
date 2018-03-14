@@ -42,8 +42,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final String TAG = DetailActivity.class.getSimpleName();
 
-    DetailActivityBinding mBinding;
-
     private PopularMovie mMovie;
 
     private static final int MOVIE_DETAIL_LOADER_ID = 11;
@@ -69,12 +67,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         setTitle(mMovie.getTitle());
 
-        // Uses dataBinding
-        mBinding = DataBindingUtil.setContentView(DetailActivity.this, R.layout.detail_activity);
+        // Uses dataBinding with detail_activity.xml
+        DetailActivityBinding binding = DataBindingUtil.setContentView(DetailActivity.this, R.layout.detail_activity);
         DetailPagerAdapter adapter = new DetailPagerAdapter(this, String.valueOf(mMovie.getId()), getSupportFragmentManager());
-        mBinding.setPagerAdapter(adapter);
-        mBinding.slidingTabs.setupWithViewPager(mBinding.viewpager);
-        mBinding.setPopularMovie(mMovie);
+        binding.setPagerAdapter(adapter);
+        binding.slidingTabs.setupWithViewPager(binding.viewpager);
+        binding.setPopularMovie(mMovie);
 
         // Setup button to mark movie as favorite
         mMarkButton = findViewById(R.id.btn_mark);
@@ -98,6 +96,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         getSupportLoaderManager().initLoader(MOVIE_DETAIL_LOADER_ID, null, this);
     }
 
+    /**
+     * Adds a movie to the favorites
+     */
     private void markMovieAsFavorite() {
 
         ContentValues values = new ContentValues();
@@ -115,10 +116,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 values                          // the values to insert
         );
 
-        // Save this poster to local file
+        // Save this poster to a local file
         savePosterImageToFile();
     }
-
+    /**
+     * Removes a movie from the favorites
+     */
     private void removeMovieFromFavorites() {
         int rowDeleted = getContentResolver().delete(
                 ContentUris.appendId(
@@ -130,6 +133,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         );
     }
 
+    /**
+     *  Set UI differences for favorite and non-favorite movies
+     */
     private void showMovieState() {
         if (mMovie.getIsFavorite()) {
             mMarkButton.setText(R.string.remove_from_favorite);
@@ -215,6 +221,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         alertDialog.show();
     }
 
+    /**
+     * Uses to save posters for favorite movie
+     */
     private void savePosterImageToFile() {
         Picasso.with(this).load(TheMovieDbHttpUtils.getFullPathToPoster(mMovie.getPoster()))
                 .into(picassoImageTarget(getApplicationContext(),
@@ -222,16 +231,19 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                         mMovie.getPoster()));
 
     }
-
+    /**
+     * Uses to delete local files if movie is removed from favorites
+     */
     private void deletePosterFile() {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir(PopularMoviesContract.IMAGE_DIR, Context.MODE_PRIVATE);
         File myImageFile = new File(directory, mMovie.getPoster());
         if (myImageFile.delete())
-            Log.d(TAG,"Image on the disk deleted successfully!");
+            Log.d(TAG, "Image on the disk deleted successfully!");
     }
 
-    /*
+    /**
+    * Download and save image through Picasso
     * http://www.codexpedia.com/android/android-download-and-save-image-through-picasso/
     */
     private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
@@ -267,6 +279,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
             }
+
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
             }

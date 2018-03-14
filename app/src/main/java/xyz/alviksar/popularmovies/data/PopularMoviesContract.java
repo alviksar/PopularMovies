@@ -49,7 +49,9 @@ public class PopularMoviesContract {
     // The image directory to save the favorite movie posters
     public static final String IMAGE_DIR = "posters";
 
-
+    /**
+     * Table to store favorite movies
+     */
     public static final class MoviesEntry implements BaseColumns {
 
         /* The base CONTENT_URI used to query the movies table from the content provider */
@@ -78,6 +80,12 @@ public class PopularMoviesContract {
                 COLUMN_RELEASEDATE
         };
 
+        /**
+         * Makes cursor from list of movies.
+         *
+         * @param movies List of PopularMovie objects.
+         * @return Cursor of movie records.
+         */
         public static Cursor fromList(List<PopularMovie> movies) {
             MatrixCursor cursor = new MatrixCursor(columnNames);
             for (int i = 0; i < movies.size(); i++) {
@@ -94,6 +102,12 @@ public class PopularMoviesContract {
             return cursor;
         }
 
+        /**
+         * Builds a PopularMovie object from a cursor on current position.
+         *
+         * @param cursor MoviesEntry cursor.
+         * @return PopularMovie object.
+         */
         public static PopularMovie buildFromCursor(Cursor cursor) {
 
             return new PopularMovie(
@@ -117,6 +131,9 @@ public class PopularMoviesContract {
         }
     }
 
+    /**
+     * The trailer data structure.
+     */
     public static final class TrailersEntry implements BaseColumns {
 
         /* The base CONTENT_URI used to query the movies table from the content provider */
@@ -130,6 +147,10 @@ public class PopularMoviesContract {
         public static final String COLUMN_SITE = "site";
 
     }
+
+    /**
+     * The review data structure.
+     */
     public static final class ReviewsEntry implements BaseColumns {
 
         /* The base CONTENT_URI used to query the movies table from the content provider */

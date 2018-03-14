@@ -18,41 +18,6 @@ import xyz.alviksar.popularmovies.model.PopularMovie;
 
 import static xyz.alviksar.popularmovies.data.PopularMoviesContract.TrailersEntry.COLUMN_NAME;
 
-/*
- * Sample:
- * {
- * "page":1,
- * "total_results":19615,
- * "total_pages":981,
- * "results":[
- * {
- * "vote_count":119,
- * "id":441614,
- * "video":false,
- * "vote_average":4.7,
- * "title":"Loving",
- * "popularity":568.476218,
- * "poster_path":"\/6uOMVZ6oG00xjq0KQiExRBw2s3P.jpg",
- * "original_language":"es",
- * "original_title":"Amar",
- * "genre_ids":[
- * 10749
- * ],
- * "backdrop_path":"\/iBM6zvlOmcfodGhUa36sy7pM2Er.jpg",
- * "adult":false,
- * "overview":"Laura and Carlos love each other as if every day was the last, and perhaps that first love intensity is what will tear them apart a year later.",
- * "release_date":"2017-04-21"
- * },
- * {
- * We need:
- * id
- * original title
- * movie poster image
- * a plot synopsis (called overview in the api)
- * user rating (called vote_average in the api)
- * release date
- */
-
 /**
  * Parses a JSON string to movie objects
  */
@@ -94,11 +59,11 @@ public final class TheMovieDbJsonUtils {
     private static final String TMD_REVIEWS_URL = "url";
 
     /**
-     * This method parses JSON from a web response and returns a list of movie objects
+     * This method parses JSON from a web response and returns a list of movie objects.
      *
-     * @param jsonStr JSON response from server
-     * @return a list of movie objects
-     * @throws JSONException If JSON data cannot be properly parsed
+     * @param jsonStr JSON response from server.
+     * @return a list of movie objects.
+     * @throws JSONException If JSON data cannot be properly parsed.
      */
     @Nullable
     public static List<PopularMovie> getMoviesFromJson(String jsonStr)
@@ -139,11 +104,11 @@ public final class TheMovieDbJsonUtils {
     }
 
     /**
-     * Returns a cursor for the movie trailers
+     * Returns a cursor for the movie trailers.
      *
-     * @param jsonStr JSON response from server
-     * @return  a cursor for the movie trailers
-     * @throws JSONException If JSON data cannot be properly parsed
+     * @param jsonStr JSON response from server.
+     * @return  a cursor for the movie trailers.
+     * @throws JSONException If JSON data cannot be properly parsed.
      */
     @Nullable
     public static Cursor getTrailersFromJson(String jsonStr)
@@ -185,11 +150,11 @@ public final class TheMovieDbJsonUtils {
     }
 
     /**
-     * Returns a cursor for the movie reviews
+     * Returns a cursor for the movie reviews.
      *
-     * @param jsonStr JSON response from server
-     * @return  a cursor for reviews
-     * @throws JSONException If JSON data cannot be properly parsed
+     * @param jsonStr JSON response from server.
+     * @return  a cursor for reviews.
+     * @throws JSONException If JSON data cannot be properly parsed.
      */
     @Nullable
     public static Cursor getReviewsFromJson(String jsonStr)
@@ -230,4 +195,38 @@ public final class TheMovieDbJsonUtils {
         return cursor;
     }
 
+/*
+ * Sample:
+ * {
+ * "page":1,
+ * "total_results":19615,
+ * "total_pages":981,
+ * "results":[
+ * {
+ * "vote_count":119,
+ * "id":441614,
+ * "video":false,
+ * "vote_average":4.7,
+ * "title":"Loving",
+ * "popularity":568.476218,
+ * "poster_path":"\/6uOMVZ6oG00xjq0KQiExRBw2s3P.jpg",
+ * "original_language":"es",
+ * "original_title":"Amar",
+ * "genre_ids":[
+ * 10749
+ * ],
+ * "backdrop_path":"\/iBM6zvlOmcfodGhUa36sy7pM2Er.jpg",
+ * "adult":false,
+ * "overview":"Laura and Carlos love each other as if every day was the last, and perhaps that first love intensity is what will tear them apart a year later.",
+ * "release_date":"2017-04-21"
+ * },
+ * {
+ * We need:
+ * id
+ * original title
+ * movie poster image
+ * a plot synopsis (called overview in the api)
+ * user rating (called vote_average in the api)
+ * release date
+ */
 }

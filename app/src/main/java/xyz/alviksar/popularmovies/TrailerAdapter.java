@@ -10,8 +10,7 @@ import android.widget.TextView;
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
 /**
- * An adapter for a list or grid view
- * that uses a of trailers as its data source.
+ * An adapter for a list view that uses a cursor of trailers as its data source.
  */
 public class TrailerAdapter extends android.widget.CursorAdapter {
 

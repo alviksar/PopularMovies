@@ -70,7 +70,6 @@ public class MoviesProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor = null;
-        TheMovieDbHttpUtils.init(getContext(), MainActivity.POSTER_WIDTH_INCHES);
 
         try {
             switch (sUriMatcher.match(uri)) {
@@ -203,6 +202,6 @@ public class MoviesProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return -1;
+        throw new RuntimeException("The getType method is not implemented.");
     }
 }

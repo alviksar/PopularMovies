@@ -1,7 +1,5 @@
 package xyz.alviksar.popularmovies.utils;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -16,7 +14,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 import xyz.alviksar.popularmovies.R;
-import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
     /*
     The class to fetch popular movies from themoviedb.org.
@@ -27,8 +24,12 @@ import xyz.alviksar.popularmovies.data.PopularMoviesContract;
     */
 
 public class TheMovieDbHttpUtils {
-
-    private static Context mContext;
+    /*
+            ContextWrapper cw = new ContextWrapper(mContext);
+            File directory = cw.getDir(PopularMoviesContract.IMAGE_DIR, Context.MODE_PRIVATE);
+     */
+    // The directory name for saving posters locally
+    private static File sDirectory;
 
     private static final String TAG = TheMovieDbHttpUtils.class.getSimpleName();
 
@@ -54,45 +55,27 @@ public class TheMovieDbHttpUtils {
     public static final String REVIEWS_ENDPOINT = "reviews";
 
     /**
-     * Initializes the global parameters
+     * Initializes the global parameters.
      */
-    public static void init(Context context, float posterSizeInches) {
-        mContext = context;
-        sort_by_popularity = context.getString(R.string.sort_by_most_popular);
-        sort_by_rating = context.getString(R.string.sort_by_top_rated);
-        api_key_value = context.getResources().getString(R.string.themoviedb_v3_key);
+    public static void init(File dir, float posterSizeInches, DisplayMetrics metrics, String apiKey) {
+        sDirectory = dir;
+        api_key_value = apiKey;
 
-        // Set width for images
-        image_width_endpoint = choosePosterWidth(context, posterSizeInches);
+        // Set width for posters
+        // DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        image_width_endpoint = choosePosterWidth(metrics, posterSizeInches);
     }
 
-    /**
-     * Returns a json response by sort criteria
-     *
-     * @param sort The type of sorting movies
-     * @return The json response from the movie db server
-     */
-    public static String getMoviesBy(String sort) throws IOException {
-        if (sort.equals(sort_by_popularity)) {
-            return getResponseFromHttpUrl(buildTheMovieDbUrl(POPULAR_ENDPOINT));
-        } else {
-            if (sort.equals(sort_by_rating)) {
-                return getResponseFromHttpUrl(buildTheMovieDbUrl(TOP_RATED_ENDPOINT));
-            } else {
-                return "";
-            }
-        }
-    }
 
     public static String getPopularMoviesByEndPoint(String endPoint) throws IOException {
         return getResponseFromHttpUrl(buildTheMovieDbUrl(endPoint));
     }
 
     /**
-     * Builds the URL used to talk to the movie themoviedb server
+     * Builds the URL used to talk to the movie themoviedb server.
      *
-     * @param sort The type of sorting movies
-     * @return The Url to use to query the themoviedb server
+     * @param sort The type of sorting movies.
+     * @return The Url to use to query the themoviedb server.
      */
     @Nullable
     private static URL buildTheMovieDbUrl(String sort) {
@@ -111,11 +94,11 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     * Returns the entire result from the HTTP response
+     * Returns the entire result from the HTTP response.
      *
-     * @param url The URL to fetch the HTTP response from
-     * @return The contents of the HTTP response, null if no response
-     * @throws IOException Related to network and stream reading
+     * @param url The URL to fetch the HTTP response from.
+     * @return The contents of the HTTP response, null if no response.
+     * @throws IOException Related to network and stream reading.
      */
     private static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -141,13 +124,11 @@ public class TheMovieDbHttpUtils {
      * Build the complete url you will need to fetch the image.
      */
     public static String getFullPathToPoster(String poster) {
-        // if there is a local file take it
-        ContextWrapper cw = new ContextWrapper(mContext);
-        File directory = cw.getDir(PopularMoviesContract.IMAGE_DIR, Context.MODE_PRIVATE);
-        File file = new File(directory, poster);
+        // If there is a local file take it
+
+        File file = new File(sDirectory, poster);
         if (file.exists()) {
-            return  Uri.fromFile(file).toString();
-            // .getAbsolutePath()
+            return Uri.fromFile(file).toString();
         } else {
             return Uri.parse(MOVIEDB_IMAGE_URL).buildUpon()
                     .appendPath(image_width_endpoint)
@@ -158,19 +139,18 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     * Chooses the width image depending on the screen resolution
+     * Chooses the width image depending on the screen resolution.
      *
-     * @param context          App context
-     * @param posterSizeInches The image width in inches
-     * @return The string for URL to image at the themoviedb  server
+     * @param metrics          The display metrics.
+     * @param posterSizeInches The image width in inches.
+     * @return The string for URL to image at the themoviedb  server.
      */
-    private static String choosePosterWidth(Context context, float posterSizeInches) {
+    private static String choosePosterWidth(DisplayMetrics metrics, float posterSizeInches) {
         /*
         A poster width can be one of the following:
         "w92", "w154", "w185", "w342", "w500", "w780", or "original".
        */
         final String[] posterWidth = {"w92", "w154", "w185", "w342", "w500", "w780"};
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
         for (int i = 0; i < posterWidth.length - 1; i++) {
             if (metrics.xdpi * posterSizeInches <= Float.parseFloat(posterWidth[i].substring(1)))
@@ -180,10 +160,10 @@ public class TheMovieDbHttpUtils {
     }
 
     /**
-     * Returns a trailers by movie_id
+     * Returns a trailers by movie_id.
      *
-     * @param movie_id The movie id
-     * @return The json response from the movie db server
+     * @param movie_id The movie id.
+     * @return The json response from the movie db server.
      */
     @Nullable
     public static String getTrailersByMovieId(String movie_id) {
@@ -205,11 +185,12 @@ public class TheMovieDbHttpUtils {
             return null;
         }
     }
+
     /**
-     * Returns a reviews by movie_id
+     * Returns a reviews by movie_id.
      *
-     * @param movie_id The movie id
-     * @return The json response from the movie db server
+     * @param movie_id The movie id.
+     * @return The json response from the movie db server.
      */
     @Nullable
     public static String getReviewsByMovieId(String movie_id) {

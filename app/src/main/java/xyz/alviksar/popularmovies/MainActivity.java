@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
     private int mPosition = RecyclerView.NO_POSITION;
 
     // The poster width on screen in inches
-    public static final float POSTER_WIDTH_INCHES = 1.0f;
+    private static final float POSTER_WIDTH_INCHES = 1.0f;
 
     private static final int MOVIES_LOADER_ID = 1;
 
@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String sort = bundle.getString(getResources().getString(R.string.pref_sort_key));
         Uri uri = null;
-        String endpoint = "";
         if (getString(R.string.sort_by_most_popular).equals(sort)) {
             uri = PopularMoviesContract.BASE_CONTENT_URI.buildUpon()
                     .appendPath(PopularMoviesContract.PATH_THEMOVIEDB)

@@ -13,8 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-import xyz.alviksar.popularmovies.R;
-
     /*
     The class to fetch popular movies from themoviedb.org.
     In order to request popular movies you will want to request data from
@@ -35,10 +33,6 @@ public class TheMovieDbHttpUtils {
 
     // The base URL for a list
     private static final String MOVIEDB_BASE_URL = "http://api.themoviedb.org/3/movie";
-    // The top rated endpoint
-    public static final String TOP_RATED_ENDPOINT = "top_rated";
-    // The popular endpoint
-    public static final String POPULAR_ENDPOINT = "popular";
     // API KEY parameter
     private static final String API_KEY_PARAM = "api_key";
     private static String api_key_value = "";
@@ -48,11 +42,8 @@ public class TheMovieDbHttpUtils {
     // The image width endpoint
     private static String image_width_endpoint = "w342";
 
-    private static String sort_by_popularity;
-    private static String sort_by_rating;
-
-    public static final String TRAILERS_ENDPOINT = "videos";
-    public static final String REVIEWS_ENDPOINT = "reviews";
+    private static final String TRAILERS_ENDPOINT = "videos";
+    private static final String REVIEWS_ENDPOINT = "reviews";
 
     /**
      * Initializes the global parameters.

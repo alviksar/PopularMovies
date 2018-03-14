@@ -3,7 +3,6 @@ package xyz.alviksar.popularmovies.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract.MoviesEntry;
 
@@ -15,7 +14,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     /**
      * The database name.
      */
-    public static final String DATABASE_NAME = "my_favorite_movies.db";
+    private static final String DATABASE_NAME = "my_favorite_movies.db";
 
     private static final int DATABASE_VERSION = 1;
 

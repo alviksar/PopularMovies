@@ -45,8 +45,8 @@ public class TrailerAdapter extends android.widget.CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView tvName = (TextView) view.findViewById(R.id.top_text_view);
-        TextView tvType = (TextView) view.findViewById(R.id.bottom_text_view);
+        TextView tvName = view.findViewById(R.id.top_text_view);
+        TextView tvType = view.findViewById(R.id.bottom_text_view);
         // Extract properties from cursor
         String name_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_NAME));
         String type_trailer = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_TYPE));

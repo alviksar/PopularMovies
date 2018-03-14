@@ -46,8 +46,8 @@ public class ReviewAdapter extends android.widget.CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
-        TextView tvName = (TextView) view.findViewById(R.id.top_text_view);
-        TextView tvType = (TextView) view.findViewById(R.id.bottom_text_view);
+        TextView tvName = view.findViewById(R.id.top_text_view);
+        TextView tvType = view.findViewById(R.id.bottom_text_view);
         ImageView imageView = view.findViewById(R.id.play_button_image);
         imageView.setVisibility(View.GONE);
         // Extract properties from cursor

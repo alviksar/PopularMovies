@@ -197,7 +197,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private void removeConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
-        boolean result = false;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.remove_movie_dialog_question);
         builder.setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {

@@ -16,8 +16,6 @@ import java.util.List;
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 import xyz.alviksar.popularmovies.model.PopularMovie;
 
-import static xyz.alviksar.popularmovies.data.PopularMoviesContract.TrailersEntry.COLUMN_NAME;
-
 /**
  * Parses a JSON string to movie objects
  */

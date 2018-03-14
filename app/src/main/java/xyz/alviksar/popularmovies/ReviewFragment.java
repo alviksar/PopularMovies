@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,7 +26,6 @@ import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 
 public class ReviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private String mMovieId;
     private static final int REVIEW_LOADER = 9;
     private ReviewAdapter mReviewAdapter;
 
@@ -34,7 +34,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView;
         // Check network connection
@@ -46,7 +46,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
          rootView = inflater.inflate(R.layout.extra_info_list, container, false);
 
         // Find the ListView which will be populated with the trailers
-        ListView listView = (ListView)rootView.findViewById(R.id.extra_list);
+        ListView listView = rootView.findViewById(R.id.extra_list);
 
         mReviewAdapter = new ReviewAdapter(rootView.getContext(), null);
         listView.setAdapter(mReviewAdapter);
@@ -73,6 +73,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // Now create and return a CursorLoader that will take care of
@@ -86,14 +87,14 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         mReviewAdapter.swapCursor(cursor);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         // This is called when the last Cursor provided to onLoadFinished()
         // above is about to be closed.  We need to make sure we are no
         // longer using it.

@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import xyz.alviksar.popularmovies.MainActivity;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 import xyz.alviksar.popularmovies.utils.TheMovieDbJsonUtils;
 
@@ -26,27 +25,27 @@ public class MoviesProvider extends ContentProvider {
     /**
      * These constant will be used to match URIs with the data they are looking for.
      */
-    public static final int MATCH_THEMOVIEDB = 100;
+    private static final int MATCH_THEMOVIEDB = 100;
 
-    public static final int MATCH_FAVORITE = 200;
-    public static final int MATCH_FAVORITE_BY_ID = 201;
+    private static final int MATCH_FAVORITE = 200;
+    private static final int MATCH_FAVORITE_BY_ID = 201;
 
-    public static final int MATCH_TRAILERS_BY_ID = 800;
-    public static final int MATCH_REVIEWS_BY_ID = 900;
+    private static final int MATCH_TRAILERS_BY_ID = 800;
+    private static final int MATCH_REVIEWS_BY_ID = 900;
 
     /*
      * The URI Matcher used by this content provider.
      */
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    MovieDBHelper mMovieDbHelper;
+    private MovieDBHelper mMovieDbHelper;
 
     /**
      * Creates the UriMatcher that will match each URI to constants defined above.
      *
      * @return A UriMatcher that correctly matches the constants.
      */
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PopularMoviesContract.CONTENT_AUTHORITY;
 
@@ -179,7 +178,7 @@ public class MoviesProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase database = mMovieDbHelper.getWritableDatabase();
-        int numRowsDeleted = 0;
+        int numRowsDeleted;
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case MATCH_FAVORITE_BY_ID:

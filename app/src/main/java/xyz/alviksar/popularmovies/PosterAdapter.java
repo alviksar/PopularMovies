@@ -27,7 +27,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         void onClick(PopularMovie movie);
     }
 
-    private Context mContext;
+    private final  Context mContext;
 
     private Cursor mCursor;
 
@@ -48,8 +48,9 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         mClickHandler = clickHandler;
     }
 
+    @NonNull
     @Override
-    public PosterAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PosterAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.poster_list_item, parent, false);
         view.setFocusable(true);
@@ -57,7 +58,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
     }
 
     @Override
-    public void onBindViewHolder(PosterAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PosterAdapterViewHolder holder, int position) {
         if (mCursor == null || mCursor.getCount() == 0) return;
         mCursor.moveToPosition(position);
         int columnIndex = mCursor.getColumnIndex(

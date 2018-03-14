@@ -15,12 +15,12 @@ import android.support.v4.view.ViewPager;
  */
 public class DetailPagerAdapter extends FragmentPagerAdapter {
 
-    private Context mContext;
+    private final Context  mContext;
 
     private final int PAGE_COUNT = 2;
 
     // The move ID of DetailActivity
-    private String mMoveId;
+    private final String mMoveId;
 
     /**
      * Creates a new object.

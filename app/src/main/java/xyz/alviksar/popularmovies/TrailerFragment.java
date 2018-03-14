@@ -1,27 +1,23 @@
 package xyz.alviksar.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
-import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
  * This Fragment shows a movie trailer list in DetailActivity
@@ -43,39 +39,48 @@ public class TrailerFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView;
+        // Check network connection
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
+            rootView = inflater.inflate(R.layout.extra_info_list, container, false);
 
-        View rootView = inflater.inflate(R.layout.extra_info_list, container, false);
+            // Find the ListView which will be populated with the trailers
+            ListView listView = (ListView) rootView.findViewById(R.id.extra_list);
 
-        // Find the ListView which will be populated with the trailers
-        ListView listView = (ListView) rootView.findViewById(R.id.extra_list);
+            mTrailerAdapter = new TrailerAdapter(rootView.getContext(), null);
+            listView.setAdapter(mTrailerAdapter);
 
-        mTrailerAdapter = new TrailerAdapter(rootView.getContext(), null);
-        listView.setAdapter(mTrailerAdapter);
-
-        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final String YOUTUBEWATCH = "https://www.youtube.com/watch";
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
-                String site = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_SITE));
-                String key = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_KEY));
-                if ("YouTube".equals(site)) {
-                    Uri trailerUri = Uri.parse(YOUTUBEWATCH).buildUpon()
-                            .appendQueryParameter("v", key).build();
-                    Intent intent = new Intent(Intent.ACTION_VIEW, trailerUri);
-                    if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-                        startActivity(intent);
+            listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    final String YOUTUBEWATCH = "https://www.youtube.com/watch";
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
+                    String site = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_SITE));
+                    String key = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_KEY));
+                    if ("YouTube".equals(site)) {
+                        Uri trailerUri = Uri.parse(YOUTUBEWATCH).buildUpon()
+                                .appendQueryParameter("v", key).build();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, trailerUri);
+                        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+                            startActivity(intent);
+                        }
+                        // Sample:
+                        // "https://www.youtube.com/watch?v=MS7GN2Lgdas")
                     }
-                    // Sample:
-                    // "https://www.youtube.com/watch?v=MS7GN2Lgdas")
+
                 }
+            });
 
-            }
-        });
-
-        // Provide the package with the movie ID to the loader
-        Bundle bundle = getArguments();
-        getLoaderManager().initLoader(TRAILERS_LOADER, bundle, this);
+            // Provide the package with the movie ID to the loader
+            Bundle bundle = getArguments();
+            getLoaderManager().initLoader(TRAILERS_LOADER, bundle, this);
+        } else {
+            rootView = inflater.inflate(R.layout.extra_info_error, container, false);
+        }
         return rootView;
     }
 

@@ -180,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements
             if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
             mRecyclerView.smoothScrollToPosition(mPosition);
             showData();
+        } else {
+            // Set no connection error message
+            showErrorMessage(R.string.no_data_msg);
         }
     }
 
@@ -235,22 +238,34 @@ public class MainActivity extends AppCompatActivity implements
             showErrorMessage(R.string.no_sort_error_msg);
             return;
         }
+        // Check network connection
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // If there is a network connection, fetch data
+        if ((networkInfo != null && networkInfo.isConnected())
+                || (sort.equals(getString(R.string.show_favorites)))) {
+            showLoading();
 
-        // Put sort criteria to the bundle for Loader
-        Bundle queryBundle = new Bundle();
-        queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+            // Put sort criteria to the bundle for Loader
+            Bundle queryBundle = new Bundle();
+            queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
 
         /*
          * We give the LoaderManager an ID and it returns a loader (if one exists). If
          * one doesn't exist, we tell the LoaderManager to create one. If one does exist, we tell
          * the LoaderManager to restart it.
          */
-        LoaderManager loaderManager = getLoaderManager();
-        Loader<String> moviesLoader = loaderManager.getLoader(MOVIES_LOADER_ID);
-        if (moviesLoader == null) {
-            loaderManager.initLoader(MOVIES_LOADER_ID, queryBundle, this);
+            LoaderManager loaderManager = getLoaderManager();
+            Loader<String> moviesLoader = loaderManager.getLoader(MOVIES_LOADER_ID);
+            if (moviesLoader == null) {
+                loaderManager.initLoader(MOVIES_LOADER_ID, queryBundle, this);
+            } else {
+                loaderManager.restartLoader(MOVIES_LOADER_ID, queryBundle, this);
+            }
         } else {
-            loaderManager.restartLoader(MOVIES_LOADER_ID, queryBundle, this);
+            // Set no connection error message
+            showErrorMessage(R.string.no_connection_error_msg);
         }
     }
 

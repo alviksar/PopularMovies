@@ -1,7 +1,10 @@
 package xyz.alviksar.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,8 +36,14 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.extra_info_list, container, false);
+        View rootView;
+        // Check network connection
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
+         rootView = inflater.inflate(R.layout.extra_info_list, container, false);
 
         // Find the ListView which will be populated with the trailers
         ListView listView = (ListView)rootView.findViewById(R.id.extra_list);
@@ -57,7 +66,9 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
         // Provide the package with the movie ID to the loader
         Bundle bundle = getArguments();
         getLoaderManager().initLoader(REVIEW_LOADER, bundle, this);
-
+        } else {
+            rootView = inflater.inflate(R.layout.extra_info_error, container, false);
+        }
         return rootView;
     }
 

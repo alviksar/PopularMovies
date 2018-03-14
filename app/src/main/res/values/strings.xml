@@ -3,6 +3,7 @@
 
     <!-- Error messages -->
     <string name="no_connection_error_msg">No Internet connection.</string>
+    <string name="no_data_msg">No data.</string>
     <string name="no_sort_error_msg">No sort criteria.</string>
     <string name="poster_description">Movie Poster</string>
 

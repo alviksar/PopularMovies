@@ -166,7 +166,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-
+        // Define if movie is favorite
         int rows;
         if (cursor != null) {
             rows = cursor.getCount();
@@ -176,6 +176,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             } else if (rows == 0) {
                 mMovie.setIsFavorite(false);
             } else {
+                Log.wtf(TAG, "Inconsistent data.");
                 throw new RuntimeException("Inconsistent data.");
             }
         }
@@ -257,7 +258,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                                 e.printStackTrace();
                             }
                         }
-                        Log.v(TAG, "image saved to " + myImageFile.getAbsolutePath());
+                        Log.d(TAG, "image saved to " + myImageFile.getAbsolutePath());
 
                     }
                 }).start();

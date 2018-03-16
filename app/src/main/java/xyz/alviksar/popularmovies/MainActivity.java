@@ -11,6 +11,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-// import com.facebook.stetho.Stetho;
-
 import java.io.File;
 
 import xyz.alviksar.popularmovies.data.PopularMoviesContract;
@@ -35,6 +35,8 @@ import xyz.alviksar.popularmovies.utils.PopularMoviesPreferences;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
+// import com.facebook.stetho.Stetho;
 
 /**
  * Displays movies in the main layout via a grid of their corresponding poster thumbnails
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements
     private static final float POSTER_WIDTH_INCHES = 1.0f;
 
     private static final int MOVIES_LOADER_ID = 1;
+
+    private Parcelable mSavedRecyclerLayoutState = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,34 +99,42 @@ public class MainActivity extends AppCompatActivity implements
 
         GridLayoutManager layoutManager =
                 new GridLayoutManager(this, columns);
-
-        mRecyclerView.setLayoutManager(layoutManager);
-        //  mRecyclerView.setHasFixedSize(true);
-
         // Create PosterAdapter with this context and this OnClickHandler
         mPosterAdapter = new PosterAdapter(this, this);
         // Attach the adapter to the RecyclerView
         mRecyclerView.setAdapter(mPosterAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
 
-        // Get the sort criteria and initialize a loader
-        String sort = PopularMoviesPreferences.getSort(this);
-        Bundle queryBundle = new Bundle();
-        queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
 
-        // Check network connection
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        // If there is a network connection, fetch data
-        if ((networkInfo != null && networkInfo.isConnected())
-                || (sort.equals(getString(R.string.show_favorites)))) {
-            showLoading();
+//            if(savedInstanceState != null)
+//            {
+//                Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+//                mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+//                showData();
+//            }
+//        else {
 
-            getLoaderManager().initLoader(MOVIES_LOADER_ID, queryBundle, this);
-        } else {
-            // Set no connection error message
-            showErrorMessage(R.string.no_connection_error_msg);
-        }
+                // Get the sort criteria and initialize a loader
+                String sort = PopularMoviesPreferences.getSort(this);
+                Bundle queryBundle = new Bundle();
+                queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+
+                // Check network connection
+                ConnectivityManager cm =
+                        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+                // If there is a network connection, fetch data
+                if ((networkInfo != null && networkInfo.isConnected())
+                        || (sort.equals(getString(R.string.show_favorites)))) {
+                    showLoading();
+
+                    getLoaderManager().initLoader(MOVIES_LOADER_ID, queryBundle, this);
+                } else {
+                    // Set no connection error message
+                    showErrorMessage(R.string.no_connection_error_msg);
+                }
+//            }
     }
 
     /**
@@ -189,9 +202,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null) {
             mPosterAdapter.swapData(cursor);
-            if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
-            mRecyclerView.smoothScrollToPosition(mPosition);
             showData();
+            // Restore position upon orientation change
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+
         } else {
             // Set no connection error message
             showErrorMessage(R.string.no_data_msg);
@@ -238,6 +252,29 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
         return true;
+    }
+
+    private static final String BUNDLE_RECYCLER_LAYOUT = "MainActivity.mRecyclerView.layout";
+
+    /**
+     *  https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+     */
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if(savedInstanceState != null)
+        {
+            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     /**

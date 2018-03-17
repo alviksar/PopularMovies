@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -15,11 +16,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -54,6 +59,23 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         super.onSaveInstanceState(outState);
     }
 
+
+//
+// UP button behaviour
+// https://stackoverflow.com/questions/14462456/returning-from-an-activity-using-navigateupfromsametask/16147110#16147110
+// In this app we use android:launchMode="singleTop
+// @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            // Respond to the action bar's Up/Home button
+//            case android.R.id.home:
+//                onBackPressed();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +86,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             mMovie = savedInstanceState.getParcelable(getString(R.string.movie_parcel_key));
         }
-
-
 
         setTitle(mMovie.getTitle());
 
@@ -121,6 +141,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         // Save this poster to a local file
         savePosterImageToFile();
     }
+
     /**
      * Removes a movie from the favorites
      */
@@ -136,7 +157,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     /**
-     *  Set UI differences for favorite and non-favorite movies
+     * Set UI differences for favorite and non-favorite movies
      */
     private void showMovieState() {
         if (mMovie.getIsFavorite()) {
@@ -232,6 +253,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                         mMovie.getPoster()));
 
     }
+
     /**
      * Uses to delete local files if movie is removed from favorites
      */
@@ -244,9 +266,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     /**
-    * Download and save image through Picasso
-    * http://www.codexpedia.com/android/android-download-and-save-image-through-picasso/
-    */
+     * Download and save image through Picasso
+     * http://www.codexpedia.com/android/android-download-and-save-image-through-picasso/
+     */
     private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
 
         ContextWrapper cw = new ContextWrapper(context);

@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_movie_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,13 +29,13 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
 
         <provider
-            android:authorities="xyz.alviksar.popularmovies"
             android:name=".data.MoviesProvider"
-            android:exported="false"/>
+            android:authorities="xyz.alviksar.popularmovies"
+            android:exported="false" />
 
     </application>
 

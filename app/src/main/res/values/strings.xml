@@ -37,4 +37,5 @@
     <string name="remove">Remove</string>
     <!-- Dialog button text for the option to cancel removing the movie from favorites [CHAR LIMIT=20] -->
     <string name="cancel">Cancel</string>
+    <string name="extra_info_type">extra_info_type</string>
 </resources>

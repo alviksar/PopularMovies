@@ -38,13 +38,18 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment;
+        int mode;
         if (position == 1) {
-            fragment = new ReviewFragment();
+//            fragment = new ReviewFragment();
+            mode = ExtraInfoAdapter.SHOW_REVIEWS;
         } else {
-            fragment = new TrailerFragment();
+//            fragment = new TrailerFragment();
+            mode = ExtraInfoAdapter.SHOW_TRAILERS;
         }
+        fragment = new ExtraInfoFragment();
         Bundle bundle = new Bundle(1);
         bundle.putString(mContext.getString(R.string.movie_id_key), mMoveId);
+        bundle.putInt(mContext.getString(R.string.extra_info_type), mode);
         fragment.setArguments(bundle);
         return fragment;
     }

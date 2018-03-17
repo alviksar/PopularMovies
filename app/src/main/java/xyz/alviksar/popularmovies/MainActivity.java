@@ -115,25 +115,25 @@ public class MainActivity extends AppCompatActivity implements
 //            }
 //        else {
 
-                // Get the sort criteria and initialize a loader
-                String sort = PopularMoviesPreferences.getSort(this);
-                Bundle queryBundle = new Bundle();
-                queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
+        // Get the sort criteria and initialize a loader
+        String sort = PopularMoviesPreferences.getSort(this);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(getResources().getString(R.string.pref_sort_key), sort);
 
-                // Check network connection
-                ConnectivityManager cm =
-                        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-                // If there is a network connection, fetch data
-                if ((networkInfo != null && networkInfo.isConnected())
-                        || (sort.equals(getString(R.string.show_favorites)))) {
-                    showLoading();
+        // Check network connection
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // If there is a network connection, fetch data
+        if ((networkInfo != null && networkInfo.isConnected())
+                || (sort.equals(getString(R.string.show_favorites)))) {
+            showLoading();
 
-                    getLoaderManager().initLoader(MOVIES_LOADER_ID, queryBundle, this);
-                } else {
-                    // Set no connection error message
-                    showErrorMessage(R.string.no_connection_error_msg);
-                }
+            getLoaderManager().initLoader(MOVIES_LOADER_ID, queryBundle, this);
+        } else {
+            // Set no connection error message
+            showErrorMessage(R.string.no_connection_error_msg);
+        }
 //            }
     }
 
@@ -204,7 +204,9 @@ public class MainActivity extends AppCompatActivity implements
             mPosterAdapter.swapData(cursor);
             showData();
             // Restore position upon orientation change
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+            if (mSavedRecyclerLayoutState != null) {
+                mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+            }
 
         } else {
             // Set no connection error message
@@ -257,16 +259,16 @@ public class MainActivity extends AppCompatActivity implements
     private static final String BUNDLE_RECYCLER_LAYOUT = "MainActivity.mRecyclerView.layout";
 
     /**
-     *  https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+     * https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
      */
     @Override
     public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        if(savedInstanceState != null)
-        {
-            mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-            mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(BUNDLE_RECYCLER_LAYOUT))
+                mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            // We do it in onLoadFinished : mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
         }
     }
 

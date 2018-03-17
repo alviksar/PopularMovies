@@ -65,6 +65,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             mMovie = savedInstanceState.getParcelable(getString(R.string.movie_parcel_key));
         }
 
+
+
         setTitle(mMovie.getTitle());
 
         // Uses dataBinding with detail_activity.xml

@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -33,10 +35,30 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
     private static final int TRAILERS_LOADER = 8;
     private static final int REVIEW_LOADER = 9;
 
+    private ListView mListView;
+    private Parcelable mSavedListViewState = null;
+
+    private static final String LISTVIEW_STATE_TRAILERS = "listview_state_review";
+    private static final String LISTVIEW_STATE_REVIEWS = "listview_state_reviews";
+
     private ExtraInfoAdapter mExtraInfoAdapter;
 
     public ExtraInfoFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+//        switch (mExtraInfoAdapter.getMode()) {
+//            case ExtraInfoAdapter.SHOW_TRAILERS:
+//                outState.putParcelable(LISTVIEW_STATE_TRAILERS, mListView.onSaveInstanceState());
+//                break;
+//            case ExtraInfoAdapter.SHOW_REVIEWS:
+//                outState.putParcelable(LISTVIEW_STATE_REVIEWS, mListView.onSaveInstanceState());
+//                break;
+//        }
     }
 
     @Override
@@ -52,12 +74,12 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
             rootView = inflater.inflate(R.layout.extra_info_list, container, false);
 
             // Find the ListView which will be populated with the trailers
-            ListView listView = rootView.findViewById(R.id.extra_list);
+            mListView = rootView.findViewById(R.id.extra_list);
 
             mExtraInfoAdapter = new ExtraInfoAdapter(rootView.getContext(), null);
-            listView.setAdapter(mExtraInfoAdapter);
+            mListView.setAdapter(mExtraInfoAdapter);
 
-            listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            mListView.setOnItemClickListener(new ListView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
@@ -106,6 +128,24 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
         return rootView;
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            switch (mExtraInfoAdapter.getMode()) {
+                case ExtraInfoAdapter.SHOW_TRAILERS:
+                    if (savedInstanceState.containsKey(LISTVIEW_STATE_TRAILERS))
+                        mSavedListViewState = savedInstanceState.getParcelable(LISTVIEW_STATE_TRAILERS);
+                    break;
+                case ExtraInfoAdapter.SHOW_REVIEWS:
+                    if (savedInstanceState.containsKey(LISTVIEW_STATE_REVIEWS))
+                        mSavedListViewState = savedInstanceState.getParcelable(LISTVIEW_STATE_REVIEWS);
+                    break;
+            }
+        }
+
+    }
+
 
     @NonNull
     @Override
@@ -113,7 +153,7 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
         // Create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.
         String movieId = bundle.getString(getString(R.string.movie_id_key));
-        int mode = bundle.getInt(getString(R.string.extra_info_type));
+        //      int mode = bundle.getInt(getString(R.string.extra_info_type));
         switch (i) {
             case TRAILERS_LOADER:
                 return new CursorLoader(getContext(),
@@ -121,6 +161,7 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
                                 .CONTENT_URI.buildUpon()
                                 .appendPath(movieId).build(),
                         null, null, null, null);
+
             case REVIEW_LOADER:
                 return new CursorLoader(getContext(),
                         PopularMoviesContract.ReviewsEntry
@@ -137,6 +178,10 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         mExtraInfoAdapter.swapCursor(cursor);
+//        if (mSavedListViewState != null) {
+//            mListView.onRestoreInstanceState(mSavedListViewState);
+//        }
+
     }
 
     @Override

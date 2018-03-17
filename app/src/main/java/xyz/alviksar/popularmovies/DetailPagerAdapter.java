@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
- * Provides an appropriate fragment (TrailerFragment or ReviewFragment) for a view pager.
+ * Provides an appropriate fragment for a view pager.
  */
 public class DetailPagerAdapter extends FragmentPagerAdapter {
 
@@ -40,10 +40,8 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         int mode;
         if (position == 1) {
-//            fragment = new ReviewFragment();
             mode = ExtraInfoAdapter.SHOW_REVIEWS;
         } else {
-//            fragment = new TrailerFragment();
             mode = ExtraInfoAdapter.SHOW_TRAILERS;
         }
         fragment = new ExtraInfoFragment();

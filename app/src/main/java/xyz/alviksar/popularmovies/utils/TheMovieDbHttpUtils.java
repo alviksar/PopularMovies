@@ -48,7 +48,8 @@ public class TheMovieDbHttpUtils {
     /**
      * Initializes the global parameters.
      */
-    public static void init(File dir, float posterSizeInches, DisplayMetrics metrics, String apiKey) {
+    public static void init(File dir, float posterSizeInches,
+                            DisplayMetrics metrics, String apiKey) {
         sDirectory = dir;
         api_key_value = apiKey;
 

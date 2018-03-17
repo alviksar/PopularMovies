@@ -63,12 +63,16 @@ public class ExtraInfoAdapter extends android.widget.CursorAdapter {
             // Extract properties from cursor
             if (mMode == SHOW_TRAILERS) {
                 view.findViewById(R.id.play_button_image).setVisibility(View.VISIBLE);
-                name = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_NAME));
-                type = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_TYPE));
+                name = cursor.getString(cursor.getColumnIndexOrThrow(
+                        PopularMoviesContract.TrailersEntry.COLUMN_NAME));
+                type = cursor.getString(cursor.getColumnIndexOrThrow(
+                        PopularMoviesContract.TrailersEntry.COLUMN_TYPE));
             } else if (mMode == SHOW_REVIEWS) {
                 view.findViewById(R.id.play_button_image).setVisibility(View.GONE);
-                name = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_AUTHOR));
-                type = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_CONTENT));
+                name = cursor.getString(cursor.getColumnIndexOrThrow(
+                        PopularMoviesContract.ReviewsEntry.COLUMN_AUTHOR));
+                type = cursor.getString(cursor.getColumnIndexOrThrow(
+                        PopularMoviesContract.ReviewsEntry.COLUMN_CONTENT));
             } else {
                 name = "";
                 type = "";

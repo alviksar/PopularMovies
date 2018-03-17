@@ -119,7 +119,6 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
             if (mCursor != null) {
                 mCursor.moveToPosition(position);
                 PopularMovie movie = PopularMoviesContract.MoviesEntry.buildFromCursor(mCursor);
-//                int movieId = mCursor.getInt(mCursor.getColumnIndex(PopularMoviesContract.MoviesEntry._ID));
                 mClickHandler.onClick(movie);
             }
         }

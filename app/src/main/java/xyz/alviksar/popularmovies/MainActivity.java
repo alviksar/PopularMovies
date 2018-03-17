@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements
     private Spinner mSpinner;
 
     private PosterAdapter mPosterAdapter;
-    private int mPosition = RecyclerView.NO_POSITION;
 
     // The poster width on screen in inches
     private static final float POSTER_WIDTH_INCHES = 1.0f;
@@ -139,7 +137,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * This method will hide everything except the TextView error message and set the appropriate text to it.
+     * This method will hide everything except the TextView error message
+     * and set the appropriate text to it.
      */
     private void showErrorMessage(int msgResId) {
         mPosterAdapter.swapData(null);
@@ -272,7 +271,8 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(BUNDLE_RECYCLER_LAYOUT))
                 mSavedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-            // We do it in onLoadFinished : mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
+            // We do it in onLoadFinished :
+            // mRecyclerView.getLayoutManager().onRestoreInstanceState(mSavedRecyclerLayoutState);
         }
     }
 

@@ -215,7 +215,8 @@ public final class TheMovieDbJsonUtils {
  * ],
  * "backdrop_path":"\/iBM6zvlOmcfodGhUa36sy7pM2Er.jpg",
  * "adult":false,
- * "overview":"Laura and Carlos love each other as if every day was the last, and perhaps that first love intensity is what will tear them apart a year later.",
+ * "overview":"Laura and Carlos love each other as if every day was the last, and perhaps that first
+  * love intensity is what will tear them apart a year later.",
  * "release_date":"2017-04-21"
  * },
  * {

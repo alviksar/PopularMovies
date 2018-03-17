@@ -7,9 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -18,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -27,7 +24,6 @@ import xyz.alviksar.popularmovies.data.PopularMoviesContract;
 /**
  * This Fragment shows a movie trailer or review list in DetailActivity.
  */
-
 public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ExtraInfoFragment.class.getSimpleName();
@@ -35,30 +31,10 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
     private static final int TRAILERS_LOADER = 8;
     private static final int REVIEW_LOADER = 9;
 
-    private ListView mListView;
-    private Parcelable mSavedListViewState = null;
-
-    private static final String LISTVIEW_STATE_TRAILERS = "listview_state_review";
-    private static final String LISTVIEW_STATE_REVIEWS = "listview_state_reviews";
-
     private ExtraInfoAdapter mExtraInfoAdapter;
 
     public ExtraInfoFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-
-        super.onSaveInstanceState(outState);
-//        switch (mExtraInfoAdapter.getMode()) {
-//            case ExtraInfoAdapter.SHOW_TRAILERS:
-//                outState.putParcelable(LISTVIEW_STATE_TRAILERS, mListView.onSaveInstanceState());
-//                break;
-//            case ExtraInfoAdapter.SHOW_REVIEWS:
-//                outState.putParcelable(LISTVIEW_STATE_REVIEWS, mListView.onSaveInstanceState());
-//                break;
-//        }
     }
 
     @Override
@@ -74,12 +50,12 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
             rootView = inflater.inflate(R.layout.extra_info_list, container, false);
 
             // Find the ListView which will be populated with the trailers
-            mListView = rootView.findViewById(R.id.extra_list);
+            ListView listView = rootView.findViewById(R.id.extra_list);
 
             mExtraInfoAdapter = new ExtraInfoAdapter(rootView.getContext(), null);
-            mListView.setAdapter(mExtraInfoAdapter);
+            listView.setAdapter(mExtraInfoAdapter);
 
-            mListView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            listView.setOnItemClickListener(new ListView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
@@ -87,8 +63,10 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
                     switch (mExtraInfoAdapter.getMode()) {
                         case ExtraInfoAdapter.SHOW_TRAILERS:
                             final String YOUTUBEWATCH = "https://www.youtube.com/watch";
-                            String site = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_SITE));
-                            String key = cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.TrailersEntry.COLUMN_KEY));
+                            String site = cursor.getString(cursor.getColumnIndexOrThrow(
+                                    PopularMoviesContract.TrailersEntry.COLUMN_SITE));
+                            String key = cursor.getString(cursor.getColumnIndexOrThrow(
+                                    PopularMoviesContract.TrailersEntry.COLUMN_KEY));
                             if ("YouTube".equals(site)) {
                                 uri = Uri.parse(YOUTUBEWATCH).buildUpon()
                                         .appendQueryParameter("v", key).build();
@@ -97,7 +75,8 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
                             }
                             break;
                         case ExtraInfoAdapter.SHOW_REVIEWS:
-                            uri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(PopularMoviesContract.ReviewsEntry.COLUMN_URL)));
+                            uri = Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(
+                                    PopularMoviesContract.ReviewsEntry.COLUMN_URL)));
 
                             break;
                     }
@@ -126,24 +105,6 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
             rootView = inflater.inflate(R.layout.extra_info_error, container, false);
         }
         return rootView;
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            switch (mExtraInfoAdapter.getMode()) {
-                case ExtraInfoAdapter.SHOW_TRAILERS:
-                    if (savedInstanceState.containsKey(LISTVIEW_STATE_TRAILERS))
-                        mSavedListViewState = savedInstanceState.getParcelable(LISTVIEW_STATE_TRAILERS);
-                    break;
-                case ExtraInfoAdapter.SHOW_REVIEWS:
-                    if (savedInstanceState.containsKey(LISTVIEW_STATE_REVIEWS))
-                        mSavedListViewState = savedInstanceState.getParcelable(LISTVIEW_STATE_REVIEWS);
-                    break;
-            }
-        }
-
     }
 
 
@@ -178,10 +139,6 @@ public class ExtraInfoFragment extends Fragment implements LoaderManager.LoaderC
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
         mExtraInfoAdapter.swapCursor(cursor);
-//        if (mSavedListViewState != null) {
-//            mListView.onRestoreInstanceState(mSavedListViewState);
-//        }
-
     }
 
     @Override

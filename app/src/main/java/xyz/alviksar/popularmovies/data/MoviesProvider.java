@@ -49,11 +49,16 @@ public class MoviesProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PopularMoviesContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*", MATCH_THEMOVIEDB);
-        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "", MATCH_FAVORITE);
-        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "/#", MATCH_FAVORITE_BY_ID);
-        matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS + "/#", MATCH_TRAILERS_BY_ID);
-        matcher.addURI(authority, PopularMoviesContract.PATH_REVIEWS + "/#", MATCH_REVIEWS_BY_ID);
+        matcher.addURI(authority, PopularMoviesContract.PATH_THEMOVIEDB + "/*",
+                MATCH_THEMOVIEDB);
+        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "",
+                MATCH_FAVORITE);
+        matcher.addURI(authority, PopularMoviesContract.FAVORITE_MOVIE_ENDPOINT + "/#",
+                MATCH_FAVORITE_BY_ID);
+        matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS + "/#",
+                MATCH_TRAILERS_BY_ID);
+        matcher.addURI(authority, PopularMoviesContract.PATH_REVIEWS + "/#",
+                MATCH_REVIEWS_BY_ID);
 
         return matcher;
     }
@@ -157,7 +162,8 @@ public class MoviesProvider extends ContentProvider {
         Long newRowId = -1L;
         switch (sUriMatcher.match(uri)) {
             case MATCH_FAVORITE:
-                newRowId = db.insert(PopularMoviesContract.MoviesEntry.TABLE_NAME, null, values);
+                newRowId = db.insert(PopularMoviesContract.MoviesEntry.TABLE_NAME,
+                        null, values);
                 break;
             default:
                 Log.e(TAG, "Unknown uri: " + uri.toString());
@@ -176,7 +182,8 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
         SQLiteDatabase database = mMovieDbHelper.getWritableDatabase();
         int numRowsDeleted;
         final int match = sUriMatcher.match(uri);
@@ -185,7 +192,8 @@ public class MoviesProvider extends ContentProvider {
                 // Delete a single row given by the ID in the URI
                 selection = PopularMoviesContract.MoviesEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                numRowsDeleted = database.delete(PopularMoviesContract.MoviesEntry.TABLE_NAME, selection, selectionArgs);
+                numRowsDeleted = database.delete(PopularMoviesContract.MoviesEntry.TABLE_NAME,
+                        selection, selectionArgs);
                 break;
             default:
                 Log.e(TAG, "Deletion is not supported for " + uri.toString());
@@ -200,7 +208,8 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
+                      @Nullable String s, @Nullable String[] strings) {
         throw new RuntimeException("The getType method is not implemented.");
     }
 }

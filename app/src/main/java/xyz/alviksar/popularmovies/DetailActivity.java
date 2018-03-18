@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -14,11 +15,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +50,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final int MOVIE_DETAIL_LOADER_ID = 11;
     // The button to mark a movie as favorite
     private Button mMarkButton;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -109,14 +113,32 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
+        mFab = findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isFavorite = mMovie.getIsFavorite();
+                try {
+                    if (!isFavorite) {
+                        markMovieAsFavorite();
+                    } else {
+                        removeConfirmationDialog();
+                    }
+                } finally {
+                    showMovieState();
+                }
+            }
+        });
+
         // Connect our activity into the loader lifecycle
         getSupportLoaderManager().initLoader(MOVIE_DETAIL_LOADER_ID, null, this);
     }
 
+
     /**
      * Adds a movie to the favorites
      */
-    private void markMovieAsFavorite() {
+    private boolean markMovieAsFavorite() {
 
         ContentValues values = new ContentValues();
         values.put(PopularMoviesContract.MoviesEntry._ID, mMovie.getId());
@@ -132,9 +154,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 PopularMoviesContract.MoviesEntry.CONTENT_URI,
                 values                          // the values to insert
         );
+        if (newUri != null) {
+            // Save this poster to a local file
+            savePosterImageToFile();
+            return true;
+        } else {
+            return false;
+        }
 
-        // Save this poster to a local file
-        savePosterImageToFile();
     }
 
     /**
@@ -155,12 +182,21 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
      * Set UI differences for favorite and non-favorite movies
      */
     private void showMovieState() {
-        if (mMovie.getIsFavorite()) {
-            mMarkButton.setText(R.string.remove_from_favorite);
-            mMarkButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorGold));
-        } else {
-            mMarkButton.setText(R.string.mark_as_favorite);
-            mMarkButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
+        if (mMarkButton.getVisibility() == View.VISIBLE) {
+            if (mMovie.getIsFavorite()) {
+                mMarkButton.setText(R.string.remove_from_favorite);
+                mMarkButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorGold));
+            } else {
+                mMarkButton.setText(R.string.mark_as_favorite);
+                mMarkButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
+            }
+        }
+        if (mFab.getVisibility() == View.VISIBLE) {
+            if (mMovie.getIsFavorite()) {
+                mFab.setImageResource(R.drawable.ic_star_gold);
+            } else {
+                mFab.setImageResource(R.drawable.ic_star_gray);
+            }
         }
     }
 
@@ -264,7 +300,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
      * Download and save image through Picasso
      * http://www.codexpedia.com/android/android-download-and-save-image-through-picasso/
      */
-    private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
+    private Target picassoImageTarget(Context context,
+                                      final String imageDir, final String imageName) {
 
         ContextWrapper cw = new ContextWrapper(context);
         // path to /data/data/yourapp/app_imageDir
@@ -275,7 +312,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final File myImageFile = new File(directory, imageName); // Create image file
+                        // Create image file
+                        final File myImageFile = new File(directory, imageName);
                         FileOutputStream fos = null;
                         try {
                             fos = new FileOutputStream(myImageFile);

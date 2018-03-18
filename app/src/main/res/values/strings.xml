@@ -38,4 +38,6 @@
     <!-- Dialog button text for the option to cancel removing the movie from favorites [CHAR LIMIT=20] -->
     <string name="cancel">Cancel</string>
     <string name="extra_info_type">extra_info_type</string>
+    <string name="mark_as_favorite_message">The movie was marked as favorite.</string>
+    <string name="remove_from_favorites_messages">The movie was removed from favorites.</string>
 </resources>

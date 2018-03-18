@@ -15,7 +15,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -25,6 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -51,6 +54,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     // The button to mark a movie as favorite
     private Button mMarkButton;
     private FloatingActionButton mFab;
+    private LinearLayout mainLayout;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -130,6 +134,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
+        mainLayout = findViewById(R.id.main_layout);
         // Connect our activity into the loader lifecycle
         getSupportLoaderManager().initLoader(MOVIE_DETAIL_LOADER_ID, null, this);
     }
@@ -157,6 +162,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         if (newUri != null) {
             // Save this poster to a local file
             savePosterImageToFile();
+            Snackbar.make(mainLayout,
+                    R.string.mark_as_favorite_message, Snackbar.LENGTH_LONG).show();
             return true;
         } else {
             return false;
@@ -176,6 +183,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 null,
                 null
         );
+        if (rowDeleted == 1) {
+            Snackbar.make(mainLayout,
+                    R.string.remove_from_favorites_messages, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     /**

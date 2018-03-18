@@ -27,7 +27,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         void onClick(PopularMovie movie);
     }
 
-    private final  Context mContext;
+    private final Context mContext;
 
     private Cursor mCursor;
 
@@ -67,8 +67,8 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterAdap
         String fullPathToPoster = TheMovieDbHttpUtils.getFullPathToPoster(poster);
         Picasso.with(mContext)
                 .load(fullPathToPoster)
-                //     .placeholder(R.drawable.user_placeholder)
-                //      .error(R.drawable.user_placeholder_error)
+                .placeholder(R.drawable.poster_placeholder)
+                .error(R.drawable.ic_error)
                 .into(holder.posterView);
     }
 

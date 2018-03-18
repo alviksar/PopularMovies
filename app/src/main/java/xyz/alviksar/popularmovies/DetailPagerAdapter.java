@@ -15,9 +15,9 @@ import android.support.v4.view.ViewPager;
  */
 public class DetailPagerAdapter extends FragmentPagerAdapter {
 
-    private final Context  mContext;
+    private final Context mContext;
 
-    private final int PAGE_COUNT = 2;
+    private static final int PAGE_COUNT = 2;
 
     // The move ID of DetailActivity
     private final String mMoveId;
@@ -69,7 +69,7 @@ public class DetailPagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Sets PagerAdapter into databinding
-     *
+     * <p>
      * https://codedesignpattern.wordpress.com/2016/09/16/view-pager-with-databinding-custom-setter/
      */
     @BindingAdapter(value = {"android:pagerAdapter"}, requireAll = false)

@@ -9,6 +9,7 @@ import android.widget.RatingBar;
 
 import com.squareup.picasso.Picasso;
 
+import xyz.alviksar.popularmovies.R;
 import xyz.alviksar.popularmovies.utils.TheMovieDbHttpUtils;
 
 /**
@@ -180,7 +181,8 @@ public class PopularMovie implements Parcelable {
         String url = TheMovieDbHttpUtils.getFullPathToPoster(poster);
         Picasso.with(view.getContext())
                 .load(url)
-                //   .error(error)
+                .placeholder(R.drawable.poster_placeholder)
+                .error(R.drawable.ic_error)
                 .into(view);
     }
 

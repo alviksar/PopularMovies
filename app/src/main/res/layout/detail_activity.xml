@@ -40,7 +40,8 @@
                     android:scaleType="centerCrop"
                     app:imageUrl="@{popularMovie.poster}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_error"/>
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
